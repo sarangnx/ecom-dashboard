@@ -20,7 +20,7 @@
         <div v-if="addonLeftIcon || $slots.addonLeft" class="input-group-prepend">
             <span class="input-group-text">
                 <slot name="addonLeft">
-                    <i :class="addonLeftIcon"></i>
+                    <font-awesome-icon :icon="addonLeftIcon"></font-awesome-icon>
                 </slot>
             </span>
         </div>
@@ -37,7 +37,7 @@
         <div v-if="addonRightIcon || $slots.addonRight" class="input-group-append">
             <span class="input-group-text">
                 <slot name="addonRight">
-                    <i :class="addonRightIcon"></i>
+                    <font-awesome-icon :icon="addonRightIcon"></font-awesome-icon>
                 </slot>
             </span>
         </div>
