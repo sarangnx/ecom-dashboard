@@ -1,0 +1,14 @@
+{
+    "extends": ["plugin:vue/recommended", "plugin:prettier-vue/recommended"],
+    "rules": {
+        "prettier-vue/prettier": [
+            "error",
+            {
+                "printWidth": 100,
+                "singleQuote": true,
+                "semi": true,
+                "trailingComma": "es5"
+            }
+        ]
+    }
+}
