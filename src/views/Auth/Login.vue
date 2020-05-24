@@ -30,7 +30,13 @@
                             <span class="text-muted">Remember me</span>
                         </base-checkbox>
                         <div class="text-center">
-                            <base-button type="primary" class="my-4" @click.prevent="login">
+                            <base-button
+                                type="primary"
+                                class="my-4"
+                                :loading="loading"
+                                :disabled="loading"
+                                @click.prevent="login"
+                            >
                                 Sign in
                             </base-button>
                         </div>
