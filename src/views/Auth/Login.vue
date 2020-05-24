@@ -47,6 +47,7 @@
 </template>
 <script>
 import { required } from 'vuelidate/lib/validators';
+import { mapGetters } from 'vuex';
 
 export default {
     name: 'Login',
@@ -55,6 +56,11 @@ export default {
         password: '',
         loading: false,
     }),
+    computed: {
+        ...mapGetters({
+            isLoggedIn: 'auth/isLoggedIn',
+        }),
+    },
     validations: {
         username: {
             required,
@@ -72,12 +78,12 @@ export default {
                 this.loading = true;
 
                 try {
-                    const loggedIn = await this.$store.dispatch('auth/login', {
+                    await this.$store.dispatch('auth/login', {
                         username: this.username,
                         password: this.password,
                     });
 
-                    if (loggedIn) {
+                    if (this.isLoggedIn) {
                         this.$router.push('/');
                     }
                 } catch (err) {
