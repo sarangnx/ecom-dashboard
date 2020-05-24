@@ -4,7 +4,6 @@ export default {
     namespaced: true,
     // State stores jwtToken in local storeage
     state: {
-        authStatus: false,
         token: null,
         user: null,
         apiUrl: null,
@@ -30,7 +29,8 @@ export default {
     },
     getters: {
         isLoggedIn(state) {
-            return !!state.token;
+            console.log(state);
+            return state.token && state.user ? true : false;
         },
         getToken(state) {
             return state.token;
@@ -55,23 +55,25 @@ export default {
                 });
 
                 if (response.data) {
-                    const user = decode(response.data.token);
+                    const user = response.data.user;
 
                     // Store the token to local storage
                     await localStorage.setItem('authToken', response.data.token);
 
                     // Set authentication headers for future requests
-                    this._vm.$axios.defaults.headers.common.Authorization = `Bearer ${data.token}`;
+                    this._vm.$axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
                     // set states token and user
+
                     commit('setToken', response.data.token);
                     commit('setUser', user);
-                    return true;
                 }
-                return false;
             } catch (err) {
                 if (err.response && err.response.data && err.response.data.error) {
                     this._vm.$error(err.response.data.error.message);
                 }
+                commit('setToken', null);
+                commit('setUser', null);
+                delete this._vm.$axios.defaults.headers.common.Authorization;
             }
         },
         async logout({ commit }) {
@@ -82,41 +84,40 @@ export default {
             } catch (err) {}
         },
         checkLogin({ getters, dispatch, commit }) {
-            /**
-             * Check whether user is logged in during each relogin.
-             */
-            return new Promise((resolve) => {
-                const token = getters.getToken || localStorage.getItem('authToken');
-                if (token) {
-                    const user = decode(token);
-                    const expiry = new Date() - new Date(user.exp * 1000);
-                    if (expiry <= 0) {
-                        this._vm.$axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-                        commit('setToken', token);
-                        commit('setUser', user);
-                        resolve({ status: 'authenticated' });
-                    } else {
-                        throw new Error('Login Again');
-                    }
-                } else {
-                    throw new Error('Login Again');
-                }
-            }).catch(() => dispatch('logout'));
+            // /**
+            //  * Check whether user is logged in during each relogin.
+            //  */
+            // return new Promise((resolve) => {
+            //     const token = getters.getToken || localStorage.getItem('authToken');
+            //     if (token) {
+            //         const user = decode(token);
+            //         const expiry = new Date() - new Date(user.exp * 1000);
+            //         if (expiry <= 0) {
+            //             this._vm.$axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+            //             commit('setToken', token);
+            //             commit('setUser', user);
+            //             resolve({ status: 'authenticated' });
+            //         } else {
+            //             throw new Error('Login Again');
+            //         }
+            //     } else {
+            //         throw new Error('Login Again');
+            //     }
+            // }).catch(() => dispatch('logout'));
         },
         checkExp({ getters, dispatch, commit }) {
-            return new Promise((resolve) => {
-                const token = getters.getToken;
-
-                if (token) {
-                    const user = decode(token);
-                    const expiry = new Date() - new Date(user.exp * 1000);
-                    if (expiry <= 0) {
-                        resolve({ status: 'authenticated' });
-                    } else {
-                        throw new Error('Login Again');
-                    }
-                }
-            }).catch(() => dispatch('logout'));
+            // return new Promise((resolve) => {
+            //     const token = getters.getToken;
+            //     if (token) {
+            //         const user = decode(token);
+            //         const expiry = new Date() - new Date(user.exp * 1000);
+            //         if (expiry <= 0) {
+            //             resolve({ status: 'authenticated' });
+            //         } else {
+            //             throw new Error('Login Again');
+            //         }
+            //     }
+            // }).catch(() => dispatch('logout'));
         },
     },
 };
