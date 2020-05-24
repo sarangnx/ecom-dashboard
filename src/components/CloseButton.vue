@@ -3,11 +3,11 @@
         type="button"
         class="navbar-toggler"
         data-toggle="collapse"
-        @click="handleClick"
         :data-target="`#${target}`"
         :aria-controls="target"
         :aria-expanded="expanded"
         aria-label="Toggle navigation"
+        @click="handleClick"
     >
         <span></span>
         <span></span>
@@ -15,7 +15,7 @@
 </template>
 <script>
 export default {
-    name: 'close-button',
+    name: 'CloseButton',
     props: {
         target: {
             type: [String, Number],
@@ -33,4 +33,3 @@ export default {
     },
 };
 </script>
-<style></style>

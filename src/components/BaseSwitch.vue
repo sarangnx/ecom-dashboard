@@ -1,12 +1,12 @@
 <template>
     <label class="custom-toggle">
-        <input type="checkbox" v-model="model" v-bind="$attrs" v-on="$listeners" />
+        <input v-model="model" type="checkbox" v-bind="$attrs" v-on="$listeners" />
         <span class="custom-toggle-slider rounded-circle"></span>
     </label>
 </template>
 <script>
 export default {
-    name: 'base-switch',
+    name: 'BaseSwitch',
     inheritAttrs: false,
     props: {
         value: {
@@ -27,4 +27,3 @@ export default {
     },
 };
 </script>
-<style></style>

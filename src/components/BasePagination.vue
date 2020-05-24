@@ -5,7 +5,7 @@
                 <span aria-hidden="true"><i class="fa fa-angle-left" aria-hidden="true"></i></span>
             </a>
         </li>
-        <li class="page-item" :class="{ active: value === item }" :key="item" v-for="item in range(minPage, maxPage)">
+        <li v-for="item in range(minPage, maxPage)" :key="item" class="page-item" :class="{ active: value === item }">
             <a class="page-link" @click="changePage(item)">{{ item }}</a>
         </li>
         <li class="page-item next-page" :class="{ disabled: value === totalPages }">
@@ -17,7 +17,7 @@
 </template>
 <script>
 export default {
-    name: 'base-pagination',
+    name: 'BasePagination',
     props: {
         pageCount: {
             type: Number,
@@ -49,6 +49,11 @@ export default {
             default: '',
             description: 'Pagination alignment (e.g center|start|end)',
         },
+    },
+    data() {
+        return {
+            defaultPagesToDisplay: 5,
+        };
     },
     computed: {
         totalPages() {
@@ -90,10 +95,13 @@ export default {
             }
         },
     },
-    data() {
-        return {
-            defaultPagesToDisplay: 5,
-        };
+    watch: {
+        perPage() {
+            this.$emit('input', 1);
+        },
+        total() {
+            this.$emit('input', 1);
+        },
     },
     methods: {
         range(min, max) {
@@ -115,14 +123,6 @@ export default {
             if (this.value > 1) {
                 this.$emit('input', this.value - 1);
             }
-        },
-    },
-    watch: {
-        perPage() {
-            this.$emit('input', 1);
-        },
-        total() {
-            this.$emit('input', 1);
         },
     },
 };

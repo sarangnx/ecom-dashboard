@@ -1,6 +1,6 @@
 <template>
     <div class="custom-control custom-checkbox" :class="[{ disabled: disabled }, inlineClass]">
-        <input :id="cbId" class="custom-control-input" type="checkbox" :disabled="disabled" v-model="model" />
+        <input :id="cbId" v-model="model" class="custom-control-input" type="checkbox" :disabled="disabled" />
         <label :for="cbId" class="custom-control-label">
             <slot>
                 <span v-if="inline">&nbsp;</span>
@@ -12,13 +12,14 @@
 import { randomString } from './stringUtils';
 
 export default {
-    name: 'base-checkbox',
+    name: 'BaseCheckbox',
     model: {
         prop: 'checked',
     },
     props: {
         checked: {
             type: [Array, Boolean],
+            default: false,
             description: 'Whether checkbox is checked',
         },
         disabled: {

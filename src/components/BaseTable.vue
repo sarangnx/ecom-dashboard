@@ -10,7 +10,7 @@
         <tbody :class="tbodyClasses">
             <tr v-for="(item, index) in data" :key="index">
                 <slot :row="item" :index="index">
-                    <td v-for="(column, index) in colsWithValue(item)" :key="index">
+                    <td v-for="(column, index2) in colsWithValue(item)" :key="index2">
                         {{ itemValue(item, column) }}
                     </td>
                 </slot>
@@ -20,7 +20,7 @@
 </template>
 <script>
 export default {
-    name: 'base-table',
+    name: 'BaseTable',
     props: {
         columns: {
             type: Array,
@@ -68,4 +68,3 @@ export default {
     },
 };
 </script>
-<style></style>

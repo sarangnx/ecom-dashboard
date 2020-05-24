@@ -27,11 +27,11 @@
         <slot v-bind="slotData">
             <input
                 :value="value"
-                v-on="listeners"
                 v-bind="$attrs"
                 class="form-control"
                 :class="[{ 'is-valid': valid === true }, { 'is-invalid': error }, inputClasses]"
                 aria-describedby="addon-right addon-left"
+                v-on="listeners"
             />
         </slot>
         <div v-if="addonRightIcon || $slots.addonRight" class="input-group-append">
@@ -43,7 +43,7 @@
         </div>
         <slot name="infoBlock"></slot>
         <slot name="helpBlock">
-            <div class="text-danger invalid-feedback" style="display: block;" :class="{ 'mt-2': hasIcon }" v-if="error">
+            <div v-if="error" class="text-danger invalid-feedback" style="display: block;" :class="{ 'mt-2': hasIcon }">
                 {{ error }}
             </div>
         </slot>
@@ -51,8 +51,8 @@
 </template>
 <script>
 export default {
+    name: 'BaseInput',
     inheritAttrs: false,
-    name: 'base-input',
     props: {
         required: {
             type: Boolean,
@@ -138,4 +138,3 @@ export default {
     },
 };
 </script>
-<style></style>

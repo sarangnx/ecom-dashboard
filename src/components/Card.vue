@@ -9,23 +9,23 @@
             { [`bg-${type}`]: type },
         ]"
     >
-        <div class="card-header" :class="headerClasses" v-if="$slots.header">
+        <div v-if="$slots.header" class="card-header" :class="headerClasses">
             <slot name="header"> </slot>
         </div>
-        <div class="card-body" :class="bodyClasses" v-if="!noBody">
+        <div v-if="!noBody" class="card-body" :class="bodyClasses">
             <slot></slot>
         </div>
 
         <slot v-if="noBody"></slot>
 
-        <div class="card-footer" :class="footerClasses" v-if="$slots.footer">
+        <div v-if="$slots.footer" class="card-footer" :class="footerClasses">
             <slot name="footer"></slot>
         </div>
     </div>
 </template>
 <script>
 export default {
-    name: 'card',
+    name: 'Card',
     props: {
         type: {
             type: String,
@@ -67,4 +67,3 @@ export default {
     },
 };
 </script>
-<style></style>

@@ -1,14 +1,14 @@
 <template>
     <div class="progress-wrapper">
-        <div class="progress-info" v-if="$slots.label || label || $slots.percentage || showPercentage">
-            <div class="progress-label" v-if="$slots.label || label">
+        <div v-if="$slots.label || label || $slots.percentage || showPercentage" class="progress-info">
+            <div v-if="$slots.label || label" class="progress-label">
                 <span>
                     <slot name="label">
                         {{ label }}
                     </slot>
                 </span>
             </div>
-            <div class="progress-percentage" v-if="$slots.percentage || showPercentage">
+            <div v-if="$slots.percentage || showPercentage" class="progress-percentage">
                 <slot name="percentage"> {{ value }} % </slot>
             </div>
         </div>
@@ -27,7 +27,7 @@
 </template>
 <script>
 export default {
-    name: 'base-progress',
+    name: 'BaseProgress',
     props: {
         striped: {
             type: Boolean,
@@ -77,4 +77,3 @@ export default {
     },
 };
 </script>
-<style></style>

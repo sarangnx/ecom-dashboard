@@ -7,7 +7,7 @@
 </template>
 <script>
 export default {
-    name: 'loading',
+    name: 'Loading',
     props: {
         color: {
             type: String,

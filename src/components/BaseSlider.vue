@@ -1,13 +1,13 @@
 <template>
     <div class="input-slider-container">
-        <div class="input-slider" ref="slider" :class="[`slider-${type}`]" :disabled="disabled"></div>
+        <div ref="slider" class="input-slider" :class="[`slider-${type}`]" :disabled="disabled"></div>
     </div>
 </template>
 <script>
 import noUiSlider from 'nouislider';
 
 export default {
-    name: 'base-slider',
+    name: 'BaseSlider',
     props: {
         value: {
             type: [String, Array, Number],
@@ -40,15 +40,33 @@ export default {
             description: 'noUiSlider options',
         },
     },
+    data() {
+        return {
+            slider: null,
+        };
+    },
     computed: {
         connect() {
             return Array.isArray(this.value) || [true, false];
         },
     },
-    data() {
-        return {
-            slider: null,
-        };
+    watch: {
+        value(newValue, oldValue) {
+            const slider = this.$refs.slider.noUiSlider;
+            const sliderValue = slider.get();
+            if (newValue !== oldValue && sliderValue !== newValue) {
+                if (Array.isArray(sliderValue) && Array.isArray(newValue)) {
+                    if (oldValue.length === newValue.length && oldValue.every((v, i) => v === newValue[i])) {
+                        slider.set(newValue);
+                    }
+                } else {
+                    slider.set(newValue);
+                }
+            }
+        },
+    },
+    mounted() {
+        this.createSlider();
     },
     methods: {
         createSlider() {
@@ -65,24 +83,6 @@ export default {
                     this.$emit('input', value);
                 }
             });
-        },
-    },
-    mounted() {
-        this.createSlider();
-    },
-    watch: {
-        value(newValue, oldValue) {
-            const slider = this.$refs.slider.noUiSlider;
-            const sliderValue = slider.get();
-            if (newValue !== oldValue && sliderValue !== newValue) {
-                if (Array.isArray(sliderValue) && Array.isArray(newValue)) {
-                    if (oldValue.length === newValue.length && oldValue.every((v, i) => v === newValue[i])) {
-                        slider.set(newValue);
-                    }
-                } else {
-                    slider.set(newValue);
-                }
-            }
         },
     },
 };

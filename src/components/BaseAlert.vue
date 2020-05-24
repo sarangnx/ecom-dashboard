@@ -1,6 +1,6 @@
 <template>
     <fade-transition>
-        <div class="alert" :class="[`alert-${type}`, { 'alert-dismissible': dismissible }]" role="alert" v-if="visible">
+        <div v-if="visible" class="alert" :class="[`alert-${type}`, { 'alert-dismissible': dismissible }]" role="alert">
             <slot v-if="!dismissible">
                 <span v-if="icon" class="alert-inner--icon">
                     <i :class="icon"></i>
@@ -31,7 +31,7 @@
 import { FadeTransition } from 'vue2-transitions';
 
 export default {
-    name: 'base-alert',
+    name: 'BaseAlert',
     components: {
         FadeTransition,
     },
