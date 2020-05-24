@@ -1,7 +1,8 @@
 {
     "extends": ["plugin:vue/recommended", "plugin:prettier-vue/recommended", "prettier/vue"],
     "rules": {
-        "prettier-vue/prettier": ["error"]
+        "prettier-vue/prettier": ["error"],
+        "vue/require-default-prop": "off"
     },
     "parser": "vue-eslint-parser",
     "parserOptions": {
