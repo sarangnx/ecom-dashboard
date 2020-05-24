@@ -29,7 +29,6 @@ export default {
     },
     getters: {
         isLoggedIn(state) {
-            console.log(state);
             return state.token && state.user ? true : false;
         },
         getToken(state) {
