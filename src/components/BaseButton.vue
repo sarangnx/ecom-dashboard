@@ -1,17 +1,27 @@
 <template>
-    <component :is="tag" :type="tag === 'button' ? nativeType : ''" class="btn" :class="classes" @click="handleClick">
-        <span v-if="$slots.icon || (icon && $slots.default)" class="btn-inner--icon">
+    <component
+        :is="tag"
+        :type="tag === 'button' ? nativeType : ''"
+        class="btn"
+        :class="classes"
+        :disabled="disabled"
+        @click="handleClick"
+    >
+        <span v-if="($slots.icon || (icon && $slots.default)) && !loading" class="btn-inner--icon">
             <slot name="icon">
-                <i :class="icon"></i>
+                <font-awesome-icon :icon="icon"></font-awesome-icon>
             </slot>
         </span>
-        <i v-if="!$slots.default" :class="icon"></i>
-        <span v-if="$slots.icon || (icon && $slots.default)" class="btn-inner--text">
+        <font-awesome-icon v-if="!$slots.default && !loading" :icon="icon"></font-awesome-icon>
+        <span v-if="($slots.icon || (icon && $slots.default)) && !loading" class="btn-inner--text">
             <slot>
                 {{ text }}
             </slot>
         </span>
-        <slot v-if="!$slots.icon && !icon"></slot>
+        <slot v-if="!$slots.icon && !icon && !loading"></slot>
+        <slot v-if="loading" name="loading">
+            <font-awesome-icon icon="circle-notch" spin></font-awesome-icon>
+        </slot>
     </component>
 </template>
 <script>
@@ -72,6 +82,14 @@ export default {
             type: Boolean,
             default: false,
             description: 'Whether button is of block type',
+        },
+        loading: {
+            type: Boolean,
+            default: false,
+        },
+        disabled: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {
