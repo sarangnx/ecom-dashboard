@@ -43,8 +43,8 @@
         </div>
         <slot name="infoBlock"></slot>
         <slot name="helpBlock">
-            <div v-if="error" class="text-danger invalid-feedback" style="display: block;" :class="{ 'mt-2': hasIcon }">
-                {{ error }}
+            <div v-if="error" class="text-danger invalid-feedback p-1" style="display: block;">
+                <small>{{ error }}</small>
             </div>
         </slot>
     </div>
