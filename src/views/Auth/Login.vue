@@ -72,7 +72,7 @@ export default {
                 this.loading = true;
 
                 try {
-                    const loggedIn = await this.$store.dispatch('login/login', {
+                    const loggedIn = await this.$store.dispatch('auth/login', {
                         username: this.username,
                         password: this.password,
                     });

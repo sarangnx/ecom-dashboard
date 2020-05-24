@@ -22,7 +22,7 @@ Vue.use(ArgonDashboard);
 Vue.use(Vuelidate);
 Vue.use(axios);
 
-store.dispatch('login/checkLogin');
+store.dispatch('auth/checkLogin');
 
 new Vue({
     router,
