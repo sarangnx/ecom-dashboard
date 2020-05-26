@@ -1,4 +1,5 @@
-const decode = require('jwt-decode');
+import decode from 'jwt-decode';
+import ability from '@/config/ability';
 
 export default {
     namespaced: true,
@@ -65,6 +66,12 @@ export default {
                     // set states token and user
                     commit('setToken', response.data.token);
                     commit('setUser', user);
+
+                    // update ability with new usergroup rules
+                    if (user.usergroup) {
+                        console.log(ability[user.usergroup]);
+                        this._vm.$ability.update(ability[user.usergroup]);
+                    }
                 }
             } catch (err) {
                 if (err.response && err.response.data && err.response.data.error) {
@@ -95,7 +102,11 @@ export default {
                     this._vm.$axios.defaults.headers.common.Authorization = `Bearer ${token}`;
                     commit('setToken', token);
                     commit('setUser', user);
-                    localStorage.setItem('authToken', token);
+
+                    // update ability with new usergroup rules
+                    if (user.usergroup) {
+                        this._vm.$ability.update(ability[user.usergroup]);
+                    }
                 } else {
                     throw new Error('Token expired.');
                 }
