@@ -1,17 +1,9 @@
-import { Ability } from '@casl/ability';
-
 export default {
-    guest: new Ability([
-        {
-            action: 'manage',
-            subject: 'all',
-            inverted: true,
-        },
-    ]),
+    guest: [],
     user: [],
     delivery: [],
     staff: [],
-    shopowner: new Ability([
+    shopowner: [
         {
             action: 'menu',
             subject: 'store-dashboard',
@@ -24,17 +16,17 @@ export default {
             action: 'menu',
             subject: 'items',
         },
-    ]),
-    admin: new Ability([
+    ],
+    admin: [
         {
             action: 'menu',
             subject: 'admin-dashboard',
         },
-    ]),
-    superadmin: new Ability([
+    ],
+    superadmin: [
         {
             action: 'menu',
             subject: 'admin-dashboard',
         },
-    ]),
+    ],
 };
