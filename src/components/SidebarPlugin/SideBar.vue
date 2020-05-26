@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white" id="sidenav-main">
+    <nav id="sidenav-main" class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white">
         <div class="container-fluid">
             <!--Toggler-->
             <navbar-toggle-button @click.native="showSidebar">
@@ -66,7 +66,7 @@
                 </ul>
             </slot>
             <slot></slot>
-            <div v-show="$sidebar.showSidebar" class="navbar-collapse collapse show" id="sidenav-collapse-main">
+            <div v-show="$sidebar.showSidebar" id="sidenav-collapse-main" class="navbar-collapse collapse show">
                 <div class="navbar-collapse-header d-md-none">
                     <div class="row">
                         <div class="col-6 collapse-brand">
@@ -91,7 +91,7 @@
 import NavbarToggleButton from '@/components/NavbarToggleButton';
 
 export default {
-    name: 'sidebar',
+    name: 'Sidebar',
     components: {
         NavbarToggleButton,
     },
@@ -112,6 +112,11 @@ export default {
             autoClose: this.autoClose,
         };
     },
+    beforeDestroy() {
+        if (this.$sidebar.showSidebar) {
+            this.$sidebar.showSidebar = false;
+        }
+    },
     methods: {
         closeSidebar() {
             this.$sidebar.displaySidebar(false);
@@ -119,11 +124,6 @@ export default {
         showSidebar() {
             this.$sidebar.displaySidebar(true);
         },
-    },
-    beforeDestroy() {
-        if (this.$sidebar.showSidebar) {
-            this.$sidebar.showSidebar = false;
-        }
     },
 };
 </script>

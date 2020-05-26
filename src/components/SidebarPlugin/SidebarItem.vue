@@ -1,6 +1,6 @@
 <template>
     <li class="nav-item">
-        <router-link :to="link.path" @click.native="linkClick" class="nav-link" :target="link.target" :href="link.path">
+        <router-link :to="link.path" class="nav-link" :target="link.target" :href="link.path" @click.native="linkClick">
             <template>
                 <i :class="link.icon"></i>
                 <span class="nav-link-text">{{ link.name }}</span>
@@ -10,7 +10,7 @@
 </template>
 <script>
 export default {
-    name: 'sidebar-item',
+    name: 'SidebarItem',
     props: {
         link: {
             type: Object,

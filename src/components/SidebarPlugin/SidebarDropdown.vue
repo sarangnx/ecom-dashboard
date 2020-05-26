@@ -5,16 +5,16 @@
             <span>{{ title }}</span>
         </a>
         <collapse-transition>
-            <ul class="dropdown___menu" v-show="isOpen">
+            <ul v-show="isOpen" class="dropdown___menu">
                 <router-link
                     v-for="child in children"
                     :key="child.name"
                     :to="child.path"
-                    @click.native="linkClick"
                     class="nav-link"
                     :target="child.target"
                     :href="child.path"
                     exact-active-class="active__link"
+                    @click.native="linkClick"
                 >
                     <template>
                         <span class="nav-link-text">{{ child.name }}</span>
@@ -28,7 +28,7 @@
 import { CollapseTransition } from 'vue2-transitions';
 
 export default {
-    name: 'sidebar-dropdown',
+    name: 'SidebarDropdown',
     components: {
         CollapseTransition,
     },
@@ -43,7 +43,7 @@ export default {
         },
         children: {
             type: Array,
-            default: [],
+            default: () => [],
         },
     },
     inject: {
