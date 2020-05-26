@@ -6,7 +6,7 @@
                     placeholder="Search"
                     class="input-group-alternative"
                     alternative=""
-                    addon-right-icon="fas fa-search"
+                    addon-right-icon="search"
                 >
                 </base-input>
             </div>
@@ -16,7 +16,7 @@
                 <base-dropdown class="nav-link pr-0" position="right">
                     <div slot="title" class="media align-items-center">
                         <div class="media-body ml-2 d-none d-lg-block">
-                            <base-button icon-only rounded size="lg" type="secondary" icon="fa fa-cog"></base-button>
+                            <base-button icon-only rounded size="lg" type="secondary" icon="cog"></base-button>
                         </div>
                     </div>
 
@@ -25,12 +25,12 @@
                             <h6 class="text-overflow m-0">Welcome!</h6>
                         </div>
                         <router-link to="/" class="dropdown-item">
-                            <i class="fa fa-cogs"></i>
+                            <font-awesome-icon icon="cogs"></font-awesome-icon>
                             <span>Settings</span>
                         </router-link>
                         <div class="dropdown-divider"></div>
                         <router-link to="/logout" class="dropdown-item">
-                            <i class="fa fa-sign-out-alt"></i>
+                            <font-awesome-icon icon="sign-out-alt"></font-awesome-icon>
                             <span>Logout</span>
                         </router-link>
                     </template>
