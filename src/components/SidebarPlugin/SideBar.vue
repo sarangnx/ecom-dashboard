@@ -1,5 +1,9 @@
 <template>
-    <nav id="sidenav-main" class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white">
+    <nav
+        id="sidenav-main"
+        class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light"
+        :class="[`bg-${bgColor}`]"
+    >
         <div class="container-fluid">
             <!--Toggler-->
             <navbar-toggle-button @click.native="showSidebar">
@@ -105,6 +109,10 @@ export default {
             type: Boolean,
             default: true,
             description: 'Whether sidebar should autoclose on mobile when clicking an item',
+        },
+        bgColor: {
+            type: String,
+            default: 'white',
         },
     },
     provide() {
