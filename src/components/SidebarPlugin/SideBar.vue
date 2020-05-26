@@ -102,7 +102,7 @@ export default {
     props: {
         logo: {
             type: String,
-            default: 'img/brand/icon.png',
+            default: '/img/brand/icon.png',
             description: 'Evide',
         },
         autoClose: {
