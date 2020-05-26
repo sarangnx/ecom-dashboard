@@ -5,6 +5,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { abilitiesPlugin } from '@casl/vue';
+import { Ability } from '@casl/ability';
 
 import App from './App.vue';
 import router from './router';
@@ -13,6 +14,9 @@ import ArgonDashboard from './plugins/argon-dashboard';
 import store from './store';
 import axios from './plugins/axios';
 import ability from './config/ability';
+
+// Init with zero ability
+const guest = new Ability(ability.guest);
 
 Vue.config.productionTip = false;
 
@@ -23,7 +27,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.use(ArgonDashboard);
 Vue.use(Vuelidate);
 Vue.use(axios);
-Vue.use(abilitiesPlugin, ability.guest);
+Vue.use(abilitiesPlugin, guest);
 
 store.dispatch('auth/checkLogin');
 
