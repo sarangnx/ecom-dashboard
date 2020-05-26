@@ -1,7 +1,7 @@
 <template>
     <li class="nav-item drop__down">
         <a class="nav-link" @click="toggleDropDown">
-            <i :class="icon"></i>
+            <font-awesome-icon :icon="icon" class="mr-2" :class="classes"></font-awesome-icon>
             <span>{{ title }}</span>
         </a>
         <collapse-transition>
@@ -44,6 +44,10 @@ export default {
         children: {
             type: Array,
             default: () => [],
+        },
+        classes: {
+            type: String,
+            default: '',
         },
     },
     inject: {
