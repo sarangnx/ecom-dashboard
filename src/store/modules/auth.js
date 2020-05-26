@@ -61,8 +61,8 @@ export default {
 
                     // Set authentication headers for future requests
                     this._vm.$axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
-                    // set states token and user
 
+                    // set states token and user
                     commit('setToken', response.data.token);
                     commit('setUser', user);
                 }
@@ -103,19 +103,22 @@ export default {
                 dispatch('logout');
             }
         },
-        checkExp({ getters, dispatch, commit }) {
-            // return new Promise((resolve) => {
-            //     const token = getters.getToken;
-            //     if (token) {
-            //         const user = decode(token);
-            //         const expiry = new Date() - new Date(user.exp * 1000);
-            //         if (expiry <= 0) {
-            //             resolve({ status: 'authenticated' });
-            //         } else {
-            //             throw new Error('Login Again');
-            //         }
-            //     }
-            // }).catch(() => dispatch('logout'));
+        checkToken({ getters }) {
+            // Check for token and its validity
+            try {
+                const token = getters.getToken;
+                const user = decode(token);
+
+                const expiry = new Date() - new Date(user.exp * 1000);
+
+                if (expiry <= 0) {
+                    return true;
+                }
+
+                return false;
+            } catch {
+                return false;
+            }
         },
     },
 };
