@@ -2,7 +2,7 @@
     <div class="wrapper" :class="{ 'nav-open': $sidebar.showSidebar }">
         <side-bar :bg-color="sidebarBackground">
             <template slot="links">
-                <template v-for="(item, index) in sidebarItems">
+                <template v-for="(item, index) in activeSidebarItems">
                     <sidebar-item v-if="item.type === 'sidebaritem'" :key="index" :link="item" />
                     <sidebar-dropdown
                         v-if="item.type === 'sidebardropdown'"
@@ -43,7 +43,8 @@ export default {
         sidebarBackground: 'white', //vue|blue|orange|green|red|primary
         sidebarItems: [
             {
-                name: 'Dashboard',
+                name: 'Dashboard', // Display in sidenav
+                subject: 'store-dashboard', // casl ability subject
                 icon: 'desktop',
                 class: 'text-blue',
                 path: '/dashboard',
@@ -51,6 +52,7 @@ export default {
             },
             {
                 name: 'Dashboard',
+                subject: 'admin-dashboard',
                 icon: 'desktop',
                 class: 'text-blue',
                 path: '/admin',
@@ -58,6 +60,7 @@ export default {
             },
             {
                 name: 'Orders',
+                subject: 'orders',
                 icon: 'shopping-basket',
                 class: 'text-blue',
                 path: '/orders',
@@ -65,6 +68,7 @@ export default {
             },
             {
                 name: 'Items',
+                subject: 'items',
                 icon: 'book',
                 class: 'text-blue',
                 type: 'sidebardropdown',
@@ -76,6 +80,7 @@ export default {
             },
             {
                 name: 'Notifications',
+                subject: 'notifications',
                 icon: 'bell',
                 class: 'text-blue',
                 path: '/notifications',
@@ -83,6 +88,7 @@ export default {
             },
             {
                 name: 'Users',
+                subject: 'users',
                 icon: 'user',
                 class: 'text-blue',
                 path: '/users',
@@ -90,6 +96,13 @@ export default {
             },
         ],
     }),
+    computed: {
+        activeSidebarItems() {
+            return this.sidebarItems.filter((item) => {
+                return this.$can('menu', item.subject);
+            });
+        },
+    },
     methods: {
         toggleSidebar() {
             if (this.$sidebar.showSidebar) {
