@@ -57,7 +57,7 @@ export default {
                     const user = response.data.user;
 
                     // Store the token to local storage
-                    await localStorage.setItem('authToken', response.data.token);
+                    localStorage.setItem('authToken', response.data.token);
 
                     // Set authentication headers for future requests
                     this._vm.$axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
@@ -71,6 +71,7 @@ export default {
                     this._vm.$error(err.response.data.error.message);
                 }
                 commit('setToken', null);
+                localStorage.removeItem('authToken');
                 commit('setUser', null);
                 delete this._vm.$axios.defaults.headers.common.Authorization;
             }
@@ -83,26 +84,24 @@ export default {
             } catch (err) {}
         },
         checkLogin({ getters, dispatch, commit }) {
-            // /**
-            //  * Check whether user is logged in during each relogin.
-            //  */
-            // return new Promise((resolve) => {
-            //     const token = getters.getToken || localStorage.getItem('authToken');
-            //     if (token) {
-            //         const user = decode(token);
-            //         const expiry = new Date() - new Date(user.exp * 1000);
-            //         if (expiry <= 0) {
-            //             this._vm.$axios.defaults.headers.common.Authorization = `Bearer ${token}`;
-            //             commit('setToken', token);
-            //             commit('setUser', user);
-            //             resolve({ status: 'authenticated' });
-            //         } else {
-            //             throw new Error('Login Again');
-            //         }
-            //     } else {
-            //         throw new Error('Login Again');
-            //     }
-            // }).catch(() => dispatch('logout'));
+            //  Check whether user is logged in after reopening browser/tab.
+            try {
+                const token = getters.getToken || localStorage.getItem('authToken');
+                const user = decode(token);
+
+                const expiry = new Date() - new Date(user.exp * 1000);
+
+                if (expiry <= 0) {
+                    this._vm.$axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+                    commit('setToken', token);
+                    commit('setUser', user);
+                    localStorage.setItem('authToken', token);
+                } else {
+                    throw new Error('Token expired.');
+                }
+            } catch (err) {
+                dispatch('logout');
+            }
         },
         checkExp({ getters, dispatch, commit }) {
             // return new Promise((resolve) => {
