@@ -44,6 +44,10 @@ export default [
                         name: 'view-items',
                         component: () => import(/* webpackChunkName: "items" */ '@/views/Items/ViewItems.vue'),
                     },
+                    {
+                        path: '*',
+                        redirect: '/404',
+                    },
                 ],
             },
             {
@@ -99,5 +103,14 @@ export default [
         path: '/logout',
         name: 'logout',
         component: () => import(/* webpackChunkName: "auth" */ '@/views/Auth/Logout.vue'),
+    },
+    {
+        path: '/404',
+        name: '404',
+        component: () => import(/* webpackChunkName: "error" */ '@/views/404.vue'),
+    },
+    {
+        path: '*',
+        redirect: '/404',
     },
 ];
