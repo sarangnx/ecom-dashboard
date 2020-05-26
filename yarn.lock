@@ -796,6 +796,18 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
+"@casl/ability@^4.1.1":
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/@casl/ability/-/ability-4.1.1.tgz#e45e9bcd53e0a175dc0a18435defd1a3ca80c12b"
+  integrity sha512-nFzSPhqkbv8i1r06DqhTM1f71f2Rsr226TddgALDw01myyqWKzAVlZh5MehomIeEYdU9johmHepSRjNTuuP9cg==
+  dependencies:
+    sift "^13.0.0"
+
+"@casl/vue@^1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@casl/vue/-/vue-1.1.0.tgz#c79c5788dcf050b5e92cdac914ada210474a8d52"
+  integrity sha512-qboFEK4BifQxi8CEWuqXlE3Rz4oP1etRu/U4JeHcHk19fKOzAqyru7Mm5NkejNgJ/KBhaoYl95P7gRIt3mrSWw==
+
 "@fortawesome/fontawesome-common-types@^0.2.28":
   version "0.2.28"
   resolved "https://registry.yarnpkg.com/@fortawesome/fontawesome-common-types/-/fontawesome-common-types-0.2.28.tgz#1091bdfe63b3f139441e9cba27aa022bff97d8b2"
@@ -7531,6 +7543,11 @@ shell-quote@^1.6.1:
   version "1.7.2"
   resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.7.2.tgz#67a7d02c76c9da24f99d20808fcaded0e0e04be2"
   integrity sha512-mRz/m/JVscCrkMyPqHc/bczi3OQHkLTqXHEFu0zDhK/qfv3UcOA4SVmRCLmos4bhjr9ekVQubj/R7waKapmiQg==
+
+sift@^13.0.0:
+  version "13.0.3"
+  resolved "https://registry.yarnpkg.com/sift/-/sift-13.0.3.tgz#f2dbb5d33cd8de2169fd05117212bc5dfd2c9e52"
+  integrity sha512-+07q8msAbbsY5rGQw61hEbAcDl+e1rBzDWqJC3juipQCGAO+bBLUPxrGJ1o5IM16hbRVf8JrlyqUvSDFOSoOgA==
 
 signal-exit@^3.0.0, signal-exit@^3.0.2:
   version "3.0.3"
