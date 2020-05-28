@@ -50,21 +50,6 @@ export default {
                 this.$error('Unable to get categories');
             }
         },
-        toggle(index, index2) {
-            if (index2 === undefined) {
-                if (this.categories[index].rotate) {
-                    this.$set(this.categories[index], 'rotate', 0);
-                } else {
-                    this.$set(this.categories[index], 'rotate', 90);
-                }
-            } else {
-                if (this.categories[index].sub_category[index2].rotate) {
-                    this.$set(this.categories[index].sub_category[index2], 'rotate', 0);
-                } else {
-                    this.$set(this.categories[index].sub_category[index2], 'rotate', 90);
-                }
-            }
-        },
     },
 };
 </script>
