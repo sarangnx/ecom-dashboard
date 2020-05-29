@@ -24,3 +24,11 @@ export default {
     },
 };
 </script>
+
+<style lang="scss">
+.category-tree {
+    ul {
+        padding-left: 20px;
+    }
+}
+</style>
