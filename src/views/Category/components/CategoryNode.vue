@@ -1,6 +1,7 @@
 <template>
     <li class="category-node">
-        <base-button type="primary" size="sm" @click="toggleOpen">
+        <font-awesome-icon v-if="hasChildren" :icon="caret" class="mr-2" />
+        <base-button type="primary" size="sm" :class="[!hasChildren && 'ml-3']" @click="toggleOpen">
             {{ item.categoryName }}
         </base-button>
         <ul v-if="item.subCategory && item.subCategory.length && open">
@@ -15,12 +16,20 @@ export default {
     props: {
         item: {
             type: Object,
-            default: () => [],
+            default: () => {},
         },
     },
     data: () => ({
         open: false,
     }),
+    computed: {
+        hasChildren() {
+            return this.item && this.item.subCategory && this.item.subCategory.length;
+        },
+        caret() {
+            return this.open ? 'caret-down' : 'caret-right';
+        },
+    },
     methods: {
         toggleOpen() {
             this.open = !this.open;
