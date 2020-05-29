@@ -5,6 +5,7 @@
         class="btn"
         :class="classes"
         :disabled="disabled"
+        :style="styles"
         @click="handleClick"
     >
         <span v-if="($slots.icon || (icon && $slots.default)) && !loading" class="btn-inner--icon">
@@ -38,15 +39,23 @@ export default {
             default: 'default',
             description: 'Button type (e,g primary, danger etc)',
         },
+        bgColor: {
+            type: String,
+            description: 'Hex Background color',
+        },
         size: {
             type: String,
             default: '',
             description: 'Button size lg|sm',
         },
-        textColor: {
+        textColorClass: {
             type: String,
             default: '',
             description: 'Button text color (e.g primary, danger etc)',
+        },
+        textColor: {
+            type: String,
+            description: 'Hex text color',
         },
         nativeType: {
             type: String,
@@ -98,7 +107,7 @@ export default {
                 { 'btn-block': this.block },
                 { 'rounded-circle': this.rounded },
                 { 'btn-icon-only': this.iconOnly },
-                { [`text-${this.textColor}`]: this.textColor },
+                { [`text-${this.textColorClass}`]: this.textColorClass },
                 { 'btn-icon': this.icon || this.$slots.icon },
                 this.type && !this.outline ? `btn-${this.type}` : '',
                 this.outline ? `btn-outline-${this.type}` : '',
@@ -107,6 +116,16 @@ export default {
                 btnClasses.push(`btn-${this.size}`);
             }
             return btnClasses;
+        },
+        styles() {
+            let styles = [];
+            if (this.bgColor) {
+                styles.push({ background: this.bgColor });
+            }
+            if (this.textColor) {
+                styles.push({ color: this.textColor });
+            }
+            return styles;
         },
     },
     methods: {
