@@ -5,7 +5,24 @@
             {{ item.categoryName }}
         </base-button>
         <ul v-if="item.subCategory && item.subCategory.length && open">
-            <category-node v-for="(category, index) in item.subCategory" :key="index" :item="category" />
+            <category-node
+                v-for="(category, index) in item.subCategory"
+                :key="index"
+                :item="category"
+                @add-category="$emit('add-category', $event)"
+            />
+            <li class="category-node">
+                <base-button
+                    size="sm"
+                    :class="'ml-3'"
+                    bg-color="#000"
+                    text-color="#fff"
+                    title="Add Sub Category"
+                    @click="$emit('add-category', item.categoryId)"
+                >
+                    <font-awesome-icon icon="plus" />
+                </base-button>
+            </li>
         </ul>
     </li>
 </template>
