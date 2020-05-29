@@ -24,6 +24,14 @@
                 </div>
             </div>
         </div>
+        <div class="col-12">
+            <base-button type="success" icon="upload" block @click.prevent.stop="upload()">
+                Add Category
+            </base-button>
+        </div>
+        <div v-if="loading" class="over__lay">
+            <loading color="dark" />
+        </div>
     </div>
 </template>
 <script>
@@ -38,6 +46,7 @@ export default {
     data: () => ({
         categoryName: null,
         image: null,
+        loading: null,
     }),
     methods: {
         loadImage(event) {
@@ -50,6 +59,9 @@ export default {
             this.image = null;
             this.$refs.file.value = this.$refs.file.defaultValue;
             this.$refs.image.innerHTML = 'Category Thumbnail';
+        },
+        upload() {
+            this.loading = true;
         },
     },
 };
