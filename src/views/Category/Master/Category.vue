@@ -12,7 +12,7 @@
                 </div>
             </div>
         </div>
-        <modal :show.sync="modal" header-classes="d-flex align-items-center pb-0">
+        <modal :show.sync="modal" header-classes="d-flex align-items-center pb-0" :click-out="false">
             <template slot="header">
                 <h3 class="modal-title">Add Category</h3>
             </template>
