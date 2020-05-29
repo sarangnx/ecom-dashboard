@@ -5,7 +5,11 @@
             <span v-else><strong>Parent:</strong> None</span>
         </div>
         <div class="col-12">
-            <base-input v-model="categoryName" placeholder="Category Name" />
+            <base-input
+                v-model="categoryName"
+                placeholder="Category Name"
+                :error="$v.categoryName.$error ? 'Category Name Required' : null"
+            />
         </div>
         <div class="form-group col-12">
             <div class="input-group">
@@ -35,6 +39,8 @@
     </div>
 </template>
 <script>
+import { required } from 'vuelidate/lib/validators';
+
 export default {
     name: 'AddCategory',
     props: {
@@ -48,6 +54,11 @@ export default {
         image: null,
         loading: null,
     }),
+    validations: {
+        categoryName: {
+            required,
+        },
+    },
     methods: {
         loadImage(event) {
             this.image = event.target.files[0];
@@ -61,6 +72,9 @@ export default {
             this.$refs.image.innerHTML = 'Category Thumbnail';
         },
         upload() {
+            this.$v.$touch();
+            if (this.$v.$invalid) return;
+
             this.loading = true;
         },
     },
