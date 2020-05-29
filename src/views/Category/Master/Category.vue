@@ -17,9 +17,6 @@
                 <h3 class="modal-title">Add Category</h3>
             </template>
             <add-category :key="Date.now()" :parent="category" />
-            <template slot="footer">
-                Footer
-            </template>
         </modal>
     </div>
 </template>
