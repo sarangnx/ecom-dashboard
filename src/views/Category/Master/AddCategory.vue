@@ -83,6 +83,11 @@ export default {
                 parentCategoryId: this.parent && this.parent.categoryId,
             };
 
+            // remove keys with null or undefined
+            for (let key in data) {
+                if (!data[key]) delete data[key];
+            }
+
             // Wrap it as FormData.
             const formData = new FormData();
             Object.keys(data).forEach((key) => {
