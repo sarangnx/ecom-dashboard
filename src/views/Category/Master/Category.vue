@@ -7,31 +7,37 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <category-tree :items="categories" />
-                    </div>
-                    <div class="col-md-12">
-                        <div class="p-2">
-                            <base-button type="primary">
-                                <font-awesome-icon icon="plus" class="mr-2" />
-                                Add Category
-                            </base-button>
-                        </div>
+                        <category-tree :items="categories" @add-category="addCategory" />
                     </div>
                 </div>
             </div>
         </div>
+        <modal :show.sync="modal" header-classes="d-flex align-items-center pb-0">
+            <template slot="header">
+                <h3 class="modal-title">Add Category</h3>
+            </template>
+            <add-category :key="Date.now()" :parent="category" />
+            <template slot="footer">
+                Footer
+            </template>
+        </modal>
     </div>
 </template>
 <script>
+import AddCategory from './AddCategory';
 import CategoryTree from '../components/CategoryTree';
 
 export default {
     name: 'ManageCategory',
     components: {
+        AddCategory,
         CategoryTree,
     },
     data: () => ({
         categories: [],
+        modal: false,
+        categoryId: null,
+        category: {},
     }),
     mounted() {
         this.getCategories();
@@ -49,6 +55,27 @@ export default {
             } catch (err) {
                 this.$error('Unable to get categories');
             }
+        },
+        addCategory(categoryId) {
+            this.categoryId = categoryId;
+            this.category = this.findCategory(this.categories);
+            this.modal = true;
+        },
+        findCategory(categories) {
+            if (this.categoryId === null) return;
+
+            let found;
+            for (let category of categories) {
+                if (category.categoryId === this.categoryId) {
+                    found = category;
+                    break;
+                }
+
+                found = this.findCategory(category.subCategory);
+
+                if (found) break;
+            }
+            return found;
         },
     },
 };
