@@ -5,18 +5,21 @@
             <span v-else><strong>Parent:</strong> None</span>
         </div>
         <div class="col-12">
-            <base-input v-model="categoryName" />
-        </div>
-        <div class="col-12">
-            <h3>Product Image</h3>
+            <base-input v-model="categoryName" placeholder="Category Name" />
         </div>
         <div class="form-group col-12">
             <div class="input-group">
                 <div class="custom-file">
-                    <input ref="file" type="file" class="custom-file-input" @change="loadImage($event)" />
+                    <input
+                        ref="file"
+                        type="file"
+                        class="custom-file-input"
+                        accept="image/*"
+                        @change="loadImage($event)"
+                    />
                     <label ref="image" class="custom-file-label">Category Thumbnail</label>
                 </div>
-                <div class="input-group-append">
+                <div v-if="image" class="input-group-append">
                     <base-button type="danger" icon="trash" @click.prevent="removeImage()" />
                 </div>
             </div>
