@@ -2,7 +2,12 @@
     <div class="category-tree">
         <ul>
             <template v-for="(item, index) in items">
-                <category-node :key="index" :item="item" @add-category="$emit('add-category', $event)" />
+                <category-node
+                    :key="index"
+                    :item="item"
+                    @add-category="$emit('add-category', $event)"
+                    @contextmenu="right"
+                />
             </template>
             <li class="category-node">
                 <base-button
@@ -17,6 +22,14 @@
                 </base-button>
             </li>
         </ul>
+        <context-menu
+            v-click-outside="closeMenu"
+            :menu-items="menuItems"
+            :event="contextmenu"
+            :show="menu"
+            @menu:close="closeMenu"
+            @menu="handleMenu"
+        />
     </div>
 </template>
 
@@ -32,6 +45,38 @@ export default {
         items: {
             type: Array,
             default: () => [],
+        },
+    },
+    data: () => ({
+        menuItems: [
+            {
+                name: 'test',
+                handler() {
+                    console.log(this.categoryId);
+                },
+            },
+            {
+                name: 'test 2',
+            },
+        ],
+        contextmenu: {},
+        menu: false,
+        categoryId: null,
+    }),
+    methods: {
+        right(event, data) {
+            this.menu = true;
+            this.contextmenu = event;
+            this.categoryId = data;
+        },
+        closeMenu() {
+            this.menu = false;
+        },
+        handleMenu(value) {
+            const menuItem = this.menuItems.find((item) => {
+                return item.name === value;
+            });
+            menuItem.handler.apply(this);
         },
     },
 };
