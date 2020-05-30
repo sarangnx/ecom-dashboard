@@ -18,6 +18,7 @@ import Modal from '../components/Modal';
 import TabPane from '../components/Tabs/TabPane';
 import Tabs from '../components/Tabs/Tabs';
 import Loading from '../components/Loading';
+import ContextMenu from '../components/ContextMenu';
 
 export default {
     install(Vue) {
@@ -41,5 +42,6 @@ export default {
         Vue.component(TabPane.name, TabPane);
         Vue.component(Tabs.name, Tabs);
         Vue.component(Loading.name, Loading);
+        Vue.component(ContextMenu.name, ContextMenu);
     },
 };
