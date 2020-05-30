@@ -50,13 +50,18 @@ export default {
     data: () => ({
         menuItems: [
             {
-                name: 'test',
+                name: 'Edit',
+                type: 'success',
                 handler() {
-                    console.log(this.categoryId);
+                    this.$emit('edit-category', this.categoryId);
                 },
             },
             {
-                name: 'test 2',
+                name: 'Delete',
+                type: 'danger',
+                handler() {
+                    this.$emit('delete-category', this.categoryId);
+                },
             },
         ],
         contextmenu: {},
