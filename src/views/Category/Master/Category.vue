@@ -7,34 +7,44 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <category-tree :items="categories" @add-category="addCategory" />
+                        <category-tree :items="categories" @add-category="addCategory" @edit-category="editCategory" />
                     </div>
                 </div>
             </div>
         </div>
-        <modal :show.sync="modal" header-classes="d-flex align-items-center pb-0" :click-out="false">
+        <modal :show.sync="addModal" header-classes="d-flex align-items-center pb-0" :click-out="false">
             <template slot="header">
                 <h3 class="modal-title">Add Category</h3>
             </template>
             <add-category :key="Date.now()" :parent="category" />
         </modal>
+        <modal :show.sync="editModal" header-classes="d-flex align-items-center pb-0" :click-out="false">
+            <template slot="header">
+                <h3 class="modal-title">Edit Category</h3>
+            </template>
+            <edit-category :key="Date.now()" :category="category" :parent="parent" />
+        </modal>
     </div>
 </template>
 <script>
 import AddCategory from './AddCategory';
+import EditCategory from './EditCategory';
 import CategoryTree from '../components/CategoryTree';
 
 export default {
     name: 'ManageCategory',
     components: {
         AddCategory,
+        EditCategory,
         CategoryTree,
     },
     data: () => ({
         categories: [],
-        modal: false,
+        addModal: false,
+        editModal: false,
         categoryId: null,
         category: {},
+        parent: {},
     }),
     mounted() {
         this.getCategories();
@@ -55,20 +65,26 @@ export default {
         },
         addCategory(categoryId) {
             this.categoryId = categoryId;
-            this.category = this.findCategory(this.categories);
-            this.modal = true;
+            this.category = this.findCategory(this.categories, categoryId);
+            this.addModal = true;
         },
-        findCategory(categories) {
-            if (this.categoryId === null) return;
+        editCategory(categoryId) {
+            this.categoryId = categoryId;
+            this.category = this.findCategory(this.categories, categoryId);
+            this.parent = this.findCategory(this.categories, this.category.parentCategoryId);
+            this.editModal = true;
+        },
+        findCategory(categories, categoryId) {
+            if (categoryId === null) return;
 
             let found;
             for (let category of categories) {
-                if (category.categoryId === this.categoryId) {
+                if (category.categoryId === categoryId) {
                     found = category;
                     break;
                 }
 
-                found = this.findCategory(category.subCategory);
+                found = this.findCategory(category.subCategory, categoryId);
 
                 if (found) break;
             }
