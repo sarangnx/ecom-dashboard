@@ -2,7 +2,9 @@
     <li class="category-node">
         <font-awesome-icon v-if="hasChildren" :icon="caret" class="mr-2" />
         <base-button
-            type="primary"
+            :type="item.bgColor ? null : item.type || 'primary'"
+            :bg-color="item.bgColor || null"
+            :text-color="item.textColor || null"
             size="sm"
             :class="[!hasChildren && 'ml-3']"
             @click.native="toggleOpen"

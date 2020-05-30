@@ -5,7 +5,15 @@
         </template>
         <div class="row">
             <div v-for="item in menuItems" :key="item.name" class="col-12 p-1">
-                <base-button size="sm" block type="default" @click="select(item.name)">
+                <base-button
+                    size="sm"
+                    block
+                    :type="item.bgColor ? null : item.type || 'primary'"
+                    :bg-color="item.bgColor || null"
+                    :text-color="item.textColor || null"
+                    :icon="item.icon"
+                    @click="select(item.name)"
+                >
                     {{ item.name }}
                 </base-button>
             </div>
