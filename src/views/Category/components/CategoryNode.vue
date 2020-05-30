@@ -1,7 +1,13 @@
 <template>
     <li class="category-node">
         <font-awesome-icon v-if="hasChildren" :icon="caret" class="mr-2" />
-        <base-button type="primary" size="sm" :class="[!hasChildren && 'ml-3']" @click="toggleOpen">
+        <base-button
+            type="primary"
+            size="sm"
+            :class="[!hasChildren && 'ml-3']"
+            @click.native="toggleOpen"
+            @contextmenu.native.prevent="$emit('contextmenu', $event, item.categoryId)"
+        >
             {{ item.categoryName }}
         </base-button>
         <ul v-if="item.subCategory && item.subCategory.length && open">
@@ -10,6 +16,7 @@
                 :key="index"
                 :item="category"
                 @add-category="$emit('add-category', $event)"
+                @contextmenu="relay"
             />
             <li class="category-node">
                 <base-button
@@ -50,6 +57,9 @@ export default {
     methods: {
         toggleOpen() {
             this.open = !this.open;
+        },
+        relay(event, data) {
+            this.$emit('contextmenu', event, data);
         },
     },
 };
