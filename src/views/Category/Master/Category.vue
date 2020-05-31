@@ -16,13 +16,28 @@
             <template slot="header">
                 <h3 class="modal-title">Add Category</h3>
             </template>
-            <add-category :key="Date.now()" :parent="parent" />
+            <add-category
+                :key="Date.now()"
+                :parent="parent"
+                @done="
+                    addModal = false;
+                    getCategories();
+                "
+            />
         </modal>
         <modal :show.sync="editModal" header-classes="d-flex align-items-center pb-0" :click-out="false">
             <template slot="header">
                 <h3 class="modal-title">Edit Category</h3>
             </template>
-            <edit-category :key="Date.now()" :category="category" :categories="flattenCategories" />
+            <edit-category
+                :key="Date.now()"
+                :category="category"
+                :categories="flattenCategories"
+                @done="
+                    editModal = false;
+                    getCategories();
+                "
+            />
         </modal>
     </div>
 </template>

@@ -109,6 +109,7 @@ export default {
                 // reset form
                 this.categoryName = null;
                 this.removeImage();
+                this.$emit('done');
             } catch (err) {
                 if (err.response && err.response.status === 400 && err.response.data.error) {
                     this.$error(err.response.data.error.message);

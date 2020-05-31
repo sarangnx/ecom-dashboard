@@ -240,6 +240,7 @@ export default {
                 if (response.status === 200 && response.data.message) {
                     this.$success(response.data.message);
                 }
+                this.$emit('done');
             } catch (err) {
                 if (err.response && err.response.status === 400 && err.response.data.error) {
                     this.$error(err.response.data.error.message);
