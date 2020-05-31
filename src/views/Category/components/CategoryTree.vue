@@ -50,8 +50,15 @@ export default {
     data: () => ({
         menuItems: [
             {
-                name: 'Edit',
+                name: 'Add Subcategory',
                 type: 'success',
+                handler() {
+                    this.$emit('add-category', this.categoryId);
+                },
+            },
+            {
+                name: 'Edit',
+                type: 'warning',
                 handler() {
                     this.$emit('edit-category', this.categoryId);
                 },
