@@ -22,7 +22,7 @@
             <template slot="header">
                 <h3 class="modal-title">Edit Category</h3>
             </template>
-            <edit-category :key="Date.now()" :category="category" :parent="parent" />
+            <edit-category :key="Date.now()" :category="category" :categories="flattenCategories" />
         </modal>
     </div>
 </template>
@@ -44,7 +44,7 @@ export default {
         editModal: false,
         categoryId: null,
         category: {},
-        parent: {},
+        flattenCategories: [],
     }),
     mounted() {
         this.getCategories();
@@ -71,7 +71,7 @@ export default {
         editCategory(categoryId) {
             this.categoryId = categoryId;
             this.category = this.findCategory(this.categories, categoryId);
-            this.parent = this.findCategory(this.categories, this.category.parentCategoryId);
+            this.flattenCategories = this.flattenCategory(this.categories);
             this.editModal = true;
         },
         findCategory(categories, categoryId) {
@@ -89,6 +89,15 @@ export default {
                 if (found) break;
             }
             return found;
+        },
+        flattenCategory(categories) {
+            let acc = [];
+            for (let category of categories) {
+                let cat = Object.assign({}, category);
+                delete cat.subCategory;
+                acc = [...acc, cat, ...this.flattenCategory(category.subCategory)];
+            }
+            return acc;
         },
     },
 };
