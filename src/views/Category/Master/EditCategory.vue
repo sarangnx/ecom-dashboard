@@ -21,8 +21,9 @@
                         parent = {};
                         parent.changed = true;
                     "
-                    >None</a
                 >
+                    None
+                </a>
                 <a
                     v-for="item in filteredCategories"
                     :key="item.categoryId"
@@ -76,7 +77,7 @@
         </div>
         <div class="col-12">
             <base-button type="success" icon="upload" block @click.prevent.stop="upload()">
-                Add Category
+                Save Changes
             </base-button>
         </div>
         <div v-if="loading" class="over__lay">
@@ -115,6 +116,11 @@ export default {
             },
         },
     },
+    computed: {
+        computedCurrentCategory() {
+            return Object.assign({}, this.currentCategory);
+        },
+    },
     watch: {
         filter() {
             this.filteredCategories = this.categories.filter((item) => {
@@ -122,8 +128,14 @@ export default {
                 return regex.test(item.categoryName);
             });
         },
-        currentCategory() {
-            this.currentCategory.changed = true;
+        computedCurrentCategory: {
+            deep: true,
+            handler(newVal, oldVal) {
+                if (Object.keys(oldVal).length === 0) return;
+                if (newVal.categoryName !== oldVal.categoryName) {
+                    this.currentCategory.changed = true;
+                }
+            },
         },
     },
     mounted() {
@@ -146,8 +158,12 @@ export default {
             this.currentCategory.image = null;
             this.$refs.file.value = this.$refs.file.defaultValue;
             this.$refs.label.innerHTML = 'Category Thumbnail';
+            this.currentCategory.changed = true;
+            this.currentCategory.imageChanged = true;
         },
         loadImageFile(event) {
+            this.currentCategory.changed = true;
+            this.currentCategory.imageChanged = true;
             if (!this.currentCategory) this.currentCategory = {};
             this.currentCategory.image = event.target.files[0];
             if (event.target.files[0]) {
@@ -166,16 +182,41 @@ export default {
         },
         async upload() {
             this.$v.$touch();
-            console.log(this.parent);
-            if (this.$v.$invalid) return;
-            return;
-            this.loading = true;
 
-            const data = {
-                categoryName: this.categoryName,
-                image: this.image,
-                parentCategoryId: this.parent && this.parent.categoryId,
+            if (this.$v.$invalid) return;
+
+            if (!this.currentCategory.changed && ((this.parent && !this.parent.changed) || !this.parent)) {
+                // abort if nothing's changed
+                this.$warn('No changes were made!');
+                return;
+            }
+
+            let data = {
+                categoryId: this.currentCategory.categoryId,
             };
+
+            if (this.currentCategory.changed) {
+                data = Object.assign(data, {
+                    categoryName: this.currentCategory.categoryName,
+                });
+            }
+
+            if (this.currentCategory.imageChanged) {
+                // if image is changed, set it to string 'null'
+                // so that it is not removed before sending to server
+                data = Object.assign(data, {
+                    image: this.currentCategory.image || 'null',
+                });
+            }
+
+            if (this.parent && this.parent.changed) {
+                // if parent is set to none, set parentCategoryId to string 'null'
+                data = Object.assign(data, {
+                    parentCategoryId: this.parent.categoryId || 'null',
+                });
+            }
+
+            this.loading = true;
 
             // remove keys with null or undefined
             for (let key in data) {
@@ -190,7 +231,7 @@ export default {
 
             try {
                 const response = await this.$axios({
-                    method: 'post',
+                    method: 'patch',
                     url: '/category/master',
                     headers: { 'Content-Type': 'multipart/form-data' },
                     data: formData,
@@ -199,10 +240,6 @@ export default {
                 if (response.status === 200 && response.data.message) {
                     this.$success(response.data.message);
                 }
-
-                // reset form
-                this.categoryName = null;
-                this.removeImage();
             } catch (err) {
                 if (err.response && err.response.status === 400 && err.response.data.error) {
                     this.$error(err.response.data.error.message);
