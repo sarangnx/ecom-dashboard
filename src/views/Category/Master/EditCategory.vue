@@ -38,9 +38,9 @@
         </div>
         <div class="col-12">
             <base-input
-                v-model="categoryName"
+                v-model="currentCategory.categoryName"
                 placeholder="Category Name"
-                :error="$v.categoryName.$error ? 'Category Name Required' : null"
+                :error="$v.currentCategory.categoryName.$error ? 'Category Name Required' : null"
             />
         </div>
         <div class="form-group col-12">
@@ -55,7 +55,7 @@
                     />
                     <label ref="image" class="custom-file-label">Category Thumbnail</label>
                 </div>
-                <div v-if="image" class="input-group-append">
+                <div v-if="currentCategory.image" class="input-group-append">
                     <base-button type="danger" icon="trash" @click.prevent="removeImage()" />
                 </div>
             </div>
@@ -89,13 +89,16 @@ export default {
         categoryName: null,
         image: null,
         loading: null,
+        currentCategory: {},
         parent: null,
         filter: null,
         filteredCategories: [],
     }),
     validations: {
-        categoryName: {
-            required,
+        currentCategory: {
+            categoryName: {
+                required,
+            },
         },
     },
     watch: {
@@ -105,30 +108,35 @@ export default {
                 return regex.test(item.categoryName);
             });
         },
+        currentCategory() {
+            this.currentCategory.changed = true;
+        },
     },
     mounted() {
         this.parent = this.categories.find((category) => {
             return category.categoryId === this.category.parentCategoryId;
         });
-        this.filteredCategories = this.categories;
+        this.filteredCategories = Object.assign({}, this.categories);
+        this.currentCategory = Object.assign({}, this.category);
     },
     methods: {
         loadImage(event) {
-            this.image = event.target.files[0];
+            if (!this.currentCategory) this.currentCategory = {};
+            this.currentCategory.image = event.target.files[0];
             this.$refs.image.innerHTML = event.target.files[0] ? event.target.files[0].name : 'Category Thumbnail';
         },
         removeImage() {
             // remove selected image from buffer and data property of vue.
             // and set label to default.
-            this.image = null;
+            this.currentCategory.image = null;
             this.$refs.file.value = this.$refs.file.defaultValue;
             this.$refs.image.innerHTML = 'Category Thumbnail';
         },
         async upload() {
-            return;
             this.$v.$touch();
+            console.log(this.parent);
             if (this.$v.$invalid) return;
-
+            return;
             this.loading = true;
 
             const data = {
