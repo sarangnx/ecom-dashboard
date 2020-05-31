@@ -16,9 +16,10 @@
         </slot>
         <ul
             ref="menu"
-            class="dropdown-menu"
+            class="dropdown-menu drop__down"
             :class="[{ 'dropdown-menu-right': position === 'right' }, { show: isOpen }, menuClasses]"
         >
+            <slot name="search"></slot>
             <slot></slot>
         </ul>
     </component>
@@ -68,7 +69,12 @@ export default {
         };
     },
     methods: {
-        toggleDropDown() {
+        toggleDropDown(event) {
+            // If element inside the search slot is given id='search'
+            // the dropdown will not close on click
+            if (event.target && event.target.id === 'search') {
+                return;
+            }
             this.isOpen = !this.isOpen;
             this.$emit('change', this.isOpen);
         },
