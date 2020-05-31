@@ -16,7 +16,7 @@
             <template slot="header">
                 <h3 class="modal-title">Add Category</h3>
             </template>
-            <add-category :key="Date.now()" :parent="category" />
+            <add-category :key="Date.now()" :parent="parent" />
         </modal>
         <modal :show.sync="editModal" header-classes="d-flex align-items-center pb-0" :click-out="false">
             <template slot="header">
@@ -42,7 +42,7 @@ export default {
         categories: [],
         addModal: false,
         editModal: false,
-        categoryId: null,
+        parent: {},
         category: {},
         flattenCategories: [],
     }),
@@ -64,12 +64,10 @@ export default {
             }
         },
         addCategory(categoryId) {
-            this.categoryId = categoryId;
-            this.category = this.findCategory(this.categories, categoryId);
+            this.parent = this.findCategory(this.categories, categoryId);
             this.addModal = true;
         },
         editCategory(categoryId) {
-            this.categoryId = categoryId;
             this.category = this.findCategory(this.categories, categoryId);
             this.flattenCategories = this.flattenCategory(this.categories);
             this.editModal = true;

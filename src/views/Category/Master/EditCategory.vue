@@ -43,20 +43,34 @@
                 :error="$v.currentCategory.categoryName.$error ? 'Category Name Required' : null"
             />
         </div>
-        <div class="form-group col-12">
-            <div class="input-group">
-                <div class="custom-file">
-                    <input
-                        ref="file"
-                        type="file"
-                        class="custom-file-input"
-                        accept="image/*"
-                        @change="loadImage($event)"
-                    />
-                    <label ref="image" class="custom-file-label">Category Thumbnail</label>
-                </div>
-                <div v-if="currentCategory.image" class="input-group-append">
-                    <base-button type="danger" icon="trash" @click.prevent="removeImage()" />
+        <div class="col-12 mb-3">
+            <div class="row">
+                <input ref="file" type="file" class="hidden" accept="image/*" @change="loadImageFile($event)" />
+                <div class="col-12">
+                    <div v-show="currentCategory.image" class="image-container">
+                        <img ref="image" src="#" class="col-6" />
+                        <!-- Overlay -->
+                        <div class="image-overlay col-6">
+                            <div class="d-flex justify-content-center align-items-center height">
+                                <base-button type="success" icon="camera" @click="openImage()">
+                                    <small>Change</small>
+                                </base-button>
+                                <base-button type="danger" icon="trash" @click.prevent="removeImage()" />
+                            </div>
+                        </div>
+                    </div>
+                    <div v-show="!currentCategory.image" class="input-group">
+                        <div class="custom-file">
+                            <input
+                                ref="file"
+                                type="file"
+                                class="custom-file-input"
+                                accept="image/*"
+                                @change="loadImageFile($event)"
+                            />
+                            <label ref="label" class="custom-file-label">Category Thumbnail</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -118,19 +132,37 @@ export default {
         });
         this.filteredCategories = Object.assign({}, this.categories);
         this.currentCategory = Object.assign({}, this.category);
+        if (this.currentCategory.image) {
+            this.$refs.image.setAttribute(
+                'src',
+                `${process.env.VUE_APP_SERVER_URL}/images/categories/${this.currentCategory.image}`
+            );
+        }
     },
     methods: {
-        loadImage(event) {
-            if (!this.currentCategory) this.currentCategory = {};
-            this.currentCategory.image = event.target.files[0];
-            this.$refs.image.innerHTML = event.target.files[0] ? event.target.files[0].name : 'Category Thumbnail';
-        },
         removeImage() {
             // remove selected image from buffer and data property of vue.
             // and set label to default.
             this.currentCategory.image = null;
             this.$refs.file.value = this.$refs.file.defaultValue;
-            this.$refs.image.innerHTML = 'Category Thumbnail';
+            this.$refs.label.innerHTML = 'Category Thumbnail';
+        },
+        loadImageFile(event) {
+            if (!this.currentCategory) this.currentCategory = {};
+            this.currentCategory.image = event.target.files[0];
+            if (event.target.files[0]) {
+                let reader = new FileReader();
+
+                reader.onload = (e) => {
+                    this.$refs.image.setAttribute('src', e.target.result);
+                };
+
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        },
+        openImage() {
+            // open the file selector.
+            this.$refs.file.click();
         },
         async upload() {
             this.$v.$touch();
@@ -185,3 +217,32 @@ export default {
     },
 };
 </script>
+<style scoped>
+.hidden {
+    display: none;
+}
+.height {
+    height: 100%;
+}
+.image-overlay {
+    cursor: pointer;
+}
+.image-container {
+    display: flex;
+    justify-content: center;
+}
+.image-container .image-overlay {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    display: none;
+    color: white;
+}
+.image-container:hover .image-overlay {
+    display: block;
+    background: rgba(0, 0, 0, 0.4);
+}
+</style>
