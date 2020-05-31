@@ -1,10 +1,10 @@
 <template>
-    <card v-if="show" class="context-menu" header-classes="p-3" body-classes="py-1 px-3" :style="style">
+    <card v-if="show" class="context-menu" header-classes="p-3" body-classes="py-1 px-1" :style="style">
         <template v-if="header" slot="header">
             {{ header }}
         </template>
-        <div class="row">
-            <div v-for="item in menuItems" :key="item.name" class="col-12 p-1">
+        <div>
+            <div v-for="item in menuItems" :key="item.name" class="col-12 py-1 px-0">
                 <base-button
                     size="sm"
                     block
