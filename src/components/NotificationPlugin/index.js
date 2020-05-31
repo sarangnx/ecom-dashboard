@@ -6,7 +6,7 @@ const NotificationStore = {
         overlap: false,
         verticalAlign: 'top',
         horizontalAlign: 'right',
-        type: 'info',
+        type: 'default',
         timeout: 5000,
         closeOnClick: true,
         showClose: true,
@@ -58,6 +58,22 @@ const NotificationsPlugin = {
                     };
                     this.notify(notification);
                 },
+                warn(message, options = {}) {
+                    const notification = {
+                        type: 'warning',
+                        message: message,
+                        ...options,
+                    };
+                    this.notify(notification);
+                },
+                info(message, options = {}) {
+                    const notification = {
+                        type: 'info',
+                        message: message,
+                        ...options,
+                    };
+                    this.notify(notification);
+                },
                 success(message, options = {}) {
                     const notification = {
                         type: 'success',
@@ -70,6 +86,8 @@ const NotificationsPlugin = {
         });
         Vue.prototype.$notify = app.notify;
         Vue.prototype.$error = app.error;
+        Vue.prototype.$warn = app.warn;
+        Vue.prototype.$info = app.info;
         Vue.prototype.$success = app.success;
         Vue.prototype.$notifications = app.notificationStore;
         Vue.component('Notifications', Notifications);
