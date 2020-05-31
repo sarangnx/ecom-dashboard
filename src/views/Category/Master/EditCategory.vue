@@ -1,8 +1,32 @@
 <template>
     <div class="row">
-        <div class="col-12">
-            <span v-if="parent"><strong>Parent:</strong> {{ parent.categoryName }}</span>
-            <span v-else><strong>Parent:</strong> None</span>
+        <div v-if="parent" class="col-12 mb-4 d-flex justify-content-start align-items-center">
+            <strong class="pr-2">Parent Category:</strong>
+            <base-dropdown class="flex-grow-1" menu-classes="col-12">
+                <base-button slot="title" type="primary" class="dropdown-toggle" block>
+                    {{ parent.categoryName }}
+                </base-button>
+                <template slot="search">
+                    <base-input
+                        id="search"
+                        v-model="filter"
+                        autocomplete="off"
+                        class="dropdown-item"
+                        placeholder="Search"
+                    />
+                </template>
+                <a
+                    v-for="item in filteredCategories"
+                    :key="item.categoryId"
+                    class="dropdown-item"
+                    @click="
+                        parent = item;
+                        parent.changed = true;
+                    "
+                >
+                    {{ item.categoryName }}
+                </a>
+            </base-dropdown>
         </div>
         <div class="col-12">
             <base-input
@@ -44,28 +68,41 @@ import { required } from 'vuelidate/lib/validators';
 export default {
     name: 'AddCategory',
     props: {
-        parent: {
-            type: Object,
-            default: () => {},
-        },
         category: {
             type: Object,
             default: () => {},
         },
         categories: {
-            type: Object,
-            default: () => {},
+            type: Array,
+            default: () => [],
         },
     },
     data: () => ({
         categoryName: null,
         image: null,
         loading: null,
+        parent: null,
+        filter: null,
+        filteredCategories: [],
     }),
     validations: {
         categoryName: {
             required,
         },
+    },
+    watch: {
+        filter() {
+            this.filteredCategories = this.categories.filter((item) => {
+                const regex = new RegExp(`${this.filter}`, 'i');
+                return regex.test(item.categoryName);
+            });
+        },
+    },
+    mounted() {
+        this.parent = this.categories.find((category) => {
+            return category.categoryId === this.category.parentCategoryId;
+        });
+        this.filteredCategories = this.categories;
     },
     methods: {
         loadImage(event) {
