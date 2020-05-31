@@ -1,10 +1,10 @@
 <template>
     <div class="row">
-        <div v-if="parent" class="col-12 mb-4 d-flex justify-content-start align-items-center">
+        <div class="col-12 mb-4 d-flex justify-content-start align-items-center">
             <strong class="pr-2">Parent Category:</strong>
             <base-dropdown class="flex-grow-1" menu-classes="col-12">
                 <base-button slot="title" type="primary" class="dropdown-toggle" block>
-                    {{ parent.categoryName }}
+                    {{ parent && parent.categoryId ? parent.categoryName : 'None' }}
                 </base-button>
                 <template slot="search">
                     <base-input
@@ -15,6 +15,14 @@
                         placeholder="Search"
                     />
                 </template>
+                <a
+                    class="dropdown-item"
+                    @click="
+                        parent = {};
+                        parent.changed = true;
+                    "
+                    >None</a
+                >
                 <a
                     v-for="item in filteredCategories"
                     :key="item.categoryId"
