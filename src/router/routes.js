@@ -53,8 +53,22 @@ export default [
             {
                 path: '/category',
                 name: 'category',
-                component: () => import(/* webpackChunkName: "category" */ '@/views/Category/Category.vue'),
+                component: () => import(/* webpackChunkName: "category" */ '@/views/Category/Index.vue'),
                 meta: { requiresAuth: true },
+                children: [
+                    {
+                        path: 'master',
+                        name: 'master category',
+                        component: () =>
+                            import(/* webpackChunkName: "category" */ '@/views/Category/Master/Category.vue'),
+                    },
+                    {
+                        path: 'store',
+                        name: 'store category',
+                        component: () =>
+                            import(/* webpackChunkName: "category" */ '@/views/Category/Store/Category.vue'),
+                    },
+                ],
             },
             {
                 path: '/notifications',
