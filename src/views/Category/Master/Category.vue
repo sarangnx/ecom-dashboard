@@ -7,7 +7,12 @@
             <div class="container">
                 <div class="row">
                     <div class="col-12">
-                        <category-tree :items="categories" @add-category="addCategory" @edit-category="editCategory" />
+                        <category-tree
+                            :items="categories"
+                            @add-category="addCategory"
+                            @edit-category="editCategory"
+                            @delete-category="deleteCategory"
+                        />
                     </div>
                 </div>
             </div>
@@ -39,11 +44,26 @@
                 "
             />
         </modal>
+        <modal :show.sync="deleteModal" header-classes="d-flex align-items-center pb-0" :click-out="false">
+            <template slot="header">
+                <h3 class="modal-title">Delete Category</h3>
+            </template>
+            <delete-category
+                :key="Date.now()"
+                :category="category"
+                @done="
+                    deleteModal = false;
+                    getCategories();
+                "
+                @close="deleteModal = false"
+            />
+        </modal>
     </div>
 </template>
 <script>
 import AddCategory from './AddCategory';
 import EditCategory from './EditCategory';
+import DeleteCategory from './DeleteCategory';
 import CategoryTree from '../components/CategoryTree';
 
 export default {
@@ -51,12 +71,14 @@ export default {
     components: {
         AddCategory,
         EditCategory,
+        DeleteCategory,
         CategoryTree,
     },
     data: () => ({
         categories: [],
         addModal: false,
         editModal: false,
+        deleteModal: false,
         parent: {},
         category: {},
         flattenCategories: [],
@@ -86,6 +108,10 @@ export default {
             this.category = this.findCategory(this.categories, categoryId);
             this.flattenCategories = this.flattenCategory(this.categories);
             this.editModal = true;
+        },
+        deleteCategory(categoryId) {
+            this.category = this.findCategory(this.categories, categoryId);
+            this.deleteModal = true;
         },
         findCategory(categories, categoryId) {
             if (categoryId === null) return;
