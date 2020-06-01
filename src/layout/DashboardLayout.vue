@@ -67,6 +67,17 @@ export default {
                 type: 'sidebaritem',
             },
             {
+                name: 'Category',
+                subject: 'category',
+                icon: 'th',
+                class: 'text-blue',
+                type: 'sidebardropdown',
+                children: [
+                    { name: 'Master Category', path: '/category/master', subject: 'master-category' },
+                    { name: 'Store Category', path: '/category/store', subject: 'store-category' },
+                ],
+            },
+            {
                 name: 'Items',
                 subject: 'items',
                 icon: 'book',
@@ -98,9 +109,26 @@ export default {
     }),
     computed: {
         activeSidebarItems() {
-            return this.sidebarItems.filter((item) => {
+            // filter out sidebar items that the usergroup has access to.
+            let sidebarItems = this.sidebarItems.filter((item) => {
+                if (item.children) {
+                    item.children = item.children.filter((child) => {
+                        return this.$can('menu', child.subject);
+                    });
+                }
                 return this.$can('menu', item.subject);
             });
+
+            // if a sidebarItem has only 1 child, convert it to item rather than dropdown.
+            for (let index in sidebarItems) {
+                if (sidebarItems[index].children && sidebarItems[index].children.length === 1) {
+                    sidebarItems[index].path = sidebarItems[index].children[0].path;
+                    sidebarItems[index].type = 'sidebaritem';
+                    delete sidebarItems[index].children;
+                }
+            }
+
+            return sidebarItems;
         },
     },
     methods: {
