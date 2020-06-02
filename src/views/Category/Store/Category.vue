@@ -1,7 +1,17 @@
 <template>
     <div class="card shadow">
-        <div class="card-header">
+        <div class="card-header d-flex justify-content-between align-items-center">
             <h3>Manage Category</h3>
+            <div v-if="current">
+                <base-dropdown position="right">
+                    <base-button slot="title" size="sm" class="dropdown-toggle">
+                        {{ current.name }}
+                    </base-button>
+                    <a v-for="item in stores" :key="item.storeId" class="dropdown-item" @click="switchStore(item)">
+                        {{ item.name }}
+                    </a>
+                </base-dropdown>
+            </div>
         </div>
         <div class="card-body">
             <div class="container">
@@ -62,7 +72,7 @@
     </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import AddCategory from './AddCategory';
 import EditCategory from './EditCategory';
 import DeleteCategory from './DeleteCategory';
@@ -92,6 +102,11 @@ export default {
         }),
         storeId() {
             return this.current.storeId;
+        },
+    },
+    watch: {
+        storeId() {
+            this.getCategories();
         },
     },
     mounted() {
@@ -152,6 +167,12 @@ export default {
             }
             return acc;
         },
+        switchStore(store) {
+            this.change(store);
+        },
+        ...mapActions({
+            change: 'stores/change',
+        }),
     },
 };
 </script>
