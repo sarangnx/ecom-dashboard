@@ -23,15 +23,20 @@ export default {
     actions: {
         init({ commit }, stores) {
             commit('setStores', stores);
-            localStorage.setItem('stores', stores);
             commit('setCurrentStore', stores[0]);
-            localStorage.setItem('current', stores[0]);
+
+            // Object has to be stringified before storing to localStorage
+            localStorage.setItem('stores', JSON.stringify(stores));
+            localStorage.setItem('current', JSON.stringify(stores[0]));
         },
         reload({ commit }) {
-            const stores = localStorage.getItem('stores');
+            let stores = localStorage.getItem('stores') || {};
+            stores = JSON.parse(stores);
+
             commit('setStores', stores);
+
             const current = localStorage.getItem('current');
-            current ? commit('setCurrentStore', current) : commit('setCurrentStore', stores[0]);
+            current ? commit('setCurrentStore', JSON.parse(current)) : commit('setCurrentStore', stores[0]);
         },
         change({ commit }, store) {
             commit('setCurrentStore', store);
