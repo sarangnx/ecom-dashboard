@@ -46,7 +46,7 @@ export default {
         },
     },
     actions: {
-        async login({ commit, state }, userdata) {
+        async login({ commit, dispatch }, userdata) {
             try {
                 const response = await this._vm.$axios({
                     method: 'post',
@@ -56,6 +56,12 @@ export default {
 
                 if (response.data) {
                     const user = response.data.user;
+
+                    // save associated stores
+                    if (user.stores && user.stores.length) {
+                        dispatch('stores/init', user.stores, { root: true });
+                        delete user.stores;
+                    }
 
                     // Store the token to local storage
                     localStorage.setItem('authToken', response.data.token);
@@ -69,7 +75,6 @@ export default {
 
                     // update ability with new usergroup rules
                     if (user.usergroup) {
-                        console.log(ability[user.usergroup]);
                         this._vm.$ability.update(ability[user.usergroup]);
                     }
                 }
@@ -83,10 +88,10 @@ export default {
                 delete this._vm.$axios.defaults.headers.common.Authorization;
             }
         },
-        async logout({ commit }) {
+        logout({ commit, dispatch }) {
             try {
                 commit('logout');
-                await localStorage.removeItem('authToken');
+                localStorage.removeItem('authToken');
                 delete this._vm.$axios.defaults.headers.common.Authorization;
             } catch (err) {}
         },
@@ -102,6 +107,7 @@ export default {
                     this._vm.$axios.defaults.headers.common.Authorization = `Bearer ${token}`;
                     commit('setToken', token);
                     commit('setUser', user);
+                    dispatch('stores/reload', null, { root: true });
 
                     // update ability with new usergroup rules
                     if (user.usergroup) {
