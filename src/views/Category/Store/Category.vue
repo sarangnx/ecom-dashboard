@@ -24,6 +24,7 @@
             <add-category
                 :key="Date.now()"
                 :parent="parent"
+                :store-id="storeId"
                 @done="
                     addModal = false;
                     getCategories();
@@ -89,15 +90,16 @@ export default {
             stores: 'stores/stores',
             current: 'stores/current',
         }),
+        storeId() {
+            return this.current.storeId;
+        },
     },
     mounted() {
-        console.log(this.stores);
-        console.log(this.current);
         this.getCategories();
     },
     methods: {
         async getCategories() {
-            const storeId = this.current.storeId;
+            const storeId = this.storeId;
 
             try {
                 // Get list of all categories and sub categories
