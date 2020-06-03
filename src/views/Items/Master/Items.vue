@@ -71,7 +71,7 @@
             <template slot="header">
                 <h4 class="modal-title">Add Item</h4>
             </template>
-            <add-item :categories="categories" />
+            <add-item :key="Date.now()" :categories="categories" />
         </modal>
     </div>
 </template>
