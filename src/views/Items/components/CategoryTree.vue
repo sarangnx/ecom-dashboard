@@ -3,7 +3,7 @@
         <ul>
             <li class="category-node">
                 <base-button size="sm" type="success" @click="$emit('select-category', category)">
-                    All Categories
+                    {{ category.categoryName }}
                 </base-button>
             </li>
             <template v-for="(category, index) in categories">
@@ -26,12 +26,19 @@ export default {
             type: Array,
             default: () => [],
         },
+        none: {
+            type: Boolean,
+            default: false,
+        },
     },
     data: () => ({
         category: {
             categoryName: 'All Categories',
         },
     }),
+    mounted() {
+        if (this.none) this.category.categoryName = 'None';
+    },
 };
 </script>
 
