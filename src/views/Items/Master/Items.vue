@@ -2,7 +2,13 @@
     <div class="card shadow">
         <div class="card-header d-flex justify-content-between">
             <h3>Items</h3>
-            <div>
+            <div class="d-flex">
+                <div class="mr-2">
+                    <base-button size="sm" type="success" @click="addModal = true">
+                        Add Item
+                        <font-awesome-icon icon="plus" class="ml-2" />
+                    </base-button>
+                </div>
                 <category-dropdown
                     :categories="categories"
                     @category-id="getItems({ categoryId: (categoryId = $event), page: (page = 1), perPage: perPage })"
@@ -61,14 +67,22 @@
         <div class="card-footer">
             <base-pagination v-model="page" :page-count="totalPages" align="center"> </base-pagination>
         </div>
+        <modal :show.sync="addModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+            <template slot="header">
+                <h4 class="modal-title">Add Item</h4>
+            </template>
+            <add-item :categories="categories" />
+        </modal>
     </div>
 </template>
 <script>
+import AddItem from './AddItem';
 import CategoryDropdown from '../components/CategoryDropdown';
 
 export default {
     name: 'MasterItems',
     components: {
+        AddItem,
         CategoryDropdown,
     },
     data: () => ({
@@ -85,6 +99,7 @@ export default {
         editId: null,
         deleteModal: null,
         editModal: null,
+        addModal: null,
     }),
     watch: {
         page() {
@@ -97,7 +112,6 @@ export default {
     },
     methods: {
         async getItems(options = {}) {
-            console.log('called');
             this.loading = true;
             try {
                 const response = await this.$axios({
