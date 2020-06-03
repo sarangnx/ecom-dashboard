@@ -2,6 +2,9 @@
     <div class="card shadow">
         <div class="card-header d-flex justify-content-between">
             <h3>Items</h3>
+            <div>
+                <category-dropdown :categories="categories" @category-id="getItems({ categoryId: $event })" />
+            </div>
         </div>
         <div class="card-body d-flex flex-row justify-content-start flex-wrap p-2">
             <div v-for="item of items" :key="item.itemId" class="col-md-4 mb-2 p-1">
@@ -55,13 +58,19 @@
     </div>
 </template>
 <script>
+import CategoryDropdown from '../components/CategoryDropdown';
+
 export default {
     name: 'MasterItems',
+    components: {
+        CategoryDropdown,
+    },
     data: () => ({
-        categoryId: null,
         page: 1,
         perPage: 12,
         items: [],
+        categories: [],
+        selectedCategory: {},
         count: 0,
         loading: false,
         deleteId: null,
@@ -71,18 +80,19 @@ export default {
     }),
     mounted() {
         this.getItems();
+        this.getCategories();
     },
     methods: {
-        async getItems() {
+        async getItems(options = {}) {
             this.loading = true;
             try {
                 const response = await this.$axios({
                     method: 'get',
                     url: '/inventory/master',
                     params: {
-                        categoryId: this.categoryId,
-                        page: this.page,
-                        perPage: this.perPage,
+                        categoryId: options.categoryId,
+                        page: options.page || this.page,
+                        perPage: options.perPage || this.perPage,
                     },
                 });
 
@@ -93,6 +103,19 @@ export default {
                 this.$error('Unable to get items.');
             }
             this.loading = false;
+        },
+        async getCategories() {
+            try {
+                const response = await this.$axios({
+                    method: 'get',
+                    url: '/category/master/list',
+                });
+
+                const data = response.data;
+                this.categories = data.categories.rows;
+            } catch (err) {
+                this.$error('Unable to get categories.');
+            }
         },
     },
 };
