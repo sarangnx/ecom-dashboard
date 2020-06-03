@@ -3,7 +3,10 @@
         <div class="card-header d-flex justify-content-between">
             <h3>Items</h3>
             <div>
-                <category-dropdown :categories="categories" @category-id="getItems({ categoryId: $event })" />
+                <category-dropdown
+                    :categories="categories"
+                    @category-id="getItems({ categoryId: (categoryId = $event), page: (page = 1), perPage: perPage })"
+                />
             </div>
         </div>
         <div class="card-body d-flex flex-row justify-content-start flex-wrap p-2">
@@ -55,6 +58,9 @@
                 <loading color="dark" />
             </div>
         </div>
+        <div class="card-footer">
+            <base-pagination v-model="page" :page-count="totalPages" align="center"> </base-pagination>
+        </div>
     </div>
 </template>
 <script>
@@ -66,8 +72,10 @@ export default {
         CategoryDropdown,
     },
     data: () => ({
+        categoryId: null,
         page: 1,
         perPage: 12,
+        totalPages: 1,
         items: [],
         categories: [],
         selectedCategory: {},
@@ -78,12 +86,18 @@ export default {
         deleteModal: null,
         editModal: null,
     }),
+    watch: {
+        page() {
+            this.getItems({ categoryId: this.categoryId, page: this.page, perPage: this.perPage });
+        },
+    },
     mounted() {
-        this.getItems();
+        this.getItems({ page: this.page, perPage: this.perPage });
         this.getCategories();
     },
     methods: {
         async getItems(options = {}) {
+            console.log('called');
             this.loading = true;
             try {
                 const response = await this.$axios({
@@ -91,14 +105,15 @@ export default {
                     url: '/inventory/master',
                     params: {
                         categoryId: options.categoryId,
-                        page: options.page || this.page,
-                        perPage: options.perPage || this.perPage,
+                        page: options.page,
+                        perPage: options.perPage,
                     },
                 });
 
                 const data = response.data;
                 this.items = data.items.rows;
                 this.count = data.items.count;
+                this.totalPages = Math.ceil(this.count / this.perPage);
             } catch (err) {
                 this.$error('Unable to get items.');
             }
