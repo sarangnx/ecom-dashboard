@@ -114,6 +114,10 @@ export default {
             type: Array,
             default: () => [],
         },
+        selected: {
+            type: Object,
+            default: () => {},
+        },
     },
     data: () => ({
         item: {
@@ -143,6 +147,11 @@ export default {
             },
         },
     },
+    mounted() {
+        if (this.selected && this.selected.categoryId) {
+            this.item.category = Object.assign({}, this.selected);
+        }
+    },
     methods: {
         select(category) {
             this.item.category = Object.assign({}, category);
@@ -170,6 +179,54 @@ export default {
         openImage() {
             // open the file selector.
             this.$refs.file.click();
+        },
+        async upload() {
+            this.$v.$touch();
+
+            if (this.$v.$invalid) return;
+
+            let data = {
+                itemName: this.item.itemName,
+                baseQuantity: this.item.baseQuantity,
+                baseUnit: this.item.baseUnit,
+                basePrice: this.item.basePrice,
+                image: this.item.image,
+                categoryId: this.item.category.categoryId,
+            };
+
+            this.loading = true;
+
+            // remove keys with null or undefined
+            for (let key in data) {
+                if (!data[key]) delete data[key];
+            }
+
+            // Wrap it as FormData.
+            const formData = new FormData();
+            Object.keys(data).forEach((key) => {
+                formData.append(key, data[key]);
+            });
+
+            try {
+                const response = await this.$axios({
+                    method: 'post',
+                    url: '/inventory/master',
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                    data: formData,
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                }
+            } catch (err) {
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
+            this.$v.$reset();
+            this.loading = false;
         },
     },
 };

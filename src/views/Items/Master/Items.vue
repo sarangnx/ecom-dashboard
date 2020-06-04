@@ -71,7 +71,7 @@
             <template slot="header">
                 <h4 class="modal-title">Add Item</h4>
             </template>
-            <add-item :key="Date.now()" :categories="categories" />
+            <add-item :key="Date.now()" :categories="categories" :selected="selectedCategory" />
         </modal>
     </div>
 </template>
@@ -104,6 +104,9 @@ export default {
     watch: {
         page() {
             this.getItems({ categoryId: this.categoryId, page: this.page, perPage: this.perPage });
+        },
+        categoryId() {
+            this.selectedCategory = this.findCategory(this.categories, this.categoryId);
         },
     },
     mounted() {
@@ -145,6 +148,22 @@ export default {
             } catch (err) {
                 this.$error('Unable to get categories.');
             }
+        },
+        findCategory(categories, categoryId) {
+            if (categoryId === null) return;
+
+            let found;
+            for (let category of categories) {
+                if (category.categoryId === categoryId) {
+                    found = category;
+                    break;
+                }
+
+                found = this.findCategory(category.subCategory, categoryId);
+
+                if (found) break;
+            }
+            return found;
         },
     },
 };
