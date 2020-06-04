@@ -25,24 +25,18 @@ export default [
             {
                 path: '/items',
                 name: 'items',
-                component: () => import(/* webpackChunkName: "items" */ '@/views/Items/Items.vue'),
+                component: () => import(/* webpackChunkName: "items" */ '@/views/Items/Index.vue'),
                 meta: { requiresAuth: true },
-                redirect: '/items/view-items',
                 children: [
                     {
-                        path: 'add-item',
-                        name: 'add-item',
-                        component: () => import(/* webpackChunkName: "items" */ '@/views/Items/AddItem.vue'),
+                        path: 'master',
+                        name: 'master items',
+                        component: () => import(/* webpackChunkName: "items" */ '@/views/Items/Master/Items.vue'),
                     },
                     {
-                        path: 'add-excel',
-                        name: 'add-excel',
-                        component: () => import(/* webpackChunkName: "items" */ '../views/Items/ItemTable.vue'),
-                    },
-                    {
-                        path: 'view-items',
-                        name: 'view-items',
-                        component: () => import(/* webpackChunkName: "items" */ '@/views/Items/ViewItems.vue'),
+                        path: 'store',
+                        name: 'store items',
+                        component: () => import(/* webpackChunkName: "items" */ '@/views/Items/Store/Items.vue'),
                     },
                     {
                         path: '*',
