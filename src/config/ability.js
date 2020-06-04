@@ -13,17 +13,22 @@ export default {
         { action: 'menu', subject: 'store-dashboard' },
         { action: 'menu', subject: 'orders' },
         { action: 'menu', subject: 'items' },
+        { action: 'menu', subject: 'store-items' },
         { action: 'menu', subject: 'category' }, // parent
         { action: 'menu', subject: 'store-category' }, // child
     ],
     admin: [
         { action: 'menu', subject: 'admin-dashboard' },
         { action: 'menu', subject: 'category' },
-        { action: 'menu', subject: 'store-category' },
+        { action: 'menu', subject: 'master-category' },
+        { action: 'menu', subject: 'items' },
+        { action: 'menu', subject: 'master-items' },
     ],
     superadmin: [
         { action: 'menu', subject: 'admin-dashboard' },
         { action: 'menu', subject: 'category' },
-        { action: 'menu', subject: 'store-category' },
+        { action: 'menu', subject: 'master-category' },
+        { action: 'menu', subject: 'items' },
+        { action: 'menu', subject: 'master-items' },
     ],
 };
