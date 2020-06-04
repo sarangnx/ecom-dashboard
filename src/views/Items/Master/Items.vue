@@ -18,8 +18,8 @@
         <div class="card-body d-flex flex-row justify-content-start flex-wrap p-2">
             <div v-for="item of items" :key="item.itemId" class="col-md-4 mb-2 p-1">
                 <div class="card shadow h-100">
-                    <div class="card-header border-0 d-flex justify-content-center">
-                        <img v-if="item.image" :src="`/images/inventory/${item.image}`" class="item-image" />
+                    <div class="card-header border-0 d-flex justify-content-center align-items-center">
+                        <img v-if="item.image" :src="`${s3bucket}/${item.image}`" class="col p-0" />
                         <font-awesome-icon v-else icon="image" size="5x"></font-awesome-icon>
                     </div>
                     <div class="card-body d-flex justify-content-end flex-column">
@@ -71,7 +71,15 @@
             <template slot="header">
                 <h4 class="modal-title">Add Item</h4>
             </template>
-            <add-item :key="Date.now()" :categories="categories" :selected="selectedCategory" />
+            <add-item
+                :key="Date.now()"
+                :categories="categories"
+                :selected="selectedCategory"
+                @done="
+                    addModal = false;
+                    getItems({ categoryId: categoryId, page: page, perPage: perPage });
+                "
+            />
         </modal>
     </div>
 </template>
@@ -101,6 +109,11 @@ export default {
         editModal: null,
         addModal: null,
     }),
+    computed: {
+        s3bucket() {
+            return process.env.VUE_APP_S3_BUCKET;
+        },
+    },
     watch: {
         page() {
             this.getItems({ categoryId: this.categoryId, page: this.page, perPage: this.perPage });
