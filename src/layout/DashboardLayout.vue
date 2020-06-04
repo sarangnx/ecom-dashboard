@@ -84,9 +84,8 @@ export default {
                 class: 'text-blue',
                 type: 'sidebardropdown',
                 children: [
-                    { name: 'View Items', path: '/items/view-items' },
-                    { name: 'Add Item', path: '/items/add-item' },
-                    { name: 'Add Item From Excel', path: '/items/add-excel' },
+                    { name: 'Master Items', path: '/items/master', subject: 'master-items' },
+                    { name: 'Store Item', path: '/items/store', subject: 'store-items' },
                 ],
             },
             {
