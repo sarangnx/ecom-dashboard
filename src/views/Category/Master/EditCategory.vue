@@ -145,10 +145,7 @@ export default {
         this.filteredCategories = Object.assign({}, this.categories);
         this.currentCategory = Object.assign({}, this.category);
         if (this.currentCategory.image) {
-            this.$refs.image.setAttribute(
-                'src',
-                `${process.env.VUE_APP_SERVER_URL}/images/categories/${this.currentCategory.image}`
-            );
+            this.$refs.image.setAttribute('src', `${process.env.VUE_APP_S3_BUCKET}/${this.currentCategory.image}`);
         }
     },
     methods: {
