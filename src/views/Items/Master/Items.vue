@@ -51,7 +51,7 @@
                             size="sm"
                             type="primary"
                             @click="
-                                editId = item.itemId;
+                                selectedItem = item;
                                 editModal = true;
                             "
                         >
@@ -67,6 +67,7 @@
         <div class="card-footer">
             <base-pagination v-model="page" :page-count="totalPages" align="center"> </base-pagination>
         </div>
+        <!-- ADD ITEM -->
         <modal :show.sync="addModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
             <template slot="header">
                 <h4 class="modal-title">Add Item</h4>
@@ -81,16 +82,33 @@
                 "
             />
         </modal>
+        <!-- EDIT ITEM -->
+        <modal :show.sync="editModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+            <template slot="header">
+                <h4 class="modal-title">Edit Item</h4>
+            </template>
+            <edit-item
+                :key="Date.now()"
+                :categories="categories"
+                :edit="selectedItem"
+                @done="
+                    editModal = false;
+                    getItems({ categoryId: categoryId, page: page, perPage: perPage });
+                "
+            />
+        </modal>
     </div>
 </template>
 <script>
 import AddItem from './AddItem';
+import EditItem from './EditItem';
 import CategoryDropdown from '../components/CategoryDropdown';
 
 export default {
     name: 'MasterItems',
     components: {
         AddItem,
+        EditItem,
         CategoryDropdown,
     },
     data: () => ({
@@ -101,6 +119,7 @@ export default {
         items: [],
         categories: [],
         selectedCategory: {},
+        selectedItem: {},
         count: 0,
         loading: false,
         deleteId: null,
