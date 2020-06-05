@@ -16,12 +16,12 @@ export default [
                 component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard/AdminDashboard.vue'),
                 meta: { requiresAuth: true },
             },
-            {
-                path: '/orders',
-                name: 'orders',
-                component: () => import(/* webpackChunkName: "orders" */ '@/views/Orders/Orders.vue'),
-                meta: { requiresAuth: true },
-            },
+            // {
+            //     path: '/orders',
+            //     name: 'orders',
+            //     component: () => import(/* webpackChunkName: "orders" */ '@/views/Orders/Orders.vue'),
+            //     meta: { requiresAuth: true },
+            // },
             {
                 path: '/items',
                 name: 'items',
@@ -64,25 +64,25 @@ export default [
                     },
                 ],
             },
-            {
-                path: '/notifications',
-                name: 'notifications',
-                component: () =>
-                    import(/* webpackChunkName: "notifications" */ '@/views/Notifications/Notifications.vue'),
-                meta: { requiresAuth: true },
-            },
-            {
-                path: '/profile',
-                name: 'profile',
-                component: () => import(/* webpackChunkName: "profile" */ '@/views/Users/UserProfile.vue'),
-                meta: { requiresAuth: true },
-            },
-            {
-                path: '/users',
-                name: 'users',
-                component: () => import(/* webpackChunkName: "users" */ '@/views/Users/Users.vue'),
-                meta: { requiresAuth: true },
-            },
+            // {
+            //     path: '/notifications',
+            //     name: 'notifications',
+            //     component: () =>
+            //         import(/* webpackChunkName: "notifications" */ '@/views/Notifications/Notifications.vue'),
+            //     meta: { requiresAuth: true },
+            // },
+            // {
+            //     path: '/profile',
+            //     name: 'profile',
+            //     component: () => import(/* webpackChunkName: "profile" */ '@/views/Users/UserProfile.vue'),
+            //     meta: { requiresAuth: true },
+            // },
+            // {
+            //     path: '/users',
+            //     name: 'users',
+            //     component: () => import(/* webpackChunkName: "users" */ '@/views/Users/Users.vue'),
+            //     meta: { requiresAuth: true },
+            // },
         ],
     },
     {
