@@ -75,7 +75,7 @@
                     <input ref="file" type="file" class="hidden" accept="image/*" @change="loadImageFile($event)" />
                     <div class="col-12">
                         <div v-show="item.image" class="image-container">
-                            <img ref="image" src="#" class="col-6" />
+                            <img ref="image" :src="src" class="col-6" />
                             <!-- Overlay -->
                             <div class="image-overlay col-6">
                                 <div class="d-flex justify-content-center align-items-center height">
@@ -103,7 +103,7 @@
             </div>
 
             <div class="form-group col">
-                <base-button type="success" icon="upload" block @click.prevent.stop="upload()">Add Item</base-button>
+                <base-button type="success" icon="upload" block @click.prevent.stop="upload()">Save Item</base-button>
             </div>
             <div v-if="loading" class="over__lay">
                 <loading color="dark" />
@@ -145,6 +145,14 @@ export default {
         selectCategoryModal: false,
         loading: null,
     }),
+    computed: {
+        s3bucket() {
+            return process.env.VUE_APP_S3_BUCKET;
+        },
+        src() {
+            return this.item.image ? `${this.s3bucket}/${this.item.image}` : '#';
+        },
+    },
     validations: {
         item: {
             itemName: {
