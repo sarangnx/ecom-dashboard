@@ -41,7 +41,7 @@
                             size="sm"
                             type="danger"
                             @click="
-                                deleteId = item.itemId;
+                                selectedItem = item;
                                 deleteModal = true;
                             "
                         >
@@ -97,11 +97,26 @@
                 "
             />
         </modal>
+        <!-- DELETE ITEM -->
+        <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+            <template slot="header">
+                <h4 class="modal-title">Delete Item</h4>
+            </template>
+            <delete-item
+                :key="Date.now()"
+                :item="selectedItem"
+                @done="
+                    deleteModal = false;
+                    getItems({ categoryId: categoryId, page: page, perPage: perPage });
+                "
+            />
+        </modal>
     </div>
 </template>
 <script>
 import AddItem from './AddItem';
 import EditItem from './EditItem';
+import DeleteItem from './DeleteItem';
 import CategoryDropdown from '../components/CategoryDropdown';
 
 export default {
@@ -109,6 +124,7 @@ export default {
     components: {
         AddItem,
         EditItem,
+        DeleteItem,
         CategoryDropdown,
     },
     data: () => ({
