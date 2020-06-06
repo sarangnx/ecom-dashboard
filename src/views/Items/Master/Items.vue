@@ -22,21 +22,21 @@
                         <img v-if="item.image" :src="`${s3bucket}/${item.image}`" class="col p-0" />
                         <font-awesome-icon v-else icon="image" size="5x"></font-awesome-icon>
                     </div>
-                    <div class="card-body d-flex justify-content-end flex-column">
+                    <div class="card-body d-flex justify-content-end flex-column py-2">
                         <div>
                             <h5 class="d-inline m-0 pr-2">Product Name:</h5>
                             <span>{{ item.itemName }}</span>
                         </div>
-                        <div v-if="item.quantity">
+                        <div v-if="item.baseQuantity">
                             <h5 class="d-inline m-0 pr-2">Quantity:</h5>
-                            <span>{{ parseFloat(item.quantity) }}</span>
+                            <span>{{ parseFloat(item.baseQuantity) }}</span>
                         </div>
-                        <div v-if="item.unit">
+                        <div v-if="item.baseUnit">
                             <h5 class="d-inline m-0 pr-2">Unit:</h5>
-                            <span>{{ item.unit }}</span>
+                            <small>{{ item.baseUnit | toUpper }}</small>
                         </div>
                     </div>
-                    <div class="card-footer d-flex justify-content-end">
+                    <div class="card-footer d-flex justify-content-end py-2">
                         <base-button
                             size="sm"
                             type="danger"
@@ -126,6 +126,12 @@ export default {
         EditItem,
         DeleteItem,
         CategoryDropdown,
+    },
+    filters: {
+        toUpper(string) {
+            if (!string) return;
+            return string.toUpperCase();
+        },
     },
     data: () => ({
         categoryId: null,
