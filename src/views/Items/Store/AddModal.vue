@@ -2,12 +2,12 @@
     <div class="row">
         <div class="col-12 mb-3">
             <div>
-                <strong>Name: </strong><span>{{ item.itemName }}</span>
+                <strong>Name: </strong><span>{{ selected.itemName }}</span>
             </div>
             <div>
                 <strong>Quantity: </strong>
                 <span>
-                    {{ parseFloat(item.baseQuantity) }} <small>{{ item.baseUnit | toUpper }}</small>
+                    {{ parseFloat(selected.baseQuantity) }} <small>{{ selected.baseUnit | toUpper }}</small>
                 </span>
             </div>
         </div>
@@ -59,17 +59,19 @@ export default {
             type: Object,
             default: () => {},
         },
+        storeId: {
+            type: [Number, String],
+        },
     },
     data: () => ({
         item: {},
         category: {},
         modal: null,
-        price: null,
         loading: null,
     }),
     mounted() {
         if (this.selected) {
-            this.item = Object.assign({}, this.selected);
+            this.item = Object.assign({}, { itemId: this.selected.itemId });
         }
     },
     methods: {
@@ -78,36 +80,24 @@ export default {
             this.modal = false;
         },
         async add() {
-            return;
-            let data = {
-                basePrice: this.item.basePrice,
-                categoryId: this.item.category.categoryId,
-            };
-
             this.loading = true;
-
-            // remove keys with null or undefined
-            for (let key in data) {
-                if (!data[key]) delete data[key];
-            }
-
-            // Wrap it as FormData.
-            const formData = new FormData();
-            Object.keys(data).forEach((key) => {
-                formData.append(key, data[key]);
-            });
 
             try {
                 const response = await this.$axios({
                     method: 'post',
-                    url: '/inventory/master',
-                    headers: { 'Content-Type': 'multipart/form-data' },
-                    data: formData,
+                    url: '/inventory/store',
+                    data: {
+                        ...this.item,
+                        categoryId: this.category && this.category.categoryId,
+                        storeId: this.storeId,
+                    },
                 });
 
                 if (response.status === 200 && response.data.message) {
                     this.$success(response.data.message);
                 }
+
+                this.$emit('done');
             } catch (err) {
                 if (err.response && err.response.status === 400 && err.response.data.error) {
                     this.$error(err.response.data.error.message);
