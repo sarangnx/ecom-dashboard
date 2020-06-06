@@ -46,7 +46,15 @@
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-end py-2">
-                        <base-button size="sm" type="danger" icon="trash">
+                        <base-button
+                            size="sm"
+                            type="danger"
+                            icon="trash"
+                            @click="
+                                deleteModal = true;
+                                selectedItem = item;
+                            "
+                        >
                             Remove
                         </base-button>
                         <base-button
@@ -80,6 +88,20 @@
                     "
                 />
             </modal>
+            <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+                <template slot="header">
+                    <h4 class="modal-title">Delete Item</h4>
+                </template>
+                <delete-modal
+                    :key="Date.now()"
+                    :item="selectedItem"
+                    @done="
+                        deleteModal = false;
+                        getItems({ categoryId, page, perPage, storeId });
+                    "
+                    @close="deleteModal = false"
+                />
+            </modal>
         </div>
         <div class="card-footer">
             <base-pagination v-model="page" :page-count="totalPages" align="center"> </base-pagination>
@@ -89,12 +111,14 @@
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import EditModal from './EditModal';
+import DeleteModal from './DeleteModal';
 import CategoryDropdown from '../components/CategoryDropdown';
 
 export default {
     name: 'StoreItems',
     components: {
         EditModal,
+        DeleteModal,
         CategoryDropdown,
     },
     filters: {
@@ -115,6 +139,7 @@ export default {
         count: 0,
         loading: false,
         editModal: null,
+        deleteModal: null,
     }),
     computed: {
         s3bucket() {
