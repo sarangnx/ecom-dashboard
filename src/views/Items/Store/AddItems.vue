@@ -76,6 +76,7 @@
                 :key="Date.now()"
                 :selected="selectedItem"
                 :categories="storeCategories"
+                :store-id="storeId"
                 @done="addModal = false"
             />
         </modal>
@@ -139,6 +140,9 @@ export default {
     mounted() {
         this.getItems({ page: this.page, perPage: this.perPage });
         this.getCategories();
+        if (this.current && this.current.storeId) {
+            this.getStoreCategories(this.current.storeId);
+        }
     },
     methods: {
         ...mapActions({
