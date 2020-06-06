@@ -7,7 +7,7 @@
                         <base-button slot="title" type="primary" size="sm" class="dropdown-toggle">
                             {{ current.name }}
                         </base-button>
-                        <a v-for="item in stores" :key="item.storeId" class="dropdown-item" @click="change(item)">
+                        <a v-for="(item, index) in stores" :key="index" class="dropdown-item" @click="change(item)">
                             {{ item.name }}
                         </a>
                     </base-dropdown>
@@ -16,7 +16,7 @@
             <div class="d-flex">
                 <category-dropdown
                     :categories="storeCategories"
-                    @category-id="getItems({ categoryId: (categoryId = $event), page: (page = 1), perPage: perPage })"
+                    @category-id="getItems({ categoryId: (categoryId = $event), page: (page = 1), perPage, storeId })"
                 />
             </div>
         </div>
@@ -114,13 +114,19 @@ export default {
     },
     watch: {
         page() {
-            this.getItems({ categoryId: this.categoryId, page: this.page, perPage: this.perPage });
+            this.getItems({
+                categoryId: this.categoryId,
+                page: this.page,
+                perPage: this.perPage,
+                storeId: this.storeId,
+            });
         },
         current: {
             deep: true,
             handler() {
                 if (this.current && this.current.storeId) {
                     this.getStoreCategories(this.current.storeId);
+                    this.getItems({ page: (this.page = 1), perPage: this.perPage, storeId: this.storeId });
                 }
             },
         },
