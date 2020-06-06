@@ -46,19 +46,19 @@
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-end py-2">
-                        <!-- <base-button size="sm" type="danger" icon="trash">
+                        <base-button size="sm" type="danger" icon="trash">
                             Remove
-                        </base-button> -->
+                        </base-button>
                         <base-button
                             size="sm"
                             type="success"
-                            icon="plus"
+                            icon="edit"
                             @click="
-                                addModal = true;
+                                editModal = true;
                                 selectedItem = item;
                             "
                         >
-                            Add
+                            Edit
                         </base-button>
                     </div>
                 </div>
@@ -66,6 +66,20 @@
             <div v-if="loading" class="over__lay">
                 <loading color="dark" />
             </div>
+            <modal :show.sync="editModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+                <template slot="header">
+                    <h4 class="modal-title">Edit Item</h4>
+                </template>
+                <edit-modal
+                    :key="Date.now()"
+                    :selected="selectedItem"
+                    :categories="storeCategories"
+                    @done="
+                        editModal = false;
+                        getItems({ categoryId, page, perPage, storeId });
+                    "
+                />
+            </modal>
         </div>
         <div class="card-footer">
             <base-pagination v-model="page" :page-count="totalPages" align="center"> </base-pagination>
@@ -74,11 +88,13 @@
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import EditModal from './EditModal';
 import CategoryDropdown from '../components/CategoryDropdown';
 
 export default {
     name: 'StoreItems',
     components: {
+        EditModal,
         CategoryDropdown,
     },
     filters: {
@@ -98,7 +114,7 @@ export default {
         selectedItem: {},
         count: 0,
         loading: false,
-        addModal: null,
+        editModal: null,
     }),
     computed: {
         s3bucket() {
