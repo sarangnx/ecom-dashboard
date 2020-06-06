@@ -34,9 +34,14 @@ export default [
                         component: () => import(/* webpackChunkName: "items" */ '@/views/Items/Master/Items.vue'),
                     },
                     {
+                        path: 'add-items',
+                        name: 'add items',
+                        component: () => import(/* webpackChunkName: "items" */ '@/views/Items/Store/AddItems.vue'),
+                    },
+                    {
                         path: 'store',
                         name: 'store items',
-                        component: () => import(/* webpackChunkName: "items" */ '@/views/Items/Store/Items.vue'),
+                        component: () => import(/* webpackChunkName: "items" */ '@/views/Items/Store/StoreItems.vue'),
                     },
                     {
                         path: '*',
