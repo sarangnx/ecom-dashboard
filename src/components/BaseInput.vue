@@ -1,48 +1,50 @@
 <template>
-    <div
-        class="form-group"
-        :class="[
-            { 'input-group': hasIcon },
-            { 'has-danger': error },
-            { focused: focused },
-            { 'has-label': label || $slots.label },
-            { 'has-success': valid === true },
-            { 'has-danger': valid === false },
-        ]"
-    >
-        <slot name="label">
-            <label v-if="label" class="form-control-label" :class="labelClasses">
-                {{ label }}
-                <span v-if="required">*</span>
-            </label>
-        </slot>
+    <div class="form-group">
+        <div
+            :class="[
+                { 'input-group': hasIcon },
+                { 'has-danger': error },
+                { focused: focused },
+                { 'has-label': label || $slots.label },
+                { 'has-success': valid === true },
+                { 'has-danger': valid === false },
+                classes,
+            ]"
+        >
+            <slot name="label">
+                <label v-if="label" class="form-control-label" :class="labelClasses">
+                    {{ label }}
+                    <span v-if="required">*</span>
+                </label>
+            </slot>
 
-        <div v-if="addonLeftIcon || $slots.addonLeft" class="input-group-prepend">
-            <span class="input-group-text">
-                <slot name="addonLeft">
-                    <font-awesome-icon :icon="addonLeftIcon"></font-awesome-icon>
-                </slot>
-            </span>
-        </div>
-        <slot v-bind="slotData">
-            <input
-                :value="value"
-                v-bind="$attrs"
-                class="form-control"
-                :class="[{ 'is-valid': valid === true }, { 'is-invalid': error }, inputClasses]"
-                aria-describedby="addon-right addon-left"
-                v-on="listeners"
-            />
-        </slot>
-        <div v-if="addonRightIcon || $slots.addonRight" class="input-group-append">
-            <span class="input-group-text">
-                <slot name="addonRight">
-                    <font-awesome-icon :icon="addonRightIcon"></font-awesome-icon>
-                </slot>
-            </span>
+            <div v-if="addonLeftIcon || $slots.addonLeft" class="input-group-prepend">
+                <span class="input-group-text">
+                    <slot name="addonLeft">
+                        <font-awesome-icon :icon="addonLeftIcon"></font-awesome-icon>
+                    </slot>
+                </span>
+            </div>
+            <slot v-bind="slotData">
+                <input
+                    :value="value"
+                    v-bind="$attrs"
+                    class="form-control"
+                    :class="[{ 'is-valid': valid === true }, { 'is-invalid': error }, inputClasses]"
+                    aria-describedby="addon-right addon-left"
+                    v-on="listeners"
+                />
+            </slot>
+            <div v-if="addonRightIcon || $slots.addonRight" class="input-group-append">
+                <span class="input-group-text">
+                    <slot name="addonRight">
+                        <font-awesome-icon :icon="addonRightIcon"></font-awesome-icon>
+                    </slot>
+                </span>
+            </div>
         </div>
         <slot name="infoBlock"></slot>
-        <slot name="helpBlock">
+        <slot name="errorBlock">
             <div v-if="error" class="text-danger invalid-feedback p-1" style="display: block;">
                 <small>{{ error }}</small>
             </div>
@@ -90,6 +92,9 @@ export default {
         addonLeftIcon: {
             type: String,
             description: 'Addont left icon',
+        },
+        classes: {
+            type: String,
         },
     },
     data() {
