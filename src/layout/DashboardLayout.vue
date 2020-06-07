@@ -85,6 +85,7 @@ export default {
                 type: 'sidebardropdown',
                 children: [
                     { name: 'Master Items', path: '/items/master', subject: 'master-items' },
+                    { name: 'Add Item', path: '/items/add-items', subject: 'store-items' },
                     { name: 'Store Item', path: '/items/store', subject: 'store-items' },
                 ],
             },
