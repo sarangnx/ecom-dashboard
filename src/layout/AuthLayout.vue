@@ -52,3 +52,8 @@ export default {
     },
 };
 </script>
+<style scoped>
+.main-content {
+    overflow: auto;
+}
+</style>
