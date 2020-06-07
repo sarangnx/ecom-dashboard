@@ -44,19 +44,32 @@
                         >
                         </base-input>
 
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="mr-3">Register as</span>
+                            <base-dropdown class="flex-grow-1">
+                                <base-button slot="title" type="default" size="sm" block>
+                                    {{ usergroup.name }}
+                                    <font-awesome-icon icon="caret-down" pull="right" />
+                                </base-button>
+                                <a
+                                    v-for="(item, index) in usergroups"
+                                    :key="index"
+                                    class="dropdown-item"
+                                    @click="usergroup = item"
+                                >
+                                    {{ item.name }}
+                                </a>
+                            </base-dropdown>
+                        </div>
+
                         <div class="text-center">
-                            <base-button type="primary" class="my-4" @click="register">Create account</base-button>
+                            <base-button type="success" class="my-4" @click="register">Create account</base-button>
                         </div>
                     </form>
                 </div>
             </div>
             <div class="row mt-3">
-                <div class="col-6">
-                    <a href="#" class="text-light">
-                        <small>Forgot password?</small>
-                    </a>
-                </div>
-                <div class="col-6 text-right">
+                <div class="col-6 text-left">
                     <router-link to="/login" class="text-light">
                         <small>Login into your account</small>
                     </router-link>
@@ -74,6 +87,12 @@ export default {
         username: '',
         password: '',
         confirmPassword: '',
+        usergroup: {},
+        usergroups: [
+            { name: 'Store Owner', group: 'storeowner' },
+            { name: 'Staff', group: 'staff' },
+            { name: 'Delivery', group: 'delivery' },
+        ],
     }),
     validations: {
         username: {
@@ -87,6 +106,9 @@ export default {
             required,
             sameAsPassword: sameAs('password'),
         },
+    },
+    mounted() {
+        this.usergroup = this.usergroups[0];
     },
     methods: {
         register() {
