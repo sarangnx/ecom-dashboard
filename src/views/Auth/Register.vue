@@ -63,7 +63,9 @@
                         </div>
 
                         <div class="text-center">
-                            <base-button type="success" class="my-4" @click="register">Create account</base-button>
+                            <base-button :loading="loading" type="success" class="my-4" @click="register">
+                                Create account
+                            </base-button>
                         </div>
                     </form>
                 </div>
@@ -93,6 +95,7 @@ export default {
             { name: 'Staff', group: 'staff' },
             { name: 'Delivery', group: 'delivery' },
         ],
+        loading: null,
     }),
     validations: {
         username: {
@@ -111,8 +114,34 @@ export default {
         this.usergroup = this.usergroups[0];
     },
     methods: {
-        register() {
-            console.log(this.$v);
+        async register() {
+            if (this.$v.$invalid) return;
+
+            this.loading = true;
+
+            try {
+                const response = await this.$axios({
+                    method: 'post',
+                    url: '/auth/register',
+                    data: {
+                        username: this.username,
+                        password: this.password,
+                        usergroup: this.usergroup.group,
+                    },
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                }
+            } catch (err) {
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
+
+            this.loading = false;
         },
     },
 };
