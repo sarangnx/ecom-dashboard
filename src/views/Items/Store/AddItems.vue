@@ -17,7 +17,7 @@
             <div class="d-flex">
                 <category-dropdown
                     :categories="categories"
-                    @category-id="getItems({ categoryId: (categoryId = $event), page: (page = 1), perPage: perPage })"
+                    @category-id="getItems({ categoryId: (categoryId = $event), page: (page = 1), perPage, storeId })"
                 />
             </div>
         </div>
@@ -43,10 +43,16 @@
                         </div>
                     </div>
                     <div class="card-footer d-flex justify-content-end py-2">
-                        <!-- <base-button size="sm" type="danger" icon="trash">
-                            Remove
-                        </base-button> -->
                         <base-button
+                            v-if="item.storeItems && item.storeItems.length"
+                            size="sm"
+                            type="danger"
+                            icon="trash"
+                        >
+                            Remove
+                        </base-button>
+                        <base-button
+                            v-else
                             size="sm"
                             type="success"
                             icon="plus"
@@ -77,7 +83,10 @@
                 :selected="selectedItem"
                 :categories="storeCategories"
                 :store-id="storeId"
-                @done="addModal = false"
+                @done="
+                    addModal = false;
+                    getItems({ categoryId, page, perPage, storeId });
+                "
             />
         </modal>
     </div>
@@ -126,19 +135,30 @@ export default {
     },
     watch: {
         page() {
-            this.getItems({ categoryId: this.categoryId, page: this.page, perPage: this.perPage });
+            this.getItems({
+                categoryId: this.categoryId,
+                page: this.page,
+                perPage: this.perPage,
+                storeId: this.storeId,
+            });
         },
         current: {
             deep: true,
             handler() {
                 if (this.current && this.current.storeId) {
                     this.getStoreCategories(this.current.storeId);
+                    this.getItems({
+                        categoryId: this.categoryId,
+                        page: this.page,
+                        perPage: this.perPage,
+                        storeId: this.storeId,
+                    });
                 }
             },
         },
     },
     mounted() {
-        this.getItems({ page: this.page, perPage: this.perPage });
+        this.getItems({ page: this.page, perPage: this.perPage, storeId: this.storeId });
         this.getCategories();
         if (this.current && this.current.storeId) {
             this.getStoreCategories(this.current.storeId);
@@ -158,6 +178,7 @@ export default {
                         categoryId: options.categoryId,
                         page: options.page,
                         perPage: options.perPage,
+                        storeId: options.storeId,
                     },
                 });
 
