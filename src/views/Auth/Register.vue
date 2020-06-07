@@ -4,7 +4,7 @@
             <div class="card bg-secondary shadow border-0">
                 <div class="card-body px-lg-5 py-lg-5">
                     <div class="card-header text-center bg-transparent">
-                        <small>Register</small>
+                        Register
                     </div>
                     <form autocomplete="false">
                         <base-input
@@ -78,6 +78,15 @@
                 </div>
             </div>
         </div>
+        <modal :show.sync="modal" body-classes="pt-0" :click-out="false">
+            <div slot="header"></div>
+            <div class="d-flex flex-column">
+                <div class="text-center mb-5">
+                    <h3>Account created successfully.</h3>
+                </div>
+                <base-button type="success" @click="$router.push('/login')">Login</base-button>
+            </div>
+        </modal>
     </div>
 </template>
 <script>
@@ -96,6 +105,7 @@ export default {
             { name: 'Delivery', group: 'delivery' },
         ],
         loading: null,
+        modal: null,
     }),
     validations: {
         username: {
@@ -132,6 +142,7 @@ export default {
 
                 if (response.status === 200 && response.data.message) {
                     this.$success(response.data.message);
+                    this.modal = true;
                 }
             } catch (err) {
                 if (err.response && err.response.status === 400 && err.response.data.error) {
