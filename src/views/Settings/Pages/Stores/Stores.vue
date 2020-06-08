@@ -32,7 +32,7 @@
                             icon="trash"
                             @click="
                                 deleteModal = true;
-                                selectedItem = item;
+                                selectedStore = item;
                             "
                         >
                             Remove
@@ -43,7 +43,7 @@
                             icon="edit"
                             @click="
                                 editModal = true;
-                                selectedItem = item;
+                                selectedStore = item;
                             "
                         >
                             Edit
@@ -61,22 +61,46 @@
             <template slot="header">
                 <h4 class="modal-title">Add Store</h4>
             </template>
-            <add-store :key="Date.now()" :user-id="userId" @done="addModal = false" />
+            <add-store
+                :key="Date.now()"
+                :user-id="userId"
+                @done="
+                    addModal = false;
+                    getStores(userId);
+                "
+            />
+        </modal>
+        <modal :show.sync="editModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+            <template slot="header">
+                <h4 class="modal-title">Edit Store</h4>
+            </template>
+            <edit-store
+                :key="Date.now()"
+                :store="selectedStore"
+                @done="
+                    editModal = false;
+                    getStores(userId);
+                "
+            />
         </modal>
     </div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import AddStore from './AddStore';
+import EditStore from './EditStore';
 
 export default {
     name: 'Stores',
     components: {
         AddStore,
+        EditStore,
     },
     data: () => ({
         stores: [],
         addModal: false,
+        editModal: false,
+        selectedStore: {},
     }),
     computed: {
         ...mapGetters({
