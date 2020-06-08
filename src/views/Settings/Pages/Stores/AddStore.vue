@@ -8,6 +8,19 @@
                 :error="$v.store.name.$error ? 'Store Name Required' : null"
             />
         </div>
+        <div class="col-12 mb-3">
+            <h4>Store Type</h4>
+            <div v-if="storeType">
+                <base-dropdown>
+                    <base-button slot="title" type="primary" size="sm" class="dropdown-toggle">
+                        {{ storeType.name }}
+                    </base-button>
+                    <a v-for="(item, index) in storeTypes" :key="index" class="dropdown-item" @click="storeType = item">
+                        {{ item.name }}
+                    </a>
+                </base-dropdown>
+            </div>
+        </div>
         <div class="col-12">
             <h4>Store Address</h4>
             <h5 class="text-muted">Area</h5>
@@ -81,6 +94,15 @@ export default {
         store: {},
         phones: [{ key: 'default', value: null }],
         loading: null,
+        storeTypes: [
+            { key: 'SUPERMARKET', name: 'Super Market' },
+            { key: 'GROCERY', name: 'Grocery' },
+            { key: 'RESTAURANTS', name: 'Restaurants' },
+            { key: 'MEDICALSHOPS', name: 'Medical Shops' },
+            { key: 'VEGNFRUITS', name: 'Vegetables & Fruits' },
+            { key: 'OTHERS', name: 'Others' },
+        ],
+        storeType: {},
     }),
     validations: {
         store: {
@@ -88,6 +110,9 @@ export default {
                 required,
             },
         },
+    },
+    mounted() {
+        this.storeType = this.storeTypes[0];
     },
     methods: {
         async add() {
@@ -108,6 +133,11 @@ export default {
 
                     return phones;
                 }, {});
+            }
+
+            // Add Store Type
+            if (this.storeType) {
+                data.storeType = this.storeType.key;
             }
 
             this.loading = true;
