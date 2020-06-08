@@ -60,10 +60,10 @@ export default {
     },
     methods: {
         hasValue(item, column) {
-            return item[column.toLowerCase()] !== 'undefined';
+            return item[column] !== undefined || item[column.toLowerCase()] !== 'undefined';
         },
         itemValue(item, column) {
-            return item[column.toLowerCase()];
+            return item[column] || item[column.toLowerCase()];
         },
     },
 };
