@@ -105,6 +105,14 @@ export default {
                 path: '/users',
                 type: 'sidebaritem',
             },
+            {
+                name: 'Settings',
+                subject: 'settings',
+                icon: 'cog',
+                class: 'text-blue',
+                path: '/settings',
+                type: 'sidebaritem',
+            },
         ],
     }),
     computed: {

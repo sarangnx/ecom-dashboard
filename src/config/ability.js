@@ -16,6 +16,7 @@ export default {
         { action: 'menu', subject: 'store-items' },
         { action: 'menu', subject: 'category' }, // parent
         { action: 'menu', subject: 'store-category' }, // child
+        { action: 'menu', subject: 'settings' },
     ],
     admin: [
         { action: 'menu', subject: 'admin-dashboard' },

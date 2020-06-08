@@ -125,6 +125,9 @@ export default {
             if (this.textColor) {
                 styles.push({ color: this.textColor });
             }
+            if (this.type === 'link') {
+                styles.push({ 'box-shadow': 'none' });
+            }
             return styles;
         },
     },

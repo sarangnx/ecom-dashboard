@@ -10,10 +10,10 @@
                     v-for="child in children"
                     :key="child.name"
                     :to="child.path"
-                    class="nav-link"
+                    class="nav-link dropdown___item"
                     :target="child.target"
                     :href="child.path"
-                    exact-active-class="active__link"
+                    exact-active-class="active"
                     @click.native="linkClick"
                 >
                     <template>
@@ -55,11 +55,9 @@ export default {
             default: true,
         },
     },
-    data() {
-        return {
-            isOpen: false,
-        };
-    },
+    data: () => ({
+        isOpen: false,
+    }),
     methods: {
         linkClick() {
             if (this.autoClose && this.$sidebar && this.$sidebar.showSidebar === true) {
@@ -84,10 +82,11 @@ export default {
 }
 .dropdown___menu {
     list-style-type: none;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
     padding: 0px;
-    background: #ececec;
 }
-.active__link {
-    border-left: 2px solid #5d72e4;
+.dropdown___item {
+    border-radius: 10px;
 }
 </style>

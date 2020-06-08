@@ -64,15 +64,7 @@
 
             &.active {
                 position: relative;
-
-                &:before {
-                    content: '';
-                    position: absolute;
-                    left: 0;
-                    top: $nav-link-padding-y;
-                    bottom: $nav-link-padding-y;
-                    border-left: 2px solid $primary;
-                }
+                background: rgba(93, 114, 228, 0.3);
             }
 
             // Icon
