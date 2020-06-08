@@ -88,6 +88,24 @@ export default [
             //     component: () => import(/* webpackChunkName: "users" */ '@/views/Users/Users.vue'),
             //     meta: { requiresAuth: true },
             // },
+            {
+                path: '/settings',
+                component: () => import(/* webpackChunkName: "settings" */ '@/views/Settings/Index.vue'),
+                meta: { requiresAuth: true },
+                children: [
+                    {
+                        path: '',
+                        name: 'settings',
+                        component: () => import(/* webpackChunkName: "settings" */ '@/views/Settings/Settings.vue'),
+                    },
+                    {
+                        path: 'stores',
+                        name: 'settings / stores',
+                        component: () =>
+                            import(/* webpackChunkName: "settings" */ '@/views/Settings/Pages/Stores/Stores.vue'),
+                    },
+                ],
+            },
         ],
     },
     {
