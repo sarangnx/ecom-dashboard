@@ -83,23 +83,40 @@
                 "
             />
         </modal>
+        <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+            <template slot="header">
+                <h4 class="modal-title">Delete Store</h4>
+            </template>
+            <delete-store
+                :key="Date.now()"
+                :store="selectedStore"
+                @done="
+                    deleteModal = false;
+                    getStores(userId);
+                "
+                @close="deleteModal = false"
+            />
+        </modal>
     </div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import AddStore from './AddStore';
 import EditStore from './EditStore';
+import DeleteStore from './DeleteStore';
 
 export default {
     name: 'Stores',
     components: {
         AddStore,
         EditStore,
+        DeleteStore,
     },
     data: () => ({
         stores: [],
         addModal: false,
         editModal: false,
+        deleteModal: false,
         selectedStore: {},
     }),
     computed: {
