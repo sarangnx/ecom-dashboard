@@ -2,7 +2,11 @@
     <div class="row">
         <div class="col-12">
             <h4>Store Name</h4>
-            <base-input v-model="store.name" placeholder="Store Name" />
+            <base-input
+                v-model="store.name"
+                placeholder="Store Name"
+                :error="$v.store.name.$error ? 'Store Name Required' : null"
+            />
         </div>
         <div class="col-12">
             <h4>Store Address</h4>
@@ -64,6 +68,8 @@
     </div>
 </template>
 <script>
+import { required } from 'vuelidate/lib/validators';
+
 export default {
     name: 'AddModal',
     props: {
@@ -76,21 +82,41 @@ export default {
         phones: [{ key: 'default', value: null }],
         loading: null,
     }),
+    validations: {
+        store: {
+            name: {
+                required,
+            },
+        },
+    },
     methods: {
         async add() {
-            console.log(this.phones);
-            return;
+            this.$v.$touch();
+
+            if (this.$v.$invalid) return;
+
+            // prepare data
+            const data = Object.assign({}, this.store);
+            data.userId = this.userId;
+
+            // if multiple phone numbers are given combine them to an object
+            if (this.phones && this.phones.length) {
+                data.phones = this.phones.reduce((phones, phone) => {
+                    if (phone.key) {
+                        phones[phone.key] = phone.value;
+                    }
+
+                    return phones;
+                }, {});
+            }
+
             this.loading = true;
 
             try {
                 const response = await this.$axios({
                     method: 'post',
-                    url: '/inventory/store',
-                    data: {
-                        ...this.item,
-                        categoryId: this.category && this.category.categoryId,
-                        storeId: this.storeId,
-                    },
+                    url: '/stores/store',
+                    data,
                 });
 
                 if (response.status === 200 && response.data.message) {
