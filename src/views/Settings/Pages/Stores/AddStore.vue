@@ -6,23 +6,53 @@
         </div>
         <div class="col-12">
             <h4>Store Address</h4>
-            <base-input v-model="store.area" placeholder="Area" label="Area" />
+            <h5 class="text-muted">Area</h5>
+            <base-input v-model="store.area" placeholder="Area" />
         </div>
         <div class="col-6">
-            <base-input v-model="store.city" placeholder="City" label="City" />
+            <h5 class="text-muted">City</h5>
+            <base-input v-model="store.city" placeholder="City" />
         </div>
         <div class="col-6">
-            <base-input v-model="store.district" placeholder="District" label="District" />
+            <h5 class="text-muted">District</h5>
+            <base-input v-model="store.district" placeholder="District" />
         </div>
         <div class="col-6">
-            <base-input v-model="store.state" placeholder="State" label="State" />
+            <h5 class="text-muted">State</h5>
+            <base-input v-model="store.state" placeholder="State" />
         </div>
         <div class="col-6">
-            <base-input v-model="store.pincode" placeholder="Pincode" label="Pincode" />
+            <h5 class="text-muted">Pincode</h5>
+            <base-input v-model="store.pincode" placeholder="Pincode" />
         </div>
         <div class="col-12">
-            <div class="d-flex">
-                <base-input v-model="store.phones[0]" placeholder="Phone" label="Phone" />
+            <h5 class="text-muted">Phones</h5>
+            <div class="d-flex flex-column">
+                <div v-for="(value, index) of phones" :key="index" class="d-flex flex-row justify-content-between mb-3">
+                    <base-input
+                        v-model="phones[index].key"
+                        placeholder="Type (like office, help etc.)"
+                        :disabled="phones[index].key === 'default'"
+                        class="mb-0 mr-2"
+                    />
+                    <base-input v-model="phones[index].value" placeholder="Phone Number" class="mb-0" />
+                    <base-button
+                        :disabled="phones[index].key === 'default'"
+                        icon="trash"
+                        type="danger"
+                        class="ml-2"
+                        @click="phones.splice(index, 1)"
+                    />
+                </div>
+                <base-button
+                    icon="plus"
+                    type="default"
+                    class="mb-3 align-self-end"
+                    size="sm"
+                    @click="phones.push({ key: null, value: null })"
+                >
+                    Add Phone
+                </base-button>
             </div>
         </div>
         <div class="col-12">
@@ -42,14 +72,13 @@ export default {
         },
     },
     data: () => ({
-        store: {
-            phones: [],
-        },
-        name: null,
+        store: {},
+        phones: [{ key: 'default', value: null }],
         loading: null,
     }),
     methods: {
         async add() {
+            console.log(this.phones);
             return;
             this.loading = true;
 
