@@ -77,6 +77,9 @@
                     <div class="row">
                         <div class="col-12">
                             <h3>You cannot view this page since you don't have any stores currently.</h3>
+                            <div class="mb-3">
+                                <span class="text-muted">You can return to this page after adding one.</span>
+                            </div>
                             <base-button icon="external-link-alt" @click="$router.push('/settings/stores')">
                                 Go to settings
                             </base-button>
