@@ -1,110 +1,131 @@
 <template>
-    <div class="card shadow">
-        <div class="card-header d-flex justify-content-between">
-            <div class="d-flex align-items-center">
-                <div v-if="current">
-                    <base-dropdown>
-                        <base-button slot="title" type="primary" size="sm" class="dropdown-toggle">
-                            {{ current.name }}
-                        </base-button>
-                        <a v-for="(item, index) in stores" :key="index" class="dropdown-item" @click="change(item)">
-                            {{ item.name }}
-                        </a>
-                    </base-dropdown>
-                </div>
-            </div>
-            <div class="d-flex">
-                <category-dropdown
-                    :categories="storeCategories"
-                    @category-id="getItems({ categoryId: (categoryId = $event), page: (page = 1), perPage, storeId })"
-                />
-            </div>
-        </div>
-        <div class="card-body d-flex flex-row justify-content-start flex-wrap p-2">
-            <div v-for="(item, index) of items" :key="index" class="col-md-4 mb-2 p-1">
-                <div class="card shadow h-100">
-                    <div class="card-header border-0 d-flex justify-content-center align-items-center">
-                        <img v-if="item.image" :src="`${s3bucket}/${item.image}`" class="col p-0" />
-                        <font-awesome-icon v-else icon="image" size="5x"></font-awesome-icon>
-                    </div>
-                    <div class="card-body d-flex justify-content-end flex-column py-2">
-                        <div>
-                            <h5 class="d-inline m-0 pr-2">Product Name:</h5>
-                            <span>{{ item.itemDetails.itemName }}</span>
-                        </div>
-                        <div v-if="item.itemDetails.baseQuantity">
-                            <h5 class="d-inline m-0 pr-2">Quantity:</h5>
-                            <span>{{ parseFloat(item.itemDetails.baseQuantity) }}</span>
-                        </div>
-                        <div v-if="item.itemDetails.baseUnit">
-                            <h5 class="d-inline m-0 pr-2">Unit:</h5>
-                            <small>{{ item.itemDetails.baseUnit | toUpper }}</small>
-                        </div>
-                        <div v-if="item.price">
-                            <h5 class="d-inline m-0 pr-2">Price:</h5>
-                            <small>{{ parseFloat(item.price) }}</small>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex justify-content-end py-2">
-                        <base-button
-                            size="sm"
-                            type="danger"
-                            icon="trash"
-                            @click="
-                                deleteModal = true;
-                                selectedItem = item;
-                            "
-                        >
-                            Remove
-                        </base-button>
-                        <base-button
-                            size="sm"
-                            type="success"
-                            icon="edit"
-                            @click="
-                                editModal = true;
-                                selectedItem = item;
-                            "
-                        >
-                            Edit
-                        </base-button>
+    <div>
+        <div v-if="storeId" class="card shadow">
+            <div class="card-header d-flex justify-content-between">
+                <div class="d-flex align-items-center">
+                    <div v-if="current">
+                        <base-dropdown>
+                            <base-button slot="title" type="primary" size="sm" class="dropdown-toggle">
+                                {{ current.name }}
+                            </base-button>
+                            <a v-for="(item, index) in stores" :key="index" class="dropdown-item" @click="change(item)">
+                                {{ item.name }}
+                            </a>
+                        </base-dropdown>
                     </div>
                 </div>
+                <div class="d-flex">
+                    <category-dropdown
+                        :categories="storeCategories"
+                        @category-id="
+                            getItems({ categoryId: (categoryId = $event), page: (page = 1), perPage, storeId })
+                        "
+                    />
+                </div>
             </div>
-            <div v-if="loading" class="over__lay">
-                <loading color="dark" />
+            <div class="card-body d-flex flex-row justify-content-start flex-wrap p-2">
+                <div v-for="(item, index) of items" :key="index" class="col-md-4 mb-2 p-1">
+                    <div class="card shadow h-100">
+                        <div class="card-header border-0 d-flex justify-content-center align-items-center">
+                            <img v-if="item.image" :src="`${s3bucket}/${item.image}`" class="col p-0" />
+                            <font-awesome-icon v-else icon="image" size="5x"></font-awesome-icon>
+                        </div>
+                        <div class="card-body d-flex justify-content-end flex-column py-2">
+                            <div>
+                                <h5 class="d-inline m-0 pr-2">Product Name:</h5>
+                                <span>{{ item.itemDetails.itemName }}</span>
+                            </div>
+                            <div v-if="item.itemDetails.baseQuantity">
+                                <h5 class="d-inline m-0 pr-2">Quantity:</h5>
+                                <span>{{ parseFloat(item.itemDetails.baseQuantity) }}</span>
+                            </div>
+                            <div v-if="item.itemDetails.baseUnit">
+                                <h5 class="d-inline m-0 pr-2">Unit:</h5>
+                                <small>{{ item.itemDetails.baseUnit | toUpper }}</small>
+                            </div>
+                            <div v-if="item.price">
+                                <h5 class="d-inline m-0 pr-2">Price:</h5>
+                                <small>{{ parseFloat(item.price) }}</small>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-end py-2">
+                            <base-button
+                                size="sm"
+                                type="danger"
+                                icon="trash"
+                                @click="
+                                    deleteModal = true;
+                                    selectedItem = item;
+                                "
+                            >
+                                Remove
+                            </base-button>
+                            <base-button
+                                size="sm"
+                                type="success"
+                                icon="edit"
+                                @click="
+                                    editModal = true;
+                                    selectedItem = item;
+                                "
+                            >
+                                Edit
+                            </base-button>
+                        </div>
+                    </div>
+                </div>
+                <div v-if="loading" class="over__lay">
+                    <loading color="dark" />
+                </div>
+                <modal :show.sync="editModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+                    <template slot="header">
+                        <h4 class="modal-title">Edit Item</h4>
+                    </template>
+                    <edit-modal
+                        :key="Date.now()"
+                        :selected="selectedItem"
+                        :categories="storeCategories"
+                        @done="
+                            editModal = false;
+                            getItems({ categoryId, page, perPage, storeId });
+                        "
+                    />
+                </modal>
+                <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+                    <template slot="header">
+                        <h4 class="modal-title">Delete Item</h4>
+                    </template>
+                    <delete-modal
+                        :key="Date.now()"
+                        :item="selectedItem"
+                        @done="
+                            deleteModal = false;
+                            getItems({ categoryId, page, perPage, storeId });
+                        "
+                        @close="deleteModal = false"
+                    />
+                </modal>
             </div>
-            <modal :show.sync="editModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
-                <template slot="header">
-                    <h4 class="modal-title">Edit Item</h4>
-                </template>
-                <edit-modal
-                    :key="Date.now()"
-                    :selected="selectedItem"
-                    :categories="storeCategories"
-                    @done="
-                        editModal = false;
-                        getItems({ categoryId, page, perPage, storeId });
-                    "
-                />
-            </modal>
-            <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
-                <template slot="header">
-                    <h4 class="modal-title">Delete Item</h4>
-                </template>
-                <delete-modal
-                    :key="Date.now()"
-                    :item="selectedItem"
-                    @done="
-                        deleteModal = false;
-                        getItems({ categoryId, page, perPage, storeId });
-                    "
-                    @close="deleteModal = false"
-                />
-            </modal>
+            <div class="card-footer">
+                <base-pagination v-model="page" :page-count="totalPages" align="center"> </base-pagination>
+            </div>
         </div>
-        <div class="card-footer">
-            <base-pagination v-model="page" :page-count="totalPages" align="center"> </base-pagination>
+        <div v-else class="card shadow p-2 p-md-5">
+            <div class="card-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <h3>You cannot view this page since you don't have any stores currently.</h3>
+                            <div class="mb-3">
+                                <span class="text-muted">You can return to this page after adding one.</span>
+                            </div>
+                            <base-button icon="external-link-alt" @click="$router.push('/settings/stores')">
+                                Go to settings
+                            </base-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -150,7 +171,10 @@ export default {
             current: 'stores/current',
         }),
         storeId() {
-            return this.current.storeId;
+            if (this.current) {
+                return this.current.storeId;
+            }
+            return null;
         },
     },
     watch: {
@@ -173,7 +197,10 @@ export default {
         },
     },
     mounted() {
-        this.getItems({ page: this.page, perPage: this.perPage, storeId: this.storeId });
+        if (this.storeId) {
+            this.getItems({ page: this.page, perPage: this.perPage, storeId: this.storeId });
+        }
+
         if (this.current && this.current.storeId) {
             this.getStoreCategories(this.current.storeId);
         }
