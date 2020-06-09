@@ -1,74 +1,90 @@
 <template>
-    <div class="card shadow">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h3>Manage Category</h3>
-            <div v-if="current">
-                <base-dropdown position="right">
-                    <base-button slot="title" size="sm" class="dropdown-toggle">
-                        {{ current.name }}
-                    </base-button>
-                    <a v-for="item in stores" :key="item.storeId" class="dropdown-item" @click="switchStore(item)">
-                        {{ item.name }}
-                    </a>
-                </base-dropdown>
+    <div>
+        <div v-if="storeId || (stores && stores.length)" class="card shadow">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3>Manage Category</h3>
+                <div v-if="current">
+                    <base-dropdown position="right">
+                        <base-button slot="title" size="sm" class="dropdown-toggle">
+                            {{ current.name }}
+                        </base-button>
+                        <a v-for="item in stores" :key="item.storeId" class="dropdown-item" @click="switchStore(item)">
+                            {{ item.name }}
+                        </a>
+                    </base-dropdown>
+                </div>
             </div>
+            <div class="card-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <category-tree
+                                :items="categories"
+                                @add-category="addCategory"
+                                @edit-category="editCategory"
+                                @delete-category="deleteCategory"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <modal :show.sync="addModal" header-classes="d-flex align-items-center pb-0" :click-out="false">
+                <template slot="header">
+                    <h3 class="modal-title">Add Category</h3>
+                </template>
+                <add-category
+                    :key="Date.now()"
+                    :parent="parent"
+                    :store-id="storeId"
+                    @done="
+                        addModal = false;
+                        getCategories();
+                    "
+                />
+            </modal>
+            <modal :show.sync="editModal" header-classes="d-flex align-items-center pb-0" :click-out="false">
+                <template slot="header">
+                    <h3 class="modal-title">Edit Category</h3>
+                </template>
+                <edit-category
+                    :key="Date.now()"
+                    :category="category"
+                    :categories="flattenCategories"
+                    @done="
+                        editModal = false;
+                        getCategories();
+                    "
+                />
+            </modal>
+            <modal :show.sync="deleteModal" header-classes="d-flex align-items-center pb-0" :click-out="false">
+                <template slot="header">
+                    <h3 class="modal-title">Delete Category</h3>
+                </template>
+                <delete-category
+                    :key="Date.now()"
+                    :category="category"
+                    @done="
+                        deleteModal = false;
+                        getCategories();
+                    "
+                    @close="deleteModal = false"
+                />
+            </modal>
         </div>
-        <div class="card-body">
-            <div class="container">
-                <div class="row">
-                    <div class="col-12">
-                        <category-tree
-                            :items="categories"
-                            @add-category="addCategory"
-                            @edit-category="editCategory"
-                            @delete-category="deleteCategory"
-                        />
+        <div v-else class="card shadow p-2 p-md-5">
+            <div class="card-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <h3>You cannot view this page since you don't have any stores currently.</h3>
+                            <base-button icon="external-link-alt" @click="$router.push('/settings/stores')">
+                                Go to settings
+                            </base-button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <modal :show.sync="addModal" header-classes="d-flex align-items-center pb-0" :click-out="false">
-            <template slot="header">
-                <h3 class="modal-title">Add Category</h3>
-            </template>
-            <add-category
-                :key="Date.now()"
-                :parent="parent"
-                :store-id="storeId"
-                @done="
-                    addModal = false;
-                    getCategories();
-                "
-            />
-        </modal>
-        <modal :show.sync="editModal" header-classes="d-flex align-items-center pb-0" :click-out="false">
-            <template slot="header">
-                <h3 class="modal-title">Edit Category</h3>
-            </template>
-            <edit-category
-                :key="Date.now()"
-                :category="category"
-                :categories="flattenCategories"
-                @done="
-                    editModal = false;
-                    getCategories();
-                "
-            />
-        </modal>
-        <modal :show.sync="deleteModal" header-classes="d-flex align-items-center pb-0" :click-out="false">
-            <template slot="header">
-                <h3 class="modal-title">Delete Category</h3>
-            </template>
-            <delete-category
-                :key="Date.now()"
-                :category="category"
-                @done="
-                    deleteModal = false;
-                    getCategories();
-                "
-                @close="deleteModal = false"
-            />
-        </modal>
     </div>
 </template>
 <script>
@@ -101,7 +117,10 @@ export default {
             current: 'stores/current',
         }),
         storeId() {
-            return this.current.storeId;
+            if (this.current) {
+                return this.current.storeId;
+            }
+            return null;
         },
     },
     watch: {
@@ -115,6 +134,7 @@ export default {
     methods: {
         async getCategories() {
             const storeId = this.storeId;
+            if (!storeId) return;
 
             try {
                 // Get list of all categories and sub categories
