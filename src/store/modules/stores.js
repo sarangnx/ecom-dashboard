@@ -22,6 +22,7 @@ export default {
     },
     actions: {
         init({ commit }, stores) {
+            if (!stores || !stores.length) return;
             commit('setStores', stores);
             commit('setCurrentStore', stores[0]);
 
@@ -30,8 +31,10 @@ export default {
             localStorage.setItem('current', JSON.stringify(stores[0]));
         },
         reload({ commit }) {
-            let stores = localStorage.getItem('stores') || {};
+            let stores = localStorage.getItem('stores');
             stores = JSON.parse(stores);
+
+            if (!stores || !stores.length) return;
 
             commit('setStores', stores);
 

@@ -88,7 +88,7 @@ export default {
                 delete this._vm.$axios.defaults.headers.common.Authorization;
             }
         },
-        logout({ commit, dispatch }) {
+        logout({ commit }) {
             try {
                 commit('logout');
                 localStorage.removeItem('authToken');
