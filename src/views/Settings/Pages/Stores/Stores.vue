@@ -131,6 +131,9 @@ export default {
         this.getStores(this.userId);
     },
     methods: {
+        ...mapActions({
+            init: 'stores/init',
+        }),
         async getStores(ownerId) {
             try {
                 const response = await this.$axios({
@@ -143,6 +146,10 @@ export default {
 
                 const data = response.data;
                 this.stores = data.stores.rows;
+                const stores = this.stores.map((store) => {
+                    return (({ storeId, storeName }) => ({ storeId, storeName }))(store);
+                });
+                this.init(this.stores);
             } catch (err) {
                 this.$error('Unable to get stores list.');
             }
