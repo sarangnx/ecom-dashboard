@@ -3,7 +3,7 @@
         <div class="card-header d-flex justify-content-between flex-column flex-md-row align-items-center">
             <h3>Orders</h3>
         </div>
-        <div class="card-body d-flex flex-row justify-content-around flex-wrap">
+        <div class="card-body position-relative d-flex flex-row justify-content-around flex-wrap min__height">
             <div v-for="(order, index) in orders" :key="index" class="card shadow h-100 col-md-5 mb-3 p-4">
                 <badge :type="badgeType(order.orderStatus)">
                     {{ badgeText(order.orderStatus) }}
@@ -52,6 +52,9 @@
                     </div>
                 </div>
             </div>
+            <div v-if="loading" class="over__lay">
+                <loading />
+            </div>
         </div>
     </div>
 </template>
@@ -81,23 +84,30 @@ export default {
             DELIVERED: 'Delivered',
             CANCELLED: 'Cancelled',
         },
+        loading: false,
     }),
     mounted() {
         this.getOrders();
     },
     methods: {
         async getOrders() {
-            const response = await this.$axios({
-                method: 'get',
-                url: '/orders',
-                params: {
-                    storeId: this.storeId,
-                },
-            });
+            this.loading = true;
+            try {
+                const response = await this.$axios({
+                    method: 'get',
+                    url: '/orders',
+                    params: {
+                        storeId: this.storeId,
+                    },
+                });
 
-            const orders = response.data.orders;
-            this.orders = orders.rows;
-            console.log(this.orders);
+                const orders = response.data.orders;
+                this.orders = orders.rows;
+            } catch (err) {
+                this.$error('Unable to get orders! Try again later.');
+            }
+
+            this.loading = false;
         },
         formatDate(date) {
             date = new Date(date);
