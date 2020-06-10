@@ -64,6 +64,7 @@
                             :key="key"
                             class="dropdown-item pointer"
                             :class="[`text-${badgeType(key)}`]"
+                            @click="changeStatus(order.orderId, key)"
                         >
                             {{ value }}
                         </a>
@@ -127,6 +128,28 @@ export default {
 
             this.loading = false;
         },
+        async changeStatus(orderId, orderStatus) {
+            try {
+                const response = await this.$axios({
+                    method: 'patch',
+                    url: '/orders/status',
+                    data: {
+                        orderId,
+                        orderStatus,
+                    },
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                }
+            } catch (err) {
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Order status was not changed! Try again.');
+                }
+            }
+        },
         formatDate(date) {
             date = new Date(date);
             let dateString = date.toDateString();
@@ -141,11 +164,9 @@ export default {
             return `${dateString} - ${timeString}`;
         },
         badgeType(status) {
-            status = status.toUpperCase();
             return this.statusColors[status];
         },
         badgeText(status) {
-            status = status.toUpperCase();
             return this.statusText[status];
         },
     },
