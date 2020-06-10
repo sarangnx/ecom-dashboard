@@ -57,7 +57,7 @@
             <div class="container-fluid mt--7">
                 <div class="row">
                     <div class="col">
-                        <!-- <orders-table title="Orders" :user="user"></orders-table> -->
+                        <orders-table :store-id="storeId"></orders-table>
                     </div>
                 </div>
             </div>
@@ -94,7 +94,7 @@ import OrdersTable from './OrdersTable';
 export default {
     name: 'Orders',
     components: {
-        // OrdersTable,
+        OrdersTable,
     },
     data: () => ({
         orderStatus: {
