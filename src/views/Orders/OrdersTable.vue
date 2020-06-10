@@ -55,7 +55,12 @@
                 </div>
                 <div class="card-footer py-2">
                     <base-dropdown>
-                        <base-button slot="title" size="sm" :type="badgeType(order.orderStatus)">
+                        <base-button
+                            slot="title"
+                            size="sm"
+                            :type="badgeType(order.orderStatus)"
+                            :loading="statusLoading == order.orderId"
+                        >
                             {{ badgeText(order.orderStatus) }}
                             <font-awesome-icon icon="caret-down" />
                         </base-button>
@@ -64,7 +69,7 @@
                             :key="key"
                             class="dropdown-item pointer"
                             :class="[`text-${badgeType(key)}`]"
-                            @click="changeStatus(order.orderId, key)"
+                            @click="!statusLoading && changeStatus(order.orderId, key, index)"
                         >
                             {{ value }}
                         </a>
@@ -104,6 +109,7 @@ export default {
             CANCELLED: 'Cancelled',
         },
         loading: false,
+        statusLoading: null,
     }),
     mounted() {
         this.getOrders();
@@ -128,7 +134,9 @@ export default {
 
             this.loading = false;
         },
-        async changeStatus(orderId, orderStatus) {
+        async changeStatus(orderId, orderStatus, index) {
+            this.statusLoading = orderId;
+
             try {
                 const response = await this.$axios({
                     method: 'patch',
@@ -141,6 +149,7 @@ export default {
 
                 if (response.status === 200 && response.data.message) {
                     this.$success(response.data.message);
+                    this.orders[index].orderStatus = orderStatus;
                 }
             } catch (err) {
                 if (err.response && err.response.status === 400 && err.response.data.error) {
@@ -149,6 +158,8 @@ export default {
                     this.$error('Order status was not changed! Try again.');
                 }
             }
+
+            this.statusLoading = null;
         },
         formatDate(date) {
             date = new Date(date);
