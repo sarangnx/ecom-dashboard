@@ -5,6 +5,9 @@
         </div>
         <div class="card-body d-flex flex-row justify-content-around flex-wrap">
             <div v-for="(order, index) in orders" :key="index" class="card shadow h-100 col-md-5 mb-3 p-4">
+                <badge :type="badgeType(order.orderStatus)">
+                    {{ badgeText(order.orderStatus) }}
+                </badge>
                 <div class="d-flex text-muted">
                     <h4 class="m-0 pr-2 text-muted">Order Date</h4>
                     <small>{{ formatDate(order.orderDate) }}</small>
@@ -62,6 +65,22 @@ export default {
     },
     data: () => ({
         orders: [],
+        statusColors: {
+            PENDING: 'primary',
+            PROCESSING: 'secondary',
+            READY: 'info',
+            OUTFORDELIVERY: 'warning',
+            DELIVERED: 'success',
+            CANCELLED: 'danger',
+        },
+        statusText: {
+            PENDING: 'Pending',
+            PROCESSING: 'Processing',
+            READY: 'Ready',
+            OUTFORDELIVERY: 'Out for Delivery',
+            DELIVERED: 'Delivered',
+            CANCELLED: 'Cancelled',
+        },
     }),
     mounted() {
         this.getOrders();
@@ -92,6 +111,14 @@ export default {
             minutes = minutes < 10 ? '0' + minutes : minutes;
             const timeString = hours + ':' + minutes + ' ' + ampm;
             return `${dateString} - ${timeString}`;
+        },
+        badgeType(status) {
+            status = status.toUpperCase();
+            return this.statusColors[status];
+        },
+        badgeText(status) {
+            status = status.toUpperCase();
+            return this.statusText[status];
         },
     },
 };
