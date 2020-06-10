@@ -2,6 +2,25 @@
     <div class="card shadow">
         <div class="card-header d-flex justify-content-between flex-column flex-md-row align-items-center">
             <h3>Orders</h3>
+            <!-- FILTER BY STATUS -->
+            <base-dropdown position="right">
+                <base-button slot="title" size="sm" :type="badgeType(status)">
+                    {{ badgeText(status) }}
+                    <font-awesome-icon icon="caret-down" />
+                </base-button>
+                <a class="dropdown-item pointer text-dark" @click="status = null">
+                    All
+                </a>
+                <a
+                    v-for="(value, key) of statusText"
+                    :key="key"
+                    class="dropdown-item pointer"
+                    :class="[`text-${badgeType(key)}`]"
+                    @click="status = key"
+                >
+                    {{ value }}
+                </a>
+            </base-dropdown>
         </div>
         <div class="card-body position-relative d-flex flex-row justify-content-around flex-wrap min__height">
             <div v-for="(order, index) in orders" :key="index" class="card shadow h-100 col-md-5 mb-3">
@@ -98,6 +117,7 @@ export default {
         page: 1,
         limit: 10,
         totalPages: 1,
+        status: null,
         statusColors: {
             PENDING: 'primary',
             PROCESSING: 'darker',
@@ -124,6 +144,9 @@ export default {
         limit() {
             this.getOrders();
         },
+        status() {
+            this.page > 1 ? (this.page = 1) : this.getOrders();
+        },
     },
     mounted() {
         this.getOrders();
@@ -139,6 +162,7 @@ export default {
                         storeId: this.storeId,
                         page: this.page,
                         limit: this.limit,
+                        orderStatus: this.status,
                     },
                 });
 
@@ -192,9 +216,11 @@ export default {
             return `${dateString} - ${timeString}`;
         },
         badgeType(status) {
+            if (!status) return 'dark';
             return this.statusColors[status];
         },
         badgeText(status) {
+            if (!status) return 'All';
             return this.statusText[status];
         },
     },
