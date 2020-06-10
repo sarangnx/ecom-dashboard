@@ -93,6 +93,14 @@
                             {{ value }}
                         </a>
                     </base-dropdown>
+                    <base-button
+                        size="sm"
+                        @click="
+                            modal = true;
+                            orderItems = order.orderItems;
+                        "
+                        >View Order</base-button
+                    >
                 </div>
             </div>
             <div v-if="loading" class="over__lay">
@@ -102,11 +110,20 @@
         <div class="card-footer">
             <base-pagination v-model="page" :page-count="totalPages" align="center" />
         </div>
+        <modal :show.sync="modal" header-classes="pb-0">
+            <h5 slot="header">Order Items</h5>
+            <orders-list :items="orderItems" />
+        </modal>
     </div>
 </template>
 <script>
+import OrdersList from './OrdersList';
+
 export default {
     name: 'OrdersTable',
+    components: {
+        OrdersList,
+    },
     props: {
         storeId: {
             type: [Number, String],
@@ -136,6 +153,8 @@ export default {
         },
         loading: false,
         statusLoading: null,
+        modal: false,
+        orderItems: [],
     }),
     watch: {
         page() {
