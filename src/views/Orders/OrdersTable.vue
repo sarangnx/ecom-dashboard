@@ -80,6 +80,9 @@
                 <loading />
             </div>
         </div>
+        <div class="card-footer">
+            <base-pagination v-model="page" :page-count="totalPages" align="center" />
+        </div>
     </div>
 </template>
 <script>
@@ -92,6 +95,9 @@ export default {
     },
     data: () => ({
         orders: [],
+        page: 1,
+        limit: 10,
+        totalPages: 1,
         statusColors: {
             PENDING: 'primary',
             PROCESSING: 'darker',
@@ -111,6 +117,14 @@ export default {
         loading: false,
         statusLoading: null,
     }),
+    watch: {
+        page() {
+            this.getOrders();
+        },
+        limit() {
+            this.getOrders();
+        },
+    },
     mounted() {
         this.getOrders();
     },
@@ -123,11 +137,14 @@ export default {
                     url: '/orders',
                     params: {
                         storeId: this.storeId,
+                        page: this.page,
+                        limit: this.limit,
                     },
                 });
 
                 const orders = response.data.orders;
                 this.orders = orders.rows;
+                this.totalPages = Math.ceil(orders.count / this.limit);
             } catch (err) {
                 this.$error('Unable to get orders! Try again later.');
             }
