@@ -16,12 +16,12 @@ export default [
                 component: () => import(/* webpackChunkName: "dashboard" */ '@/views/Dashboard/AdminDashboard.vue'),
                 meta: { requiresAuth: true },
             },
-            // {
-            //     path: '/orders',
-            //     name: 'orders',
-            //     component: () => import(/* webpackChunkName: "orders" */ '@/views/Orders/Orders.vue'),
-            //     meta: { requiresAuth: true },
-            // },
+            {
+                path: '/orders',
+                name: 'orders',
+                component: () => import(/* webpackChunkName: "orders" */ '@/views/Orders/Orders.vue'),
+                meta: { requiresAuth: true },
+            },
             {
                 path: '/items',
                 name: 'items',
