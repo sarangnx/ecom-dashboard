@@ -160,6 +160,31 @@ export default {
                     }
                 }
             }
+
+            // send request to delete pincodes if given
+            if (removeIds && removeIds.length) {
+                try {
+                    const response = await this.$axios({
+                        method: 'delete',
+                        url: '/pincodes/store',
+                        data: {
+                            pincodes: removeIds,
+                            storeId: this.store.storeId,
+                        },
+                    });
+
+                    if (response.status === 200 && response.data.message) {
+                        this.$success(response.data.message);
+                        this.removedPincodes = [];
+                    }
+                } catch (err) {
+                    if (err.response && err.response.status === 400 && err.response.data.error) {
+                        this.$error(err.response.data.error.message);
+                    } else {
+                        this.$error('Something went wrong. Please try again later.');
+                    }
+                }
+            }
         },
     },
 };
