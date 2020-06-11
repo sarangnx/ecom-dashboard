@@ -40,6 +40,11 @@
         <div v-else class="col-12 mt-3 text-center py-5">
             <small>Add Pincodes from the dropdown list above.</small>
         </div>
+        <div v-if="changed" class="col-12 mt-4">
+            <base-button block type="success" icon="save">
+                Save Changes
+            </base-button>
+        </div>
     </div>
 </template>
 <script>
@@ -61,6 +66,7 @@ export default {
         newPincodes: [],
         filter: null,
         filteredPincodes: [],
+        changed: false,
     }),
     computed: {
         selectedPincodes() {
@@ -107,12 +113,14 @@ export default {
             if (index !== -1) {
                 const removed = this.storePincodes.splice(index, 1);
                 this.removedPincodes.push(removed);
+                this.changed = true;
             }
         },
         add(pincode) {
             const index = this.selectedPincodes.findIndex((item) => item.pinId === pincode.pinId);
             if (index === -1) {
                 this.newPincodes.push(pincode);
+                this.changed = true;
             }
         },
     },
