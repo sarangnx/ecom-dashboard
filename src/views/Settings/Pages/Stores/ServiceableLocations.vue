@@ -135,6 +135,8 @@ export default {
                 removeIds = removeIds.filter((item) => !common.includes(item));
             }
 
+            let error = false;
+
             // send request to add pincodes if given
             if (addIds && addIds.length) {
                 try {
@@ -158,6 +160,7 @@ export default {
                     } else {
                         this.$error('Something went wrong. Please try again later.');
                     }
+                    error = true;
                 }
             }
 
@@ -183,7 +186,13 @@ export default {
                     } else {
                         this.$error('Something went wrong. Please try again later.');
                     }
+                    error = true;
                 }
+            }
+
+            // If both requests are successful, changed is set to false.
+            if (!error) {
+                this.changed = false;
             }
         },
     },
