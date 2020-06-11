@@ -203,7 +203,7 @@ export default {
             try {
                 const response = await this.$axios({
                     method: 'get',
-                    url: '/pincode/list',
+                    url: '/pincodes/list',
                     params: {
                         district: options.district,
                     },
