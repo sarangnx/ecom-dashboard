@@ -41,7 +41,7 @@
             <small>Add Pincodes from the dropdown list above.</small>
         </div>
         <div v-if="changed" class="col-12 mt-4">
-            <base-button block type="success" icon="save">
+            <base-button block type="success" icon="save" @click="save">
                 Save Changes
             </base-button>
         </div>
@@ -91,7 +91,7 @@ export default {
         async getStorePincodes() {
             const response = await this.$axios({
                 method: 'get',
-                url: '/pincode/list',
+                url: '/pincodes/list',
                 params: {
                     storeId: this.store.storeId,
                 },
@@ -112,7 +112,7 @@ export default {
             // if it is in storePincodes, add it to removedPincodes list
             if (index !== -1) {
                 const removed = this.storePincodes.splice(index, 1);
-                this.removedPincodes.push(removed);
+                this.removedPincodes = this.removedPincodes.concat(removed);
                 this.changed = true;
             }
         },
@@ -121,6 +121,44 @@ export default {
             if (index === -1) {
                 this.newPincodes.push(pincode);
                 this.changed = true;
+            }
+        },
+        async save() {
+            let addIds = this.newPincodes.map((item) => item.pinId);
+            let removeIds = this.removedPincodes.map((item) => item.pinId);
+            // Ids both in add and remove
+            const common = removeIds.filter((item) => addIds.includes(item));
+
+            if (common && common.length) {
+                // remove Ids in common from both addIds and removeIds
+                addIds = addIds.filter((item) => !common.includes(item));
+                removeIds = removeIds.filter((item) => !common.includes(item));
+            }
+
+            // send request to add pincodes if given
+            if (addIds && addIds.length) {
+                try {
+                    const response = await this.$axios({
+                        method: 'post',
+                        url: '/pincodes/store',
+                        data: {
+                            pincodes: addIds,
+                            storeId: this.store.storeId,
+                        },
+                    });
+
+                    if (response.status === 200 && response.data.message) {
+                        this.$success(response.data.message);
+                        this.storePincodes = this.storePincodes.concat(this.newPincodes);
+                        this.newPincodes = [];
+                    }
+                } catch (err) {
+                    if (err.response && err.response.status === 400 && err.response.data.error) {
+                        this.$error(err.response.data.error.message);
+                    } else {
+                        this.$error('Something went wrong. Please try again later.');
+                    }
+                }
             }
         },
     },
