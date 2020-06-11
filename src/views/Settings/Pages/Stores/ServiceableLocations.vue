@@ -19,7 +19,7 @@
                     v-for="(pincode, index) in filteredPincodes"
                     :key="index"
                     class="dropdown-item pointer"
-                    @click="newPincodes.push(pincode)"
+                    @click="add(pincode)"
                 >
                     {{ pincode.pincode }} - {{ pincode.officeName }}
                 </a>
@@ -107,6 +107,12 @@ export default {
             if (index !== -1) {
                 const removed = this.storePincodes.splice(index, 1);
                 this.removedPincodes.push(removed);
+            }
+        },
+        add(pincode) {
+            const index = this.selectedPincodes.findIndex((item) => item.pinId === pincode.pinId);
+            if (index === -1) {
+                this.newPincodes.push(pincode);
             }
         },
     },
