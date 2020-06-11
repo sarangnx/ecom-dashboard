@@ -22,7 +22,13 @@ export default {
     },
     actions: {
         init({ commit }, stores) {
-            if (!stores || !stores.length) return;
+            if (!stores || !stores.length) {
+                commit('setStores', null);
+                commit('setCurrentStore', null);
+                localStorage.removeItem('stores');
+                localStorage.setItem('current');
+                return;
+            }
             commit('setStores', stores);
             commit('setCurrentStore', stores[0]);
 
