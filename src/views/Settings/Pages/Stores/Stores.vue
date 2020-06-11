@@ -25,7 +25,7 @@
                             <small>{{ item.storeType }}</small>
                         </div>
                     </div>
-                    <div class="card-footer d-flex justify-content-end py-2">
+                    <div class="card-footer d-flex flex-wrap justify-content-end py-2">
                         <base-button
                             size="sm"
                             type="danger"
@@ -47,6 +47,9 @@
                             "
                         >
                             Edit
+                        </base-button>
+                        <base-button size="sm" class="mt-2">
+                            Serviceable locations
                         </base-button>
                     </div>
                 </div>
@@ -149,7 +152,7 @@ export default {
                 const stores = this.stores.map((store) => {
                     return (({ storeId, storeName }) => ({ storeId, storeName }))(store);
                 });
-                this.init(this.stores);
+                this.init(stores);
             } catch (err) {
                 this.$error('Unable to get stores list.');
             }
