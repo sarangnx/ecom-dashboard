@@ -25,7 +25,7 @@
                             <small>{{ item.storeType }}</small>
                         </div>
                     </div>
-                    <div class="card-footer d-flex flex-wrap justify-content-end py-2">
+                    <div class="card-footer d-flex flex-wrap justify-content-start py-2">
                         <base-button
                             size="sm"
                             type="danger"
@@ -48,7 +48,15 @@
                         >
                             Edit
                         </base-button>
-                        <base-button size="sm" class="mt-2">
+                        <base-button
+                            size="sm"
+                            class="mt-2"
+                            icon="clipboard-list"
+                            @click="
+                                locationModal = true;
+                                selectedStore = item;
+                            "
+                        >
                             Serviceable locations
                         </base-button>
                     </div>
@@ -73,7 +81,13 @@
                 "
             />
         </modal>
-        <modal :show.sync="editModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+        <modal
+            :show.sync="editModal"
+            header-classes="pb-0"
+            body-classes="pt-0"
+            :click-out="false"
+            @close="selectedStore = null"
+        >
             <template slot="header">
                 <h4 class="modal-title">Edit Store</h4>
             </template>
@@ -86,7 +100,13 @@
                 "
             />
         </modal>
-        <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+        <modal
+            :show.sync="deleteModal"
+            header-classes="pb-0"
+            body-classes="pt-0"
+            :click-out="false"
+            @close="selectedStore = null"
+        >
             <template slot="header">
                 <h4 class="modal-title">Delete Store</h4>
             </template>
@@ -100,6 +120,23 @@
                 @close="deleteModal = false"
             />
         </modal>
+        <modal
+            :show.sync="locationModal"
+            header-classes="pb-0"
+            body-classes="pt-0"
+            :click-out="false"
+            @close="selectedStore = null"
+        >
+            <template slot="header">
+                <h4 class="modal-title">Serviceable Locations</h4>
+            </template>
+            <serviceable-locations
+                :key="Date.now()"
+                :store="locationModal ? selectedStore : null"
+                :pincodes="pincodes"
+                @done="locationModal = false"
+            />
+        </modal>
     </div>
 </template>
 <script>
@@ -107,6 +144,7 @@ import { mapGetters, mapActions } from 'vuex';
 import AddStore from './AddStore';
 import EditStore from './EditStore';
 import DeleteStore from './DeleteStore';
+import ServiceableLocations from './ServiceableLocations';
 
 export default {
     name: 'Stores',
@@ -114,6 +152,7 @@ export default {
         AddStore,
         EditStore,
         DeleteStore,
+        ServiceableLocations,
     },
     data: () => ({
         stores: [],
@@ -121,6 +160,8 @@ export default {
         editModal: false,
         deleteModal: false,
         selectedStore: {},
+        locationModal: null,
+        pincodes: [],
     }),
     computed: {
         ...mapGetters({
@@ -132,6 +173,7 @@ export default {
     },
     mounted() {
         this.getStores(this.userId);
+        this.listPincodes();
     },
     methods: {
         ...mapActions({
@@ -155,6 +197,22 @@ export default {
                 this.init(stores);
             } catch (err) {
                 this.$error('Unable to get stores list.');
+            }
+        },
+        async listPincodes(options = {}) {
+            try {
+                const response = await this.$axios({
+                    method: 'get',
+                    url: '/pincode/list',
+                    params: {
+                        district: options.district,
+                    },
+                });
+
+                const pincodes = response.data.pincodes;
+                this.pincodes = pincodes.rows;
+            } catch (err) {
+                this.$error('Unable to get pincodes list.');
             }
         },
     },
