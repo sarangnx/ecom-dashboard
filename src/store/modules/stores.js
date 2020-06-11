@@ -26,7 +26,7 @@ export default {
                 commit('setStores', null);
                 commit('setCurrentStore', null);
                 localStorage.removeItem('stores');
-                localStorage.setItem('current');
+                localStorage.removeItem('current');
                 return;
             }
             commit('setStores', stores);
