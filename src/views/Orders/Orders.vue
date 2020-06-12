@@ -124,6 +124,11 @@ export default {
             return null;
         },
     },
+    watch: {
+        storeId() {
+            this.getStats(this.storeId);
+        },
+    },
     mounted() {
         this.getStats(this.storeId);
     },

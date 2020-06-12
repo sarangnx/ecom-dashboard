@@ -166,6 +166,9 @@ export default {
         status() {
             this.page > 1 ? (this.page = 1) : this.getOrders();
         },
+        storeId() {
+            this.getOrders();
+        },
     },
     mounted() {
         this.getOrders();
