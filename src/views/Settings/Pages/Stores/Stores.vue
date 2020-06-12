@@ -62,7 +62,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-2 p-1">
+            <div class="col-md-4 mb-2 p-1 min__height">
                 <div class="card shadow h-100 p-3 d-flex justify-content-center align-items-center">
                     <base-button icon="plus" @click="addModal = true">Add Store</base-button>
                 </div>
