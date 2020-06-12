@@ -23,56 +23,62 @@
                     />
                 </div>
             </div>
-            <div class="card-body d-flex flex-row justify-content-start flex-wrap p-2">
-                <div v-for="(item, index) of items" :key="index" class="col-md-4 mb-2 p-1">
-                    <div class="card shadow h-100">
-                        <div class="card-header border-0 d-flex justify-content-center align-items-center">
-                            <img v-if="item.image" :src="`${s3bucket}/${item.image}`" class="col p-0" />
-                            <font-awesome-icon v-else icon="image" size="5x"></font-awesome-icon>
-                        </div>
-                        <div class="card-body d-flex justify-content-end flex-column py-2">
-                            <div>
-                                <h5 class="d-inline m-0 pr-2">Product Name:</h5>
-                                <span>{{ item.itemDetails.itemName }}</span>
+            <div class="card-body d-flex flex-row justify-content-start flex-wrap p-2 min__height">
+                <template v-if="items && items.length">
+                    <div v-for="(item, index) of items" :key="index" class="col-md-4 mb-2 p-1">
+                        <div class="card shadow h-100">
+                            <div class="card-header border-0 d-flex justify-content-center align-items-center">
+                                <img v-if="item.image" :src="`${s3bucket}/${item.image}`" class="col p-0" />
+                                <font-awesome-icon v-else icon="image" size="5x"></font-awesome-icon>
                             </div>
-                            <div v-if="item.itemDetails.baseQuantity">
-                                <h5 class="d-inline m-0 pr-2">Quantity:</h5>
-                                <span>{{ parseFloat(item.itemDetails.baseQuantity) }}</span>
+                            <div class="card-body d-flex justify-content-end flex-column py-2">
+                                <div>
+                                    <h5 class="d-inline m-0 pr-2">Product Name:</h5>
+                                    <span>{{ item.itemDetails.itemName }}</span>
+                                </div>
+                                <div v-if="item.itemDetails.baseQuantity">
+                                    <h5 class="d-inline m-0 pr-2">Quantity:</h5>
+                                    <span>{{ parseFloat(item.itemDetails.baseQuantity) }}</span>
+                                </div>
+                                <div v-if="item.itemDetails.baseUnit">
+                                    <h5 class="d-inline m-0 pr-2">Unit:</h5>
+                                    <small>{{ item.itemDetails.baseUnit | toUpper }}</small>
+                                </div>
+                                <div v-if="item.price">
+                                    <h5 class="d-inline m-0 pr-2">Price:</h5>
+                                    <small>{{ parseFloat(item.price) }}</small>
+                                </div>
                             </div>
-                            <div v-if="item.itemDetails.baseUnit">
-                                <h5 class="d-inline m-0 pr-2">Unit:</h5>
-                                <small>{{ item.itemDetails.baseUnit | toUpper }}</small>
+                            <div class="card-footer d-flex justify-content-end py-2">
+                                <base-button
+                                    size="sm"
+                                    type="danger"
+                                    icon="trash"
+                                    @click="
+                                        deleteModal = true;
+                                        selectedItem = item;
+                                    "
+                                >
+                                    Remove
+                                </base-button>
+                                <base-button
+                                    size="sm"
+                                    type="success"
+                                    icon="edit"
+                                    @click="
+                                        editModal = true;
+                                        selectedItem = item;
+                                    "
+                                >
+                                    Edit
+                                </base-button>
                             </div>
-                            <div v-if="item.price">
-                                <h5 class="d-inline m-0 pr-2">Price:</h5>
-                                <small>{{ parseFloat(item.price) }}</small>
-                            </div>
-                        </div>
-                        <div class="card-footer d-flex justify-content-end py-2">
-                            <base-button
-                                size="sm"
-                                type="danger"
-                                icon="trash"
-                                @click="
-                                    deleteModal = true;
-                                    selectedItem = item;
-                                "
-                            >
-                                Remove
-                            </base-button>
-                            <base-button
-                                size="sm"
-                                type="success"
-                                icon="edit"
-                                @click="
-                                    editModal = true;
-                                    selectedItem = item;
-                                "
-                            >
-                                Edit
-                            </base-button>
                         </div>
                     </div>
+                </template>
+                <div v-else class="col-12 p-5 d-flex justify-content-center align-items-center">
+                    <small class="p-2">no items in store</small>
+                    <font-awesome-icon icon="inbox" />
                 </div>
                 <div v-if="loading" class="over__lay">
                     <loading color="dark" />
