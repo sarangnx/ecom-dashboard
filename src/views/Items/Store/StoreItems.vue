@@ -23,7 +23,7 @@
                     />
                 </div>
             </div>
-            <div class="card-body d-flex flex-row justify-content-start flex-wrap p-2 min__height">
+            <div class="card-body d-flex flex-row justify-content-start flex-wrap p-2 position-relative min__height">
                 <template v-if="items && items.length">
                     <div v-for="(item, index) of items" :key="index" class="col-md-4 mb-2 p-1">
                         <div class="card shadow h-100">
@@ -76,7 +76,10 @@
                         </div>
                     </div>
                 </template>
-                <div v-else class="col-12 p-5 d-flex justify-content-center align-items-center">
+                <div
+                    v-if="!(items && items.length) && !loading"
+                    class="col-12 p-5 d-flex justify-content-center align-items-center"
+                >
                     <small class="p-2">no items in store</small>
                     <font-awesome-icon icon="inbox" />
                 </div>
