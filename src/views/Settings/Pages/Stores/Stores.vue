@@ -192,7 +192,7 @@ export default {
                 const data = response.data;
                 this.stores = data.stores.rows;
                 const stores = this.stores.map((store) => {
-                    return (({ storeId, storeName }) => ({ storeId, storeName }))(store);
+                    return (({ storeId, name }) => ({ storeId, name }))(store);
                 });
                 this.init(stores);
             } catch (err) {
