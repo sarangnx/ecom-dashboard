@@ -128,6 +128,9 @@ export default {
         this.getStats(this.storeId);
     },
     methods: {
+        ...mapActions({
+            change: 'stores/change',
+        }),
         async getStats(storeId) {
             try {
                 const response = await this.$axios({
