@@ -46,6 +46,7 @@
                         </base-input>
 
                         <base-input
+                            v-if="usergroup.group === 'storeowner'"
                             v-model="$v.phone.$model"
                             classes="input-group-alternative"
                             placeholder="phonenumber"
