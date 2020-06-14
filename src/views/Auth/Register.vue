@@ -164,7 +164,7 @@ export default {
                         username: this.username,
                         password: this.password,
                         usergroup: this.usergroup.group,
-                        phone: this.phone,
+                        ...(this.usergroup && this.usergroup.group === 'storeowner' && { phone: this.phone }),
                     },
                 });
 
