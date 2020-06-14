@@ -69,6 +69,12 @@ export default [
                     },
                 ],
             },
+            {
+                path: '/banners',
+                name: 'banners',
+                component: () => import(/* webpackChunkName: "notifications" */ '@/views/Banner/Banner.vue'),
+                meta: { requiresAuth: true },
+            },
             // {
             //     path: '/notifications',
             //     name: 'notifications',
