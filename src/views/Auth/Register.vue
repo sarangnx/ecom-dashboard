@@ -51,7 +51,14 @@
                             placeholder="phonenumber"
                             addon-left-icon="phone"
                             autocomplete="false"
-                            :error="$v.phone.$error && !$v.phone.required ? 'Phone Number Required' : null"
+                            :error="
+                                $v.phone.$error && !$v.phone.required
+                                    ? 'Phone Number Required'
+                                    : ($v.phone.$error && !$v.phone.minLength) || ($v.phone.$error && !$v.phone.numeric)
+                                    ? 'Enter Valid Phone Number'
+                                    : null
+                            "
+                            type="number"
                         >
                         </base-input>
 
@@ -101,10 +108,8 @@
     </div>
 </template>
 <script>
-import { required, sameAs, minLength, requiredIf } from 'vuelidate/lib/validators';
-const phone = (value) => {
-    return /^[6-9]\d{9}$/.test(value);
-};
+import { required, sameAs, minLength, requiredIf, numeric } from 'vuelidate/lib/validators';
+
 export default {
     name: 'Register',
     data: () => ({
@@ -138,7 +143,7 @@ export default {
                 return this.usergroup && this.usergroup.group === 'storeowner';
             }),
             minLength: minLength(10),
-            phone,
+            numeric,
         },
     },
     mounted() {
