@@ -33,6 +33,7 @@
                             "
                         >
                         </base-input>
+
                         <base-input
                             v-model="$v.confirmPassword.$model"
                             classes="input-group-alternative"
@@ -41,6 +42,16 @@
                             addon-left-icon="lock"
                             autocomplete="false"
                             :error="$v.confirmPassword.$error ? `Passwords don't match` : null"
+                        >
+                        </base-input>
+
+                        <base-input
+                            v-model="$v.phone.$model"
+                            classes="input-group-alternative"
+                            placeholder="phonenumber"
+                            addon-left-icon="phone"
+                            autocomplete="false"
+                            :error="$v.phone.$error ? 'Enter Proper Phone Number' : null"
                         >
                         </base-input>
 
@@ -91,7 +102,9 @@
 </template>
 <script>
 import { required, sameAs, minLength } from 'vuelidate/lib/validators';
-
+const phone = (value) => {
+    return /^[6-9]\d{9}$/.test(value);
+};
 export default {
     name: 'Register',
     data: () => ({
@@ -104,6 +117,7 @@ export default {
             { name: 'Staff', group: 'staff' },
             { name: 'Delivery', group: 'delivery' },
         ],
+        phone: '',
         loading: null,
         modal: null,
     }),
@@ -118,6 +132,11 @@ export default {
         confirmPassword: {
             required,
             sameAsPassword: sameAs('password'),
+        },
+        phone: {
+            required,
+            minLength: minLength(10),
+            phone,
         },
     },
     mounted() {
@@ -137,6 +156,7 @@ export default {
                         username: this.username,
                         password: this.password,
                         usergroup: this.usergroup.group,
+                        phone: this.phone,
                     },
                 });
 
