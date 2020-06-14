@@ -51,7 +51,7 @@
                             placeholder="phonenumber"
                             addon-left-icon="phone"
                             autocomplete="false"
-                            :error="$v.phone.$error ? 'Enter Proper Phone Number' : null"
+                            :error="$v.phone.$error && !$v.phone.required ? 'Phone Number Required' : null"
                         >
                         </base-input>
 
@@ -101,7 +101,7 @@
     </div>
 </template>
 <script>
-import { required, sameAs, minLength } from 'vuelidate/lib/validators';
+import { required, sameAs, minLength, requiredIf } from 'vuelidate/lib/validators';
 const phone = (value) => {
     return /^[6-9]\d{9}$/.test(value);
 };
@@ -134,7 +134,9 @@ export default {
             sameAsPassword: sameAs('password'),
         },
         phone: {
-            required,
+            required: requiredIf(function () {
+                return this.usergroup && this.usergroup.group === 'storeowner';
+            }),
             minLength: minLength(10),
             phone,
         },
