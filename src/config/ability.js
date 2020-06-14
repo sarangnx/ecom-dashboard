@@ -12,6 +12,7 @@ export default {
     shopowner: [
         { action: 'menu', subject: 'store-dashboard' },
         { action: 'menu', subject: 'orders' },
+        { action: 'menu', subject: 'imageOrders' },
         { action: 'menu', subject: 'items' },
         { action: 'menu', subject: 'store-items' },
         { action: 'menu', subject: 'category' }, // parent
