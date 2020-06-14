@@ -1,12 +1,12 @@
 <template>
     <div
-        @click="tryClose"
         data-notify="container"
         class="alert alert-notify alert-dismissible"
         :class="[{ 'alert-with-icon': icon }, verticalAlign, horizontalAlign, alertType]"
         role="alert"
         :style="customPosition"
         data-notify-position="top-center"
+        @click="tryClose"
     >
         <template v-if="icon || $slots.icon">
             <slot name="icon">
@@ -20,6 +20,7 @@
             <span v-if="title" class="title">
                 <b>{{ title }}<br /></b>
             </span>
+            <!-- eslint-disable-next-line vue/no-v-html -->
             <span v-if="message" v-html="message"></span>
             <content-render v-if="!message && component" :component="component"></content-render>
         </span>
@@ -33,7 +34,7 @@
 </template>
 <script>
 export default {
-    name: 'notification',
+    name: 'Notification',
     components: {
         contentRender: {
             props: ['component'],
@@ -127,6 +128,12 @@ export default {
             return styles;
         },
     },
+    mounted() {
+        this.elmHeight = this.$el.clientHeight;
+        if (this.timeout) {
+            setTimeout(this.close, this.timeout);
+        }
+    },
     methods: {
         close() {
             this.$emit('close', this.timestamp);
@@ -139,12 +146,6 @@ export default {
                 this.close();
             }
         },
-    },
-    mounted() {
-        this.elmHeight = this.$el.clientHeight;
-        if (this.timeout) {
-            setTimeout(this.close, this.timeout);
-        }
     },
 };
 </script>
