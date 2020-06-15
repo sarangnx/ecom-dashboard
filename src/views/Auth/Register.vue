@@ -33,6 +33,7 @@
                             "
                         >
                         </base-input>
+
                         <base-input
                             v-model="$v.confirmPassword.$model"
                             classes="input-group-alternative"
@@ -41,6 +42,24 @@
                             addon-left-icon="lock"
                             autocomplete="false"
                             :error="$v.confirmPassword.$error ? `Passwords don't match` : null"
+                        >
+                        </base-input>
+
+                        <base-input
+                            v-if="usergroup.group === 'storeowner'"
+                            v-model="$v.phone.$model"
+                            classes="input-group-alternative"
+                            placeholder="phonenumber"
+                            addon-left-icon="phone"
+                            autocomplete="false"
+                            :error="
+                                $v.phone.$error && !$v.phone.required
+                                    ? 'Phone Number Required'
+                                    : ($v.phone.$error && !$v.phone.minLength) || ($v.phone.$error && !$v.phone.numeric)
+                                    ? 'Enter Valid Phone Number'
+                                    : null
+                            "
+                            type="number"
                         >
                         </base-input>
 
@@ -90,7 +109,7 @@
     </div>
 </template>
 <script>
-import { required, sameAs, minLength } from 'vuelidate/lib/validators';
+import { required, sameAs, minLength, requiredIf, numeric } from 'vuelidate/lib/validators';
 
 export default {
     name: 'Register',
@@ -104,6 +123,7 @@ export default {
             { name: 'Staff', group: 'staff' },
             { name: 'Delivery', group: 'delivery' },
         ],
+        phone: '',
         loading: null,
         modal: null,
     }),
@@ -118,6 +138,13 @@ export default {
         confirmPassword: {
             required,
             sameAsPassword: sameAs('password'),
+        },
+        phone: {
+            required: requiredIf(function () {
+                return this.usergroup && this.usergroup.group === 'storeowner';
+            }),
+            minLength: minLength(10),
+            numeric,
         },
     },
     mounted() {
@@ -137,6 +164,7 @@ export default {
                         username: this.username,
                         password: this.password,
                         usergroup: this.usergroup.group,
+                        ...(this.usergroup && this.usergroup.group === 'storeowner' && { phone: this.phone }),
                     },
                 });
 

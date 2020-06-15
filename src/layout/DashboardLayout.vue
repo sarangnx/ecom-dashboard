@@ -67,6 +67,14 @@ export default {
                 type: 'sidebaritem',
             },
             {
+                name: 'Quick Orders',
+                subject: 'quick-orders',
+                icon: 'shopping-basket',
+                class: 'text-blue',
+                path: '/quick-orders',
+                type: 'sidebaritem',
+            },
+            {
                 name: 'Category',
                 subject: 'category',
                 icon: 'th',
