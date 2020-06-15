@@ -67,6 +67,14 @@ export default {
                 type: 'sidebaritem',
             },
             {
+                name: 'ImageOrders',
+                subject: 'imageOrders',
+                icon: 'shopping-basket',
+                class: 'text-blue',
+                path: '/imageOrders',
+                type: 'sidebaritem',
+            },
+            {
                 name: 'Category',
                 subject: 'category',
                 icon: 'th',
