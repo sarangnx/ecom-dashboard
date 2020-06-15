@@ -30,6 +30,9 @@
                 </div>
             </div>
         </div>
+        <div class="col-12 mt-3">
+            <base-button block type="success" icon="upload" @click="upload">Add Banner</base-button>
+        </div>
     </div>
 </template>
 <script>
@@ -63,6 +66,43 @@ export default {
         openImage() {
             // open the file selector.
             this.$refs.file.click();
+        },
+        async upload() {
+            let data = {
+                name: this.banner.name,
+                image: this.banner.image,
+            };
+
+            // remove keys with null or undefined
+            for (let key in data) {
+                if (!data[key]) delete data[key];
+            }
+
+            // Wrap it as FormData.
+            const formData = new FormData();
+            Object.keys(data).forEach((key) => {
+                formData.append(key, data[key]);
+            });
+
+            try {
+                const response = await this.$axios({
+                    method: 'post',
+                    url: '/banners',
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                    data: formData,
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                }
+                this.$emit('done');
+            } catch (err) {
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
         },
     },
 };
