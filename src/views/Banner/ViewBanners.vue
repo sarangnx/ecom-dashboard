@@ -32,6 +32,7 @@
             <template slot="header">
                 <h4 class="modal-title">Add Banner</h4>
             </template>
+            <add-banner />
         </modal>
     </div>
 </template>
@@ -40,6 +41,9 @@ import AddBanner from './AddBanner';
 
 export default {
     name: 'ViewBanners',
+    components: {
+        AddBanner,
+    },
     data: () => ({
         banners: [],
         addModal: false,
@@ -65,7 +69,6 @@ export default {
 
                 const banners = response.data.banners;
                 this.banners = banners.rows;
-                console.log(banners);
             } catch (err) {
                 this.$error('Unable to get banners.');
             }
