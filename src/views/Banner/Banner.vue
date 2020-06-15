@@ -4,14 +4,7 @@
         <div class="container-fluid mt--7">
             <div class="row">
                 <div class="col-12">
-                    <div class="card shadow">
-                        <div class="card-header">
-                            <h3>Banners</h3>
-                        </div>
-                        <div class="card-body">
-                            <view-banners />
-                        </div>
-                    </div>
+                    <view-banners />
                 </div>
             </div>
         </div>
