@@ -2,6 +2,16 @@
     <div class="card shadow">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3>Banners</h3>
+            <div v-if="current">
+                <base-dropdown>
+                    <base-button slot="title" type="default" size="sm" class="dropdown-toggle">
+                        {{ current.name }}
+                    </base-button>
+                    <a v-for="(item, index) in stores" :key="index" class="dropdown-item" @click="change(item)">
+                        {{ item.name }}
+                    </a>
+                </base-dropdown>
+            </div>
             <base-button size="sm" type="primary" icon="plus" @click="addModal = true">Add Banner</base-button>
         </div>
         <div class="card-body">
@@ -35,7 +45,7 @@
             <add-banner
                 :key="Date.now()"
                 :banner-type="bannerType"
-                :store="current"
+                :store-id="storeId"
                 @done="
                     addModal = false;
                     getBanners();
@@ -45,7 +55,7 @@
     </div>
 </template>
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import AddBanner from './AddBanner';
 
 export default {
@@ -69,11 +79,25 @@ export default {
         bannerType() {
             return this.user && this.user.usergroup === 'storeowner' ? 'store' : 'main';
         },
+        storeId() {
+            if (this.current) {
+                return this.current.storeId;
+            }
+            return null;
+        },
+    },
+    watch: {
+        storeId() {
+            this.getBanners();
+        },
     },
     mounted() {
         this.getBanners();
     },
     methods: {
+        ...mapActions({
+            change: 'stores/change',
+        }),
         async getBanners() {
             try {
                 const response = await this.$axios({
@@ -81,6 +105,7 @@ export default {
                     url: '/banners',
                     params: {
                         bannerType: this.bannerType,
+                        ...(this.bannerType === 'store' && { storeId: this.storeId }),
                     },
                 });
 

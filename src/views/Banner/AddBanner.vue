@@ -43,8 +43,8 @@ export default {
             type: String,
             default: 'main',
         },
-        store: {
-            type: Object,
+        storeId: {
+            type: [Number, String],
             default: null,
         },
     },
@@ -84,8 +84,8 @@ export default {
                 image: this.banner.image,
             };
 
-            if (this.bannerType === 'store' && this.store && this.store.storeId) {
-                data.storeId = this.store.storeId;
+            if (this.bannerType === 'store' && this.storeId) {
+                data.storeId = this.storeId;
             }
 
             // remove keys with null or undefined
