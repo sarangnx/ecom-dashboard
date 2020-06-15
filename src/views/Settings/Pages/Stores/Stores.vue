@@ -62,7 +62,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 mb-2 p-1 min__height">
+            <div v-if="count < limit" class="col-md-4 mb-2 p-1 min__height">
                 <div class="card shadow h-100 p-3 d-flex justify-content-center align-items-center">
                     <base-button icon="plus" @click="addModal = true">Add Store</base-button>
                 </div>
@@ -156,6 +156,8 @@ export default {
     },
     data: () => ({
         stores: [],
+        count: null,
+        limit: 1, // TODO: make limit dynamic
         addModal: false,
         editModal: false,
         deleteModal: false,
@@ -195,6 +197,7 @@ export default {
                     return (({ storeId, name }) => ({ storeId, name }))(store);
                 });
                 this.init(stores);
+                this.count = this.stores.length;
             } catch (err) {
                 this.$error('Unable to get stores list.');
             }
