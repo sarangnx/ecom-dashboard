@@ -140,7 +140,7 @@ export default {
             try {
                 const response = await this.$axios({
                     method: 'get',
-                    url: 'imageOrders/stats',
+                    url: '/imageorders/stats',
                     params: {
                         storeId: storeId,
                     },

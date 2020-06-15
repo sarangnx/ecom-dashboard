@@ -192,7 +192,7 @@ export default {
             try {
                 const response = await this.$axios({
                     method: 'get',
-                    url: 'imageOrders',
+                    url: '/imageorders',
                     params: {
                         storeId: this.storeId,
                         page: this.page,
@@ -216,7 +216,7 @@ export default {
             try {
                 const response = await this.$axios({
                     method: 'patch',
-                    url: 'imageOrders/status',
+                    url: '/imageorders/status',
                     data: {
                         orderId,
                         orderStatus,
