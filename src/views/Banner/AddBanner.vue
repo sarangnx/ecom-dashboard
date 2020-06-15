@@ -38,6 +38,12 @@
 <script>
 export default {
     name: 'AddBanner',
+    props: {
+        bannerType: {
+            type: String,
+            default: 'main',
+        },
+    },
     data: () => ({
         banner: {
             image: null,
@@ -69,6 +75,7 @@ export default {
         },
         async upload() {
             let data = {
+                bannerType: this.bannerType,
                 name: this.banner.name,
                 image: this.banner.image,
             };

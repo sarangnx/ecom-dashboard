@@ -32,11 +32,12 @@
             <template slot="header">
                 <h4 class="modal-title">Add Banner</h4>
             </template>
-            <add-banner />
+            <add-banner :banner-type="bannerType" />
         </modal>
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import AddBanner from './AddBanner';
 
 export default {
@@ -52,6 +53,14 @@ export default {
         s3bucket() {
             return process.env.VUE_APP_S3_BUCKET;
         },
+        ...mapGetters({
+            user: 'auth/getUser',
+            stores: 'stores/stores',
+            current: 'stores/current',
+        }),
+        bannerType() {
+            return this.user && this.user.usergroup === 'storeowner' ? 'store' : 'main';
+        },
     },
     mounted() {
         this.getBanners();
@@ -63,7 +72,7 @@ export default {
                     method: 'get',
                     url: '/banners',
                     params: {
-                        bannerType: 'main',
+                        bannerType: this.bannerType,
                     },
                 });
 
