@@ -32,7 +32,7 @@
             <template slot="header">
                 <h4 class="modal-title">Add Banner</h4>
             </template>
-            <add-banner :banner-type="bannerType" />
+            <add-banner :key="Date.now()" :banner-type="bannerType" :store="current" />
         </modal>
     </div>
 </template>

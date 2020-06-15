@@ -43,6 +43,10 @@ export default {
             type: String,
             default: 'main',
         },
+        store: {
+            type: Object,
+            default: null,
+        },
     },
     data: () => ({
         banner: {
@@ -79,6 +83,10 @@ export default {
                 name: this.banner.name,
                 image: this.banner.image,
             };
+
+            if (this.bannerType === 'store' && this.store && this.store.storeId) {
+                data.storeId = this.store.storeId;
+            }
 
             // remove keys with null or undefined
             for (let key in data) {
