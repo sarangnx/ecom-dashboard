@@ -23,8 +23,8 @@ export default [
                 meta: { requiresAuth: true },
             },
             {
-                path: '/imageOrders',
-                name: 'imageOrders',
+                path: '/quick-orders',
+                name: 'quick orders',
                 component: () => import(/* webpackChunkName: "orders" */ '@/views/ImageOrders/Orders.vue'),
                 meta: { requiresAuth: true },
             },

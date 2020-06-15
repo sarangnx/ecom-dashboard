@@ -67,11 +67,11 @@ export default {
                 type: 'sidebaritem',
             },
             {
-                name: 'ImageOrders',
-                subject: 'imageOrders',
+                name: 'Quick Orders',
+                subject: 'quick-orders',
                 icon: 'shopping-basket',
                 class: 'text-blue',
-                path: '/imageOrders',
+                path: '/quick-orders',
                 type: 'sidebaritem',
             },
             {
