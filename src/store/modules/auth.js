@@ -61,6 +61,9 @@ export default {
                     if (user.stores && user.stores.length) {
                         dispatch('stores/init', user.stores, { root: true });
                         delete user.stores;
+                    } else {
+                        // remove stores in localstorage
+                        dispatch('stores/init', null, { root: true });
                     }
 
                     // Store the token to local storage
@@ -92,6 +95,8 @@ export default {
             try {
                 commit('logout');
                 localStorage.removeItem('authToken');
+                // remove stores in localstorage
+                dispatch('stores/init', null, { root: true });
                 delete this._vm.$axios.defaults.headers.common.Authorization;
             } catch (err) {}
         },
