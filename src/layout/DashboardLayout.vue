@@ -98,6 +98,14 @@ export default {
                 ],
             },
             {
+                name: 'Banners',
+                subject: 'banners',
+                icon: 'ad',
+                class: 'text-blue',
+                path: '/banners',
+                type: 'sidebaritem',
+            },
+            {
                 name: 'Notifications',
                 subject: 'notifications',
                 icon: 'bell',

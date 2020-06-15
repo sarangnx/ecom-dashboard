@@ -1,9 +1,9 @@
 <template>
     <div
-        class="tab-pane fade"
-        :id="id || label"
-        :class="{ 'active show': active }"
         v-show="active"
+        :id="id || label"
+        class="tab-pane fade"
+        :class="{ 'active show': active }"
         :aria-expanded="active"
     >
         <slot></slot>
@@ -11,7 +11,8 @@
 </template>
 <script>
 export default {
-    name: 'tab-pane',
+    name: 'TabPane',
+    // eslint-disable-next-line vue/require-prop-types
     props: ['label', 'id', 'title'],
     inject: ['addTab', 'removeTab'],
     data() {

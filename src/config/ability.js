@@ -25,6 +25,7 @@ export default {
         { action: 'menu', subject: 'master-category' },
         { action: 'menu', subject: 'items' },
         { action: 'menu', subject: 'master-items' },
+        { action: 'menu', subject: 'banners' },
     ],
     superadmin: [
         { action: 'menu', subject: 'admin-dashboard' },
@@ -32,5 +33,6 @@ export default {
         { action: 'menu', subject: 'master-category' },
         { action: 'menu', subject: 'items' },
         { action: 'menu', subject: 'master-items' },
+        { action: 'menu', subject: 'banners' },
     ],
 };

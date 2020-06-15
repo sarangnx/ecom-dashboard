@@ -3,9 +3,9 @@
         <slide-y-up-transition :duration="transitionDuration" group mode="out-in">
             <notification
                 v-for="notification in notifications"
-                v-bind="notification"
-                :clickHandler="notification.onClick"
                 :key="notification.timestamp.getTime()"
+                v-bind="notification"
+                :click-handler="notification.onClick"
                 @close="removeNotification"
             >
             </notification>
@@ -36,17 +36,17 @@ export default {
             notifications: this.$notifications.state,
         };
     },
-    methods: {
-        removeNotification(timestamp) {
-            this.$notifications.removeNotification(timestamp);
+    watch: {
+        overlap: function (newVal) {
+            this.$notifications.settings.overlap = newVal;
         },
     },
     created() {
         this.$notifications.settings.overlap = this.overlap;
     },
-    watch: {
-        overlap: function (newVal) {
-            this.$notifications.settings.overlap = newVal;
+    methods: {
+        removeNotification(timestamp) {
+            this.$notifications.removeNotification(timestamp);
         },
     },
 };
