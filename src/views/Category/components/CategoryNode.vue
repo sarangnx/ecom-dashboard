@@ -1,20 +1,19 @@
 <template>
     <li class="category-node">
-        <base-button v-if="hasChildren" size="sm" class="p-1" @click.native="toggleOpen">
-            <font-awesome-icon :icon="caret" fixed-width />
-        </base-button>
-        <base-button v-else size="sm" class="p-1" disabled type="secondary">
-            <font-awesome-icon :icon="['far', 'circle']" fixed-width />
-        </base-button>
-        <base-button
-            :type="item.bgColor ? null : item.type || 'primary'"
-            :bg-color="item.bgColor || null"
-            :text-color="item.textColor || null"
-            size="sm"
-            @click.native="$emit('menu:open', $event, item.categoryId)"
-        >
-            {{ item.categoryName }}
-        </base-button>
+        <div class="p-2" @mouseover="showOption = true" @mouseout="showOption = false">
+            <base-button v-if="hasChildren" size="sm" class="p-1" @click.native="toggleOpen">
+                <font-awesome-icon :icon="caret" fixed-width />
+            </base-button>
+            <base-button v-else size="sm" class="p-1" disabled type="secondary">
+                <font-awesome-icon :icon="['far', 'circle']" fixed-width />
+            </base-button>
+            <span class="mr-3 text-dark font-weight-bold">
+                {{ item.categoryName }}
+            </span>
+            <base-button v-show="showOption" size="sm" type="primary">
+                <font-awesome-icon icon="ellipsis-v" fixed-width />
+            </base-button>
+        </div>
         <ul v-if="item.subCategory && item.subCategory.length && open">
             <category-node
                 v-for="(category, index) in item.subCategory"
@@ -38,6 +37,7 @@ export default {
     },
     data: () => ({
         open: false,
+        showOption: false,
     }),
     computed: {
         hasChildren() {
@@ -61,6 +61,5 @@ export default {
 <style lang="scss">
 .category-node {
     list-style: none;
-    padding: 5px;
 }
 </style>
