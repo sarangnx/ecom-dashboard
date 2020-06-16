@@ -14,8 +14,8 @@
             </div>
             <base-button size="sm" type="primary" icon="plus" @click="addModal = true">Add Banner</base-button>
         </div>
-        <div class="card-body">
-            <div class="container">
+        <div class="card-body position-relative min__height">
+            <div v-if="banners && banners.length" class="container">
                 <div class="d-flex flex-wrap">
                     <div v-for="(banner, index) in banners" :key="index" class="col-12 col-md-6 mb-3">
                         <div class="card shadow h-100">
@@ -27,17 +27,41 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body py-2">
                                 <div class="col-12">
                                     <strong>Title: </strong>
                                     <span>{{ banner.name }}</span>
                                 </div>
                             </div>
+                            <div class="card-footer d-flex justify-content-end py-2">
+                                <base-button
+                                    size="sm"
+                                    type="danger"
+                                    icon="trash"
+                                    @click="
+                                        deleteModal = true;
+                                        selectedBanner = banner;
+                                    "
+                                >
+                                    Delete
+                                </base-button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div
+                v-if="!(banners && banners.length) && !loading"
+                class="col-12 p-5 d-flex justify-content-center align-items-center"
+            >
+                <small class="p-2">no banners</small>
+                <font-awesome-icon icon="ad" />
+            </div>
+            <div v-if="loading" class="over__lay">
+                <loading color="dark" />
+            </div>
         </div>
+        <!-- ADD MODAL -->
         <modal :show.sync="addModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
             <template slot="header">
                 <h4 class="modal-title">Add Banner</h4>
@@ -52,20 +76,39 @@
                 "
             />
         </modal>
+        <!-- DELETE MODAL -->
+        <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+            <template slot="header">
+                <h4 class="modal-title">Delete Banner</h4>
+            </template>
+            <delete-banner
+                :key="Date.now()"
+                :banner="selectedBanner"
+                @done="
+                    deleteModal = false;
+                    getBanners();
+                "
+            />
+        </modal>
     </div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import AddBanner from './AddBanner';
+import DeleteBanner from './DeleteBanner';
 
 export default {
     name: 'ViewBanners',
     components: {
         AddBanner,
+        DeleteBanner,
     },
     data: () => ({
         banners: [],
         addModal: false,
+        deleteModal: false,
+        selectedBanner: null,
+        loading: false,
     }),
     computed: {
         s3bucket() {
@@ -99,6 +142,8 @@ export default {
             change: 'stores/change',
         }),
         async getBanners() {
+            this.loading = true;
+
             try {
                 const response = await this.$axios({
                     method: 'get',
@@ -114,6 +159,8 @@ export default {
             } catch (err) {
                 this.$error('Unable to get banners.');
             }
+
+            this.loading = false;
         },
     },
 };
