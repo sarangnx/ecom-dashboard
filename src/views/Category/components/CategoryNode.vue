@@ -11,8 +11,7 @@
             :bg-color="item.bgColor || null"
             :text-color="item.textColor || null"
             size="sm"
-            @click.native="toggleOpen"
-            @contextmenu.native.prevent="$emit('contextmenu', $event, item.categoryId)"
+            @click.native="$emit('menu:open', $event, item.categoryId)"
         >
             {{ item.categoryName }}
         </base-button>
@@ -22,20 +21,8 @@
                 :key="index"
                 :item="category"
                 @add-category="$emit('add-category', $event)"
-                @contextmenu="relay"
+                @menu:open="relay"
             />
-            <li class="category-node">
-                <base-button
-                    size="sm"
-                    :class="'ml-4'"
-                    bg-color="#000"
-                    text-color="#fff"
-                    title="Add Sub Category"
-                    @click="$emit('add-category', item.categoryId)"
-                >
-                    <font-awesome-icon icon="plus" />
-                </base-button>
-            </li>
         </ul>
     </li>
 </template>
@@ -65,7 +52,7 @@ export default {
             this.open = !this.open;
         },
         relay(event, data) {
-            this.$emit('contextmenu', event, data);
+            this.$emit('menu:open', event, data);
         },
     },
 };

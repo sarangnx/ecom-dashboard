@@ -6,24 +6,11 @@
                     :key="index"
                     :item="item"
                     @add-category="$emit('add-category', $event)"
-                    @contextmenu="right"
+                    @menu:open="openMenu"
                 />
             </template>
-            <li class="category-node">
-                <base-button
-                    size="sm"
-                    :class="'ml-3'"
-                    bg-color="#000"
-                    text-color="#fff"
-                    title="Add Category"
-                    @click="$emit('add-category', null)"
-                >
-                    <font-awesome-icon icon="plus" />
-                </base-button>
-            </li>
         </ul>
         <context-menu
-            v-click-outside="closeMenu"
             :menu-items="menuItems"
             :event="contextmenu"
             :show="menu"
@@ -76,7 +63,7 @@ export default {
         categoryId: null,
     }),
     methods: {
-        right(event, data) {
+        openMenu(event, data) {
             this.menu = true;
             this.contextmenu = event;
             this.categoryId = data;
