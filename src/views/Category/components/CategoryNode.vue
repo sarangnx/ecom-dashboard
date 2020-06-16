@@ -40,7 +40,6 @@
         </ul>
     </li>
 </template>
-
 <script>
 export default {
     name: 'CategoryNode',
@@ -69,7 +68,6 @@ export default {
     },
 };
 </script>
-
 <style lang="scss">
 .category-node {
     list-style: none;
