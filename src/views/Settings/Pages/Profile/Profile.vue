@@ -7,7 +7,7 @@
                     <base-button v-if="!edit" type="primary" size="sm" @click="edit = true">Edit</base-button>
                     <div v-else>
                         <base-button size="sm" type="danger" icon="times" @click="close"></base-button>
-                        <base-button size="sm" type="success" icon="save">Save</base-button>
+                        <base-button size="sm" type="success" icon="save" @click="save">Save</base-button>
                     </div>
                 </div>
             </div>
@@ -128,6 +128,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+
 export default {
     name: 'UserProfile',
     data: () => ({
@@ -142,6 +143,14 @@ export default {
         }),
         userId() {
             return this.user.userId;
+        },
+    },
+    watch: {
+        profile: {
+            deep: true,
+            handler() {
+                this.changed = !this.isEqual(this.profile, this.original) ? true : false;
+            },
         },
     },
     mounted() {
@@ -167,6 +176,29 @@ export default {
         close() {
             this.profile = Object.assign({}, this.original);
             this.edit = false;
+        },
+        save() {
+            console.log(this.changed);
+        },
+        isEqual(objA, objB) {
+            // remove Vue Observer
+            objA = JSON.parse(JSON.stringify(objA));
+            objB = JSON.parse(JSON.stringify(objB));
+
+            const propsA = Object.getOwnPropertyNames(objA);
+            const propsB = Object.getOwnPropertyNames(objB);
+
+            if (propsA.length !== propsB.length) return false;
+
+            for (let prop of propsA) {
+                // no need to check inner objects
+                if (typeof objA[prop] === 'object') continue;
+                // if any empty value consider to be equal
+                if (!objA[prop] && !objB[prop]) continue;
+                if (objA[prop] !== objB[prop]) return false;
+            }
+
+            return true;
         },
     },
 };
