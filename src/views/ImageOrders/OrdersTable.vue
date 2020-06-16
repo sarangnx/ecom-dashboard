@@ -123,7 +123,7 @@
         </div>
         <modal :show.sync="modal" header-classes="pb-0">
             <h5 slot="header">Order Items</h5>
-            <img v-if="!isText" :src="'http://localhost:4566/bucketevide/' + orderFile" />
+            <img v-if="!isText" :src="`${s3bucket}/${orderFile}`" />
             <div v-if="isText" class="row">
                 <div class="col-md-12">
                     {{ orderItems }}
@@ -169,6 +169,11 @@ export default {
         orderFile: '',
         orderItems: '',
     }),
+    computed: {
+        s3bucket() {
+            return process.env.VUE_APP_S3_BUCKET;
+        },
+    },
     watch: {
         page() {
             this.getOrders();
