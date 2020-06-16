@@ -9,10 +9,14 @@ export default {
         user: null,
         apiUrl: null,
         serverUrl: null,
+        verified: false,
     },
     mutations: {
         setApiUrl(state, apiUrl) {
             state.apiUrl = apiUrl;
+        },
+        setVerified(state, verified) {
+            state.verified = verified;
         },
         setServerUrl(state, serverUrl) {
             state.serverUrl = serverUrl;
@@ -34,6 +38,9 @@ export default {
         },
         getToken(state) {
             return state.token;
+        },
+        isVerified(state) {
+            return state.verified;
         },
         apiUrl(state) {
             return state.apiUrl;
@@ -89,6 +96,25 @@ export default {
                 localStorage.removeItem('authToken');
                 commit('setUser', null);
                 delete this._vm.$axios.defaults.headers.common.Authorization;
+            }
+        },
+        async verify({ commit, dispatch }, userdata) {
+            try {
+                const response = await this._vm.$axios({
+                    method: 'post',
+                    url: '/auth/verify',
+                    data: userdata,
+                });
+
+                if (response.data) {
+                    commit('setVerified', true);
+                    console.log(response.data);
+                }
+            } catch (err) {
+                commit('setVerified', false);
+                if (err.response && err.response.data && err.response.data.error) {
+                    this._vm.$error(err.response.data.error.message);
+                }
             }
         },
         logout({ commit }) {
