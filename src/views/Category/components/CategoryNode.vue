@@ -1,12 +1,16 @@
 <template>
     <li class="category-node">
-        <font-awesome-icon v-if="hasChildren" :icon="caret" class="mr-2" />
+        <base-button v-if="hasChildren" size="sm" class="p-1" @click.native="toggleOpen">
+            <font-awesome-icon :icon="caret" fixed-width />
+        </base-button>
+        <base-button v-else size="sm" class="p-1" disabled type="secondary">
+            <font-awesome-icon :icon="['far', 'circle']" fixed-width />
+        </base-button>
         <base-button
             :type="item.bgColor ? null : item.type || 'primary'"
             :bg-color="item.bgColor || null"
             :text-color="item.textColor || null"
             size="sm"
-            :class="[!hasChildren && 'ml-3']"
             @click.native="toggleOpen"
             @contextmenu.native.prevent="$emit('contextmenu', $event, item.categoryId)"
         >
@@ -23,7 +27,7 @@
             <li class="category-node">
                 <base-button
                     size="sm"
-                    :class="'ml-3'"
+                    :class="'ml-4'"
                     bg-color="#000"
                     text-color="#fff"
                     title="Add Sub Category"
