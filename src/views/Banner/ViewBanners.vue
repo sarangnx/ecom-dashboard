@@ -15,7 +15,7 @@
             <base-button size="sm" type="primary" icon="plus" @click="addModal = true">Add Banner</base-button>
         </div>
         <div class="card-body position-relative min__height">
-            <div class="container">
+            <div v-if="banners && banners.length" class="container">
                 <div class="d-flex flex-wrap">
                     <div v-for="(banner, index) in banners" :key="index" class="col-12 col-md-6 mb-3">
                         <div class="card shadow h-100">
@@ -49,6 +49,13 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div
+                v-if="!(banners && banners.length) && !loading"
+                class="col-12 p-5 d-flex justify-content-center align-items-center"
+            >
+                <small class="p-2">no banners</small>
+                <font-awesome-icon icon="ad" />
             </div>
             <div v-if="loading" class="over__lay">
                 <loading color="dark" />
