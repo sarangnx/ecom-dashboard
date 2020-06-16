@@ -56,6 +56,26 @@
                 </div>
             </div>
         </div>
+        <modal :show.sync="modal" header-classes="pb-0">
+            <h5 slot="header">Verify Your OTP</h5>
+            <base-input
+                v-model="otp"
+                class="input-group-alternative"
+                placeholder="Password"
+                type="text"
+                addon-left-icon="lock"
+            >
+            </base-input>
+            <base-button
+                type="primary"
+                class="my-4"
+                :loading="loadingOtp"
+                :disabled="loadingOtp"
+                @click.prevent="verify"
+            >
+                Verify
+            </base-button>
+        </modal>
     </div>
 </template>
 <script>
@@ -65,6 +85,9 @@ import { mapGetters } from 'vuex';
 export default {
     name: 'Login',
     data: () => ({
+        loadingOtp: false,
+        otp: '',
+        modal: false,
         username: '',
         password: '',
         loading: false,
@@ -72,6 +95,8 @@ export default {
     computed: {
         ...mapGetters({
             isLoggedIn: 'auth/isLoggedIn',
+            user: 'auth/getUser',
+            isVerified: 'auth/isVerified',
         }),
     },
     validations: {
@@ -83,6 +108,24 @@ export default {
         },
     },
     methods: {
+        async verify() {
+            if (this.otp == null || this.otp == '') {
+                this.$error('Please enter a valid otp');
+            } else {
+                try {
+                    await this.$store.dispatch('auth/verify', {
+                        otp: this.otp,
+                        userId: this.user.userId,
+                    });
+
+                    if (this.isVerified) {
+                        this.$router.push('/');
+                    }
+                } catch (err) {
+                    this.$error('Something went Wrong!');
+                }
+            }
+        },
         async login() {
             this.$v.$touch();
 
@@ -96,8 +139,12 @@ export default {
                         password: this.password,
                     });
 
-                    if (this.isLoggedIn) {
-                        this.$router.push('/');
+                    if (this.user.verified == 0 && this.user.usergroup == 'storeowner') {
+                        this.modal = true;
+                    } else {
+                        if (this.isLoggedIn) {
+                            this.$router.push('/');
+                        }
                     }
                 } catch (err) {
                     this.$error('Something went Wrong!');
