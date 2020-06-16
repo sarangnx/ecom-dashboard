@@ -27,17 +27,31 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body py-2">
                                 <div class="col-12">
                                     <strong>Title: </strong>
                                     <span>{{ banner.name }}</span>
                                 </div>
+                            </div>
+                            <div class="card-footer d-flex justify-content-end py-2">
+                                <base-button
+                                    size="sm"
+                                    type="danger"
+                                    icon="trash"
+                                    @click="
+                                        deleteModal = true;
+                                        selectedBanner = banner;
+                                    "
+                                >
+                                    Delete
+                                </base-button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- ADD MODAL -->
         <modal :show.sync="addModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
             <template slot="header">
                 <h4 class="modal-title">Add Banner</h4>
@@ -52,20 +66,38 @@
                 "
             />
         </modal>
+        <!-- DELETE MODAL -->
+        <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+            <template slot="header">
+                <h4 class="modal-title">Delete Banner</h4>
+            </template>
+            <delete-banner
+                :key="Date.now()"
+                :banner="selectedBanner"
+                @done="
+                    deleteModal = false;
+                    getBanners();
+                "
+            />
+        </modal>
     </div>
 </template>
 <script>
 import { mapGetters, mapActions } from 'vuex';
 import AddBanner from './AddBanner';
+import DeleteBanner from './DeleteBanner';
 
 export default {
     name: 'ViewBanners',
     components: {
         AddBanner,
+        DeleteBanner,
     },
     data: () => ({
         banners: [],
         addModal: false,
+        deleteModal: false,
+        selectedBanner: null,
     }),
     computed: {
         s3bucket() {
