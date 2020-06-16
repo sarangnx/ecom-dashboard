@@ -2,9 +2,12 @@
     <div class="row">
         <card shadow type="secondary">
             <div slot="header" class="bg-white border-0">
-                <div class="row align-items-center">
-                    <div class="col-8">
-                        <h3 class="mb-0">Profile</h3>
+                <div class="d-flex justify-content-between align-items-center">
+                    <h3 class="mb-0">Profile</h3>
+                    <base-button v-if="!edit" type="primary" size="sm" @click="edit = true">Edit</base-button>
+                    <div v-else>
+                        <base-button size="sm" type="danger" icon="times" @click="close"></base-button>
+                        <base-button size="sm" type="success" icon="save">Save</base-button>
                     </div>
                 </div>
             </div>
@@ -129,7 +132,9 @@ export default {
     name: 'UserProfile',
     data: () => ({
         profile: {},
+        original: {},
         edit: false,
+        changed: true,
     }),
     computed: {
         ...mapGetters({
@@ -153,10 +158,15 @@ export default {
                     },
                 });
 
-                this.profile = response.data.user;
+                this.profile = Object.assign({}, response.data.user);
+                this.original = Object.assign({}, response.data.user);
             } catch (err) {
                 this.$error('Unable to get profile. Please try again later.');
             }
+        },
+        close() {
+            this.profile = Object.assign({}, this.original);
+            this.edit = false;
         },
     },
 };
