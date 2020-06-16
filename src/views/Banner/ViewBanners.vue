@@ -14,7 +14,7 @@
             </div>
             <base-button size="sm" type="primary" icon="plus" @click="addModal = true">Add Banner</base-button>
         </div>
-        <div class="card-body">
+        <div class="card-body position-relative min__height">
             <div class="container">
                 <div class="d-flex flex-wrap">
                     <div v-for="(banner, index) in banners" :key="index" class="col-12 col-md-6 mb-3">
@@ -49,6 +49,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div v-if="loading" class="over__lay">
+                <loading color="dark" />
             </div>
         </div>
         <!-- ADD MODAL -->
@@ -98,6 +101,7 @@ export default {
         addModal: false,
         deleteModal: false,
         selectedBanner: null,
+        loading: false,
     }),
     computed: {
         s3bucket() {
@@ -131,6 +135,8 @@ export default {
             change: 'stores/change',
         }),
         async getBanners() {
+            this.loading = true;
+
             try {
                 const response = await this.$axios({
                     method: 'get',
@@ -146,6 +152,8 @@ export default {
             } catch (err) {
                 this.$error('Unable to get banners.');
             }
+
+            this.loading = false;
         },
     },
 };
