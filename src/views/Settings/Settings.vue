@@ -18,6 +18,11 @@ export default {
                 subject: 'profile',
             },
             {
+                text: 'Change Password',
+                route: '/settings/password',
+                subject: 'password',
+            },
+            {
                 text: 'Stores',
                 route: '/settings/stores',
                 subject: 'stores',
