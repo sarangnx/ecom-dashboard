@@ -1,10 +1,36 @@
 <template>
     <div class="row">
-        <div class="col-12">
-            <base-button type="link" @click="$router.push('/settings/stores')">Profile</base-button>
-        </div>
-        <div class="col-12">
-            <base-button type="link" @click="$router.push('/settings/stores')">Stores</base-button>
+        <div v-for="(link, index) in activeLinks" :key="index" class="col-12">
+            <base-button type="link" :href="link.route" tag="a" @click.prevent="$router.push(link.route)">
+                {{ link.text }}
+            </base-button>
         </div>
     </div>
 </template>
+<script>
+export default {
+    name: 'Settings',
+    data: () => ({
+        links: [
+            {
+                text: 'Profile',
+                route: '/settings/profile',
+                subject: 'profile',
+            },
+            {
+                text: 'Stores',
+                route: '/settings/stores',
+                subject: 'stores',
+            },
+        ],
+    }),
+    computed: {
+        activeLinks() {
+            // filter out links that the usergroup has access to.
+            return this.links.filter((link) => {
+                return this.$can('settings', link.subject);
+            });
+        },
+    },
+};
+</script>

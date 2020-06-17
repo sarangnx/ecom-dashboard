@@ -116,6 +116,12 @@ export default [
                         component: () =>
                             import(/* webpackChunkName: "settings" */ '@/views/Settings/Pages/Stores/Stores.vue'),
                     },
+                    {
+                        path: 'profile',
+                        name: 'settings / profile',
+                        component: () =>
+                            import(/* webpackChunkName: "settings" */ '@/views/Settings/Pages/Profile/Profile.vue'),
+                    },
                 ],
             },
         ],
