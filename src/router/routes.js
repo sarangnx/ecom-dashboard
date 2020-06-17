@@ -122,6 +122,12 @@ export default [
                         component: () =>
                             import(/* webpackChunkName: "settings" */ '@/views/Settings/Pages/Profile/Profile.vue'),
                     },
+                    {
+                        path: 'password',
+                        name: 'settings / change password',
+                        component: () =>
+                            import(/* webpackChunkName: "settings" */ '@/views/Settings/Pages/Profile/Password.vue'),
+                    },
                 ],
             },
         ],

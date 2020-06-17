@@ -19,7 +19,7 @@ export default {
         { action: 'menu', subject: 'store-category' }, // child
         { action: 'menu', subject: 'banners' },
         { action: 'menu', subject: 'settings' },
-        { action: 'settings', subject: ['profile', 'stores'] },
+        { action: 'settings', subject: ['profile', 'stores', 'password'] },
     ],
     admin: [
         { action: 'menu', subject: 'admin-dashboard' },
@@ -29,7 +29,7 @@ export default {
         { action: 'menu', subject: 'master-items' },
         { action: 'menu', subject: 'banners' },
         { action: 'menu', subject: 'settings' },
-        { action: 'settings', subject: 'profile' },
+        { action: 'settings', subject: ['profile', 'password'] },
     ],
     superadmin: [
         { action: 'menu', subject: 'admin-dashboard' },
@@ -39,6 +39,6 @@ export default {
         { action: 'menu', subject: 'master-items' },
         { action: 'menu', subject: 'banners' },
         { action: 'menu', subject: 'settings' },
-        { action: 'settings', subject: 'profile' },
+        { action: 'settings', subject: ['profile', 'password'] },
     ],
 };
