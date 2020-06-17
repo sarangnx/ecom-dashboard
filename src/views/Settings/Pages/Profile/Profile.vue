@@ -6,8 +6,23 @@
                     <h3 class="mb-0">Profile</h3>
                     <base-button v-if="!edit" type="primary" size="sm" @click="edit = true">Edit</base-button>
                     <div v-else>
-                        <base-button size="sm" type="danger" icon="times" @click="close"></base-button>
-                        <base-button size="sm" type="success" icon="save" @click="save">Save</base-button>
+                        <base-button
+                            v-show="!loading"
+                            size="sm"
+                            type="danger"
+                            icon="times"
+                            @click="close"
+                        ></base-button>
+                        <base-button
+                            :loading="loading"
+                            :disabled="loading"
+                            size="sm"
+                            type="success"
+                            icon="save"
+                            @click="save"
+                        >
+                            Save
+                        </base-button>
                     </div>
                 </div>
             </div>
@@ -121,7 +136,7 @@
                     </div>
                 </div>
             </div>
-            <div class="over__lay">
+            <div v-if="loading" class="over__lay">
                 <loading />
             </div>
         </card>
@@ -199,7 +214,6 @@ export default {
                 }
 
                 this.original = Object.assign({}, this.profile);
-                this.edit = false;
             } catch (err) {
                 if (err.response && err.response.status === 400 && err.response.data.error) {
                     this.$error(err.response.data.error.message);
@@ -212,7 +226,7 @@ export default {
             }
 
             this.edit = false;
-            this.loading = true;
+            this.loading = false;
         },
         isEqual(objA, objB) {
             // remove Vue Observer
