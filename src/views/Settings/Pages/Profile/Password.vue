@@ -4,7 +4,7 @@
             <base-button size="sm" icon="arrow-left" @click="$router.push('/settings')"></base-button>
             <h3 class="m-0">Change Password</h3>
         </div>
-        <div class="card-body bg-secondary d-flex flex-row justify-content-start flex-wrap">
+        <div class="card-body bg-secondary d-flex flex-row justify-content-start flex-wrap position-relative">
             <form class="container">
                 <div class="row">
                     <div class="col-lg-6">
@@ -53,10 +53,15 @@
                 </div>
                 <div class="row">
                     <div class="col-lg-6">
-                        <base-button type="success" @click="changePassword">Change Password</base-button>
+                        <base-button :loading="loading" type="success" @click="changePassword">
+                            Change Password
+                        </base-button>
                     </div>
                 </div>
             </form>
+            <div v-if="loading" class="over__lay">
+                <loading />
+            </div>
         </div>
     </div>
 </template>
@@ -70,7 +75,7 @@ export default {
         oldPassword: null,
         newPassword: null,
         repeatPassword: null,
-        loading: true,
+        loading: false,
     }),
     validations: {
         oldPassword: {
@@ -97,6 +102,8 @@ export default {
         async changePassword() {
             if (this.$v.$invalid) return;
 
+            this.loading = true;
+
             try {
                 const response = await this.$axios({
                     method: 'patch',
@@ -111,6 +118,11 @@ export default {
                 if (response.status === 200 && response.data.message) {
                     this.$success(response.data.message);
                 }
+
+                this.oldPassword = null;
+                this.newPassword = null;
+                this.repeatPassword = null;
+                this.$v.$reset();
             } catch (err) {
                 const res = err.response;
                 if (res && res.status >= 400 && res.status < 500 && res.data.error) {
@@ -119,6 +131,8 @@ export default {
                     this.$error('Something went wrong. Please try again later.');
                 }
             }
+
+            this.loading = false;
         },
     },
 };
