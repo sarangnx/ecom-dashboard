@@ -1,142 +1,151 @@
 <template>
-    <div class="row">
-        <div class="col-12 d-flex flex-row justify-content-start flex-wrap">
-            <div v-for="(item, index) of stores" :key="index" class="col-md-4 mb-2 p-1">
-                <div class="card shadow h-100">
-                    <div class="card-header border-0 d-flex justify-content-center align-items-center">
-                        <img v-if="item.image" :src="`${s3bucket}/${item.image}`" class="col p-0" />
-                        <font-awesome-icon v-else icon="image" size="5x"></font-awesome-icon>
+    <div class="card shadow">
+        <div class="card-header d-flex justify-content-between">
+            <h3>Stores</h3>
+        </div>
+        <div class="card-body d-flex flex-row justify-content-start flex-wrap">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 d-flex flex-row justify-content-start flex-wrap">
+                        <div v-for="(item, index) of stores" :key="index" class="col-md-4 mb-2 p-1">
+                            <div class="card shadow h-100">
+                                <div class="card-header border-0 d-flex justify-content-center align-items-center">
+                                    <img v-if="item.image" :src="`${s3bucket}/${item.image}`" class="col p-0" />
+                                    <font-awesome-icon v-else icon="image" size="5x"></font-awesome-icon>
+                                </div>
+                                <div class="card-body d-flex justify-content-end flex-column py-2">
+                                    <div>
+                                        <h5 class="d-inline m-0 pr-2">Name:</h5>
+                                        <span>{{ item.name }}</span>
+                                    </div>
+                                    <div v-if="item.area">
+                                        <h5 class="d-inline m-0 pr-2">Area:</h5>
+                                        <span>{{ item.area }}</span>
+                                    </div>
+                                    <div v-if="item.city">
+                                        <h5 class="d-inline m-0 pr-2">City:</h5>
+                                        <span>{{ item.city }}</span>
+                                    </div>
+                                    <div v-if="item.storeType">
+                                        <h5 class="d-inline m-0 pr-2">Store Type:</h5>
+                                        <small>{{ item.storeType }}</small>
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex flex-wrap justify-content-start py-2">
+                                    <base-button
+                                        size="sm"
+                                        type="danger"
+                                        icon="trash"
+                                        @click="
+                                            deleteModal = true;
+                                            selectedStore = item;
+                                        "
+                                    >
+                                        Remove
+                                    </base-button>
+                                    <base-button
+                                        size="sm"
+                                        type="success"
+                                        icon="edit"
+                                        @click="
+                                            editModal = true;
+                                            selectedStore = item;
+                                        "
+                                    >
+                                        Edit
+                                    </base-button>
+                                    <base-button
+                                        size="sm"
+                                        class="mt-2"
+                                        icon="clipboard-list"
+                                        @click="
+                                            locationModal = true;
+                                            selectedStore = item;
+                                        "
+                                    >
+                                        Serviceable locations
+                                    </base-button>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-if="count < limit" class="col-md-4 mb-2 p-1 min__height">
+                            <div class="card shadow h-100 p-3 d-flex justify-content-center align-items-center">
+                                <base-button icon="plus" @click="addModal = true">Add Store</base-button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body d-flex justify-content-end flex-column py-2">
-                        <div>
-                            <h5 class="d-inline m-0 pr-2">Name:</h5>
-                            <span>{{ item.name }}</span>
-                        </div>
-                        <div v-if="item.area">
-                            <h5 class="d-inline m-0 pr-2">Area:</h5>
-                            <span>{{ item.area }}</span>
-                        </div>
-                        <div v-if="item.city">
-                            <h5 class="d-inline m-0 pr-2">City:</h5>
-                            <span>{{ item.city }}</span>
-                        </div>
-                        <div v-if="item.storeType">
-                            <h5 class="d-inline m-0 pr-2">Store Type:</h5>
-                            <small>{{ item.storeType }}</small>
-                        </div>
-                    </div>
-                    <div class="card-footer d-flex flex-wrap justify-content-start py-2">
-                        <base-button
-                            size="sm"
-                            type="danger"
-                            icon="trash"
-                            @click="
-                                deleteModal = true;
-                                selectedStore = item;
+                    <modal :show.sync="addModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+                        <template slot="header">
+                            <h4 class="modal-title">Add Store</h4>
+                        </template>
+                        <add-store
+                            :key="Date.now()"
+                            :user-id="userId"
+                            @done="
+                                addModal = false;
+                                getStores(userId);
                             "
-                        >
-                            Remove
-                        </base-button>
-                        <base-button
-                            size="sm"
-                            type="success"
-                            icon="edit"
-                            @click="
-                                editModal = true;
-                                selectedStore = item;
+                        />
+                    </modal>
+                    <modal
+                        :show.sync="editModal"
+                        header-classes="pb-0"
+                        body-classes="pt-0"
+                        :click-out="false"
+                        @close="selectedStore = null"
+                    >
+                        <template slot="header">
+                            <h4 class="modal-title">Edit Store</h4>
+                        </template>
+                        <edit-store
+                            :key="Date.now()"
+                            :store="selectedStore"
+                            @done="
+                                editModal = false;
+                                getStores(userId);
                             "
-                        >
-                            Edit
-                        </base-button>
-                        <base-button
-                            size="sm"
-                            class="mt-2"
-                            icon="clipboard-list"
-                            @click="
-                                locationModal = true;
-                                selectedStore = item;
+                        />
+                    </modal>
+                    <modal
+                        :show.sync="deleteModal"
+                        header-classes="pb-0"
+                        body-classes="pt-0"
+                        :click-out="false"
+                        @close="selectedStore = null"
+                    >
+                        <template slot="header">
+                            <h4 class="modal-title">Delete Store</h4>
+                        </template>
+                        <delete-store
+                            :key="Date.now()"
+                            :store="selectedStore"
+                            @done="
+                                deleteModal = false;
+                                getStores(userId);
                             "
-                        >
-                            Serviceable locations
-                        </base-button>
-                    </div>
-                </div>
-            </div>
-            <div v-if="count < limit" class="col-md-4 mb-2 p-1 min__height">
-                <div class="card shadow h-100 p-3 d-flex justify-content-center align-items-center">
-                    <base-button icon="plus" @click="addModal = true">Add Store</base-button>
+                            @close="deleteModal = false"
+                        />
+                    </modal>
+                    <modal
+                        :show.sync="locationModal"
+                        header-classes="pb-0"
+                        body-classes="pt-0"
+                        :click-out="false"
+                        @close="selectedStore = null"
+                    >
+                        <template slot="header">
+                            <h4 class="modal-title">Serviceable Locations</h4>
+                        </template>
+                        <serviceable-locations
+                            :key="Date.now()"
+                            :store="locationModal ? selectedStore : null"
+                            :pincodes="pincodes"
+                            @done="locationModal = false"
+                        />
+                    </modal>
                 </div>
             </div>
         </div>
-        <modal :show.sync="addModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
-            <template slot="header">
-                <h4 class="modal-title">Add Store</h4>
-            </template>
-            <add-store
-                :key="Date.now()"
-                :user-id="userId"
-                @done="
-                    addModal = false;
-                    getStores(userId);
-                "
-            />
-        </modal>
-        <modal
-            :show.sync="editModal"
-            header-classes="pb-0"
-            body-classes="pt-0"
-            :click-out="false"
-            @close="selectedStore = null"
-        >
-            <template slot="header">
-                <h4 class="modal-title">Edit Store</h4>
-            </template>
-            <edit-store
-                :key="Date.now()"
-                :store="selectedStore"
-                @done="
-                    editModal = false;
-                    getStores(userId);
-                "
-            />
-        </modal>
-        <modal
-            :show.sync="deleteModal"
-            header-classes="pb-0"
-            body-classes="pt-0"
-            :click-out="false"
-            @close="selectedStore = null"
-        >
-            <template slot="header">
-                <h4 class="modal-title">Delete Store</h4>
-            </template>
-            <delete-store
-                :key="Date.now()"
-                :store="selectedStore"
-                @done="
-                    deleteModal = false;
-                    getStores(userId);
-                "
-                @close="deleteModal = false"
-            />
-        </modal>
-        <modal
-            :show.sync="locationModal"
-            header-classes="pb-0"
-            body-classes="pt-0"
-            :click-out="false"
-            @close="selectedStore = null"
-        >
-            <template slot="header">
-                <h4 class="modal-title">Serviceable Locations</h4>
-            </template>
-            <serviceable-locations
-                :key="Date.now()"
-                :store="locationModal ? selectedStore : null"
-                :pincodes="pincodes"
-                @done="locationModal = false"
-            />
-        </modal>
     </div>
 </template>
 <script>
