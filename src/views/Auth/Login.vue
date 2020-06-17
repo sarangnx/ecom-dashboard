@@ -90,6 +90,7 @@ export default {
         modal: false,
         username: '',
         password: '',
+        userId: '',
         loading: false,
     }),
     computed: {
@@ -115,13 +116,14 @@ export default {
                 try {
                     await this.$store.dispatch('auth/verify', {
                         otp: this.otp,
-                        userId: this.user.userId,
+                        userId: this.userId,
                     });
 
                     if (this.isVerified) {
-                        this.$router.push('/');
+                        this.login();
                     }
                 } catch (err) {
+                    console.log(err);
                     this.$error('Something went Wrong!');
                 }
             }
@@ -141,6 +143,8 @@ export default {
 
                     if (this.user.verified == 0 && this.user.usergroup == 'storeowner') {
                         this.modal = true;
+                        this.userId = this.user.userId;
+                        this.$store.dispatch('auth/logout');
                     } else {
                         if (this.isLoggedIn) {
                             this.$router.push('/');
