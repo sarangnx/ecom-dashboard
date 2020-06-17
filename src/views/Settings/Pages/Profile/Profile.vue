@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <card shadow type="secondary">
+        <card shadow type="secondary" body-classes="position-relative">
             <div slot="header" class="bg-white border-0">
                 <div class="d-flex justify-content-between align-items-center">
                     <h3 class="mb-0">Profile</h3>
@@ -11,118 +11,119 @@
                     </div>
                 </div>
             </div>
-            <template>
-                <div>
-                    <h6 class="heading-small text-muted mb-4">User information</h6>
-                    <div class="pl-lg-4">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <base-input
-                                    v-model="profile.firstName"
-                                    :disabled="!edit"
-                                    label="First Name"
-                                    input-classes="form-control-alternative"
-                                />
-                            </div>
-                            <div class="col-lg-6">
-                                <base-input
-                                    v-model="profile.lastName"
-                                    :disabled="!edit"
-                                    label="Last Name"
-                                    input-classes="form-control-alternative"
-                                />
-                            </div>
+            <div>
+                <h6 class="heading-small text-muted mb-4">User information</h6>
+                <div class="pl-lg-4">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <base-input
+                                v-model="profile.firstName"
+                                :disabled="!edit"
+                                label="First Name"
+                                input-classes="form-control-alternative"
+                            />
                         </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <base-input
-                                    v-model="profile.email"
-                                    :disabled="!edit"
-                                    label="Email"
-                                    input-classes="form-control-alternative"
-                                />
-                            </div>
-                            <div class="col-lg-6">
-                                <base-input
-                                    v-model="profile.phone"
-                                    :disabled="!edit"
-                                    label="Phone"
-                                    input-classes="form-control-alternative"
-                                />
-                            </div>
+                        <div class="col-lg-6">
+                            <base-input
+                                v-model="profile.lastName"
+                                :disabled="!edit"
+                                label="Last Name"
+                                input-classes="form-control-alternative"
+                            />
                         </div>
                     </div>
-                    <hr class="my-4" />
-                    <!-- Address -->
-                    <h6 class="heading-small text-muted mb-4">Contact information</h6>
-                    <div class="pl-lg-4">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <base-input
-                                    v-model="profile.house"
-                                    :disabled="!edit"
-                                    label="House Name/ Flat No."
-                                    input-classes="form-control-alternative"
-                                />
-                            </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <base-input
+                                v-model="profile.email"
+                                :disabled="!edit"
+                                label="Email"
+                                input-classes="form-control-alternative"
+                            />
                         </div>
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <base-input
-                                    v-model="profile.area"
-                                    :disabled="!edit"
-                                    label="Area"
-                                    input-classes="form-control-alternative"
-                                />
-                            </div>
-                            <div class="col-lg-6">
-                                <base-input
-                                    v-model="profile.city"
-                                    :disabled="!edit"
-                                    label="City"
-                                    input-classes="form-control-alternative"
-                                />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-4">
-                                <base-input
-                                    v-model="profile.district"
-                                    :disabled="!edit"
-                                    label="District"
-                                    input-classes="form-control-alternative"
-                                />
-                            </div>
-                            <div class="col-lg-4">
-                                <base-input
-                                    v-model="profile.state"
-                                    :disabled="!edit"
-                                    label="State"
-                                    input-classes="form-control-alternative"
-                                />
-                            </div>
-                            <div class="col-lg-4">
-                                <base-input
-                                    v-model="profile.state"
-                                    :disabled="!edit"
-                                    label="Pincode"
-                                    input-classes="form-control-alternative"
-                                />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <base-input
-                                    v-model="profile.landmark"
-                                    :disabled="!edit"
-                                    label="Landmark"
-                                    input-classes="form-control-alternative"
-                                />
-                            </div>
+                        <div class="col-lg-6">
+                            <base-input
+                                v-model="profile.phone"
+                                :disabled="!edit"
+                                label="Phone"
+                                input-classes="form-control-alternative"
+                            />
                         </div>
                     </div>
                 </div>
-            </template>
+                <hr class="my-4" />
+                <!-- Address -->
+                <h6 class="heading-small text-muted mb-4">Contact information</h6>
+                <div class="pl-lg-4">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <base-input
+                                v-model="profile.house"
+                                :disabled="!edit"
+                                label="House Name/ Flat No."
+                                input-classes="form-control-alternative"
+                            />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <base-input
+                                v-model="profile.area"
+                                :disabled="!edit"
+                                label="Area"
+                                input-classes="form-control-alternative"
+                            />
+                        </div>
+                        <div class="col-lg-6">
+                            <base-input
+                                v-model="profile.city"
+                                :disabled="!edit"
+                                label="City"
+                                input-classes="form-control-alternative"
+                            />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <base-input
+                                v-model="profile.district"
+                                :disabled="!edit"
+                                label="District"
+                                input-classes="form-control-alternative"
+                            />
+                        </div>
+                        <div class="col-lg-4">
+                            <base-input
+                                v-model="profile.state"
+                                :disabled="!edit"
+                                label="State"
+                                input-classes="form-control-alternative"
+                            />
+                        </div>
+                        <div class="col-lg-4">
+                            <base-input
+                                v-model="profile.state"
+                                :disabled="!edit"
+                                label="Pincode"
+                                input-classes="form-control-alternative"
+                            />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <base-input
+                                v-model="profile.landmark"
+                                :disabled="!edit"
+                                label="Landmark"
+                                input-classes="form-control-alternative"
+                            />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="over__lay">
+                <loading />
+            </div>
         </card>
     </div>
 </template>
@@ -136,6 +137,7 @@ export default {
         original: {},
         edit: false,
         changed: true,
+        loading: false,
     }),
     computed: {
         ...mapGetters({
@@ -177,8 +179,40 @@ export default {
             this.profile = Object.assign({}, this.original);
             this.edit = false;
         },
-        save() {
-            console.log(this.changed);
+        async save() {
+            if (!this.changed) {
+                // revert and close
+                return this.close();
+            }
+
+            this.loading = true;
+
+            try {
+                const response = await this.$axios({
+                    method: 'patch',
+                    url: '/users/user',
+                    data: this.profile,
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                }
+
+                this.original = Object.assign({}, this.profile);
+                this.edit = false;
+            } catch (err) {
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+
+                // revert data
+                this.profile = Object.assign({}, this.original);
+            }
+
+            this.edit = false;
+            this.loading = true;
         },
         isEqual(objA, objB) {
             // remove Vue Observer
