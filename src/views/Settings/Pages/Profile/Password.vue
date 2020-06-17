@@ -8,29 +8,44 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6">
+                        <h4 class="text-muted">Old Password</h4>
                         <base-input
-                            v-model="oldPassword"
+                            v-model="$v.oldPassword.$model"
                             type="password"
-                            label="Old Password"
-                            input-classes="form-control-alternative"
+                            classes="input-group-alternative"
+                            addon-left-icon="lock-open"
+                            autocomplete="false"
+                            :error="$v.oldPassword.$error ? 'Old Password Required' : null"
                         />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-lg-6">
+                        <h4 class="text-muted">New Password</h4>
                         <base-input
-                            v-model="newPassword"
+                            v-model="$v.newPassword.$model"
                             type="password"
-                            label="New Password"
+                            classes="input-group-alternative"
+                            addon-left-icon="lock"
                             input-classes="form-control-alternative"
+                            :error="
+                                $v.newPassword.$error && !$v.newPassword.required
+                                    ? 'Password Required'
+                                    : $v.newPassword.$error && !$v.newPassword.minLength
+                                    ? 'Minimum 8 Characters Required'
+                                    : null
+                            "
                         />
                     </div>
                     <div class="col-lg-6">
+                        <h4 class="text-muted">Repeat Password</h4>
                         <base-input
-                            v-model="repeatPassword"
+                            v-model="$v.repeatPassword.$model"
                             type="password"
-                            label="Repeat Password"
+                            classes="input-group-alternative"
+                            addon-left-icon="lock"
                             input-classes="form-control-alternative"
+                            :error="$v.repeatPassword.$error ? `Passwords don't match` : null"
                         />
                     </div>
                 </div>
@@ -39,6 +54,8 @@
     </div>
 </template>
 <script>
+import { required, sameAs, minLength } from 'vuelidate/lib/validators';
+
 export default {
     name: 'ChangePassword',
     data: () => ({
@@ -46,5 +63,18 @@ export default {
         newPassword: null,
         repeatPassword: null,
     }),
+    validations: {
+        oldPassword: {
+            required,
+        },
+        newPassword: {
+            required,
+            minLength: minLength(8),
+        },
+        repeatPassword: {
+            required,
+            sameAsPassword: sameAs('newPassword'),
+        },
+    },
 };
 </script>
