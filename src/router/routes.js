@@ -40,6 +40,11 @@ export default [
                         component: () => import(/* webpackChunkName: "items" */ '@/views/Items/Master/Items.vue'),
                     },
                     {
+                        path: 'excel',
+                        name: 'excel',
+                        component: () => import(/* webpackChunkName: "items" */ '@/views/Items/Master/Excel.vue'),
+                    },
+                    {
                         path: 'add-items',
                         name: 'add items',
                         component: () => import(/* webpackChunkName: "items" */ '@/views/Items/Store/AddItems.vue'),
@@ -86,12 +91,6 @@ export default [
             //     name: 'notifications',
             //     component: () =>
             //         import(/* webpackChunkName: "notifications" */ '@/views/Notifications/Notifications.vue'),
-            //     meta: { requiresAuth: true },
-            // },
-            // {
-            //     path: '/profile',
-            //     name: 'profile',
-            //     component: () => import(/* webpackChunkName: "profile" */ '@/views/Users/UserProfile.vue'),
             //     meta: { requiresAuth: true },
             // },
             // {
