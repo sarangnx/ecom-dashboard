@@ -2,7 +2,10 @@
     <card shadow type="secondary" body-classes="position-relative">
         <div slot="header" class="bg-white border-0">
             <div class="d-flex justify-content-between align-items-center">
-                <h3 class="mb-0">Profile</h3>
+                <div class="d-flex">
+                    <base-button size="sm" icon="arrow-left" @click="$router.push('/settings')"></base-button>
+                    <h3 class="mb-0">Profile</h3>
+                </div>
                 <base-button v-if="!edit" type="primary" size="sm" @click="edit = true">Edit</base-button>
                 <div v-else>
                     <base-button v-show="!loading" size="sm" type="danger" icon="times" @click="close"></base-button>

@@ -1,7 +1,8 @@
 <template>
     <div class="card shadow">
-        <div class="card-header d-flex justify-content-between">
-            <h3>Stores</h3>
+        <div class="card-header d-flex justify-content-start align-items-center">
+            <base-button size="sm" icon="arrow-left" @click="$router.push('/settings')"></base-button>
+            <h3 class="m-0">Stores</h3>
         </div>
         <div class="card-body d-flex flex-row justify-content-start flex-wrap">
             <div class="container">
