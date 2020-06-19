@@ -51,6 +51,63 @@
                     </div>
                 </div>
             </div>
+            <div v-if="excel && excel.length" class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive">
+                            <base-table class="table align-items-center table-flush" tbody-classes="list" :data="excel">
+                                <template slot="columns">
+                                    <th class="minwidth">Product Name</th>
+                                    <th class="minwidth">Quantity</th>
+                                    <th class="minwidth">Unit</th>
+                                    <th class="minwidth">Category</th>
+                                    <th class="minwidth">Actions</th>
+                                </template>
+                                <template slot-scope="{ row, index }">
+                                    <td>
+                                        <base-input v-model="row.itemName"></base-input>
+                                    </td>
+                                    <td>
+                                        <base-input v-model="row.baseQuantity"></base-input>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <select v-model="row.baseUnit" class="custom-select mr-sm-2">
+                                                <option>kg</option>
+                                                <option>g</option>
+                                                <option>l</option>
+                                                <option>ml</option>
+                                                <option>count</option>
+                                            </select>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group">
+                                            <base-input v-model="row.categoryName" class="mr-sm-2"> </base-input>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="form-group d-flex justify-content-center">
+                                            <base-button
+                                                type="success"
+                                                icon="upload"
+                                                size="sm"
+                                                @click.prevent.stop="uploadSingle(index)"
+                                            ></base-button>
+                                            <base-button
+                                                type="danger"
+                                                icon="times"
+                                                size="sm"
+                                                @click.prevent.stop="uploadSingle(index)"
+                                            ></base-button>
+                                        </div>
+                                    </td>
+                                </template>
+                            </base-table>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
