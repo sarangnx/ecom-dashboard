@@ -4,7 +4,7 @@
             <h3>Add Items From Excel</h3>
         </div>
         <div class="card-body position-relative min__height">
-            <div class="container-fluid">
+            <div v-if="!excel || !excel.length" class="container-fluid">
                 <div class="row">
                     <div class="col-12">
                         <h2 class="text-black-50">Instructions</h2>
@@ -92,14 +92,9 @@
                                                 type="success"
                                                 icon="upload"
                                                 size="sm"
-                                                @click.prevent.stop="uploadSingle(index)"
+                                                @click.prevent="uploadSingle(row, index)"
                                             ></base-button>
-                                            <base-button
-                                                type="danger"
-                                                icon="times"
-                                                size="sm"
-                                                @click.prevent.stop="uploadSingle(index)"
-                                            ></base-button>
+                                            <base-button type="danger" icon="times" size="sm"></base-button>
                                         </div>
                                     </td>
                                 </template>
@@ -119,6 +114,7 @@ export default {
     data: () => ({
         excel: [],
         loading: true,
+        uploading: [],
     }),
     methods: {
         resetTable() {
@@ -160,6 +156,25 @@ export default {
 
             // download the workbook
             XLSX.writeFile(workbook, 'template.xls');
+        },
+        async uploadSingle(item) {
+            try {
+                const response = await this.$axios({
+                    method: 'post',
+                    url: '/inventory/master',
+                    data: item,
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                }
+            } catch (err) {
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
         },
     },
 };
