@@ -53,6 +53,10 @@
             </div>
             <div v-if="excel && excel.length" class="container-fluid">
                 <div class="row">
+                    <div class="col-12 mb-3 text-center">
+                        <base-button type="success" size="sm" icon="upload">Upload All</base-button>
+                        <base-button type="danger" size="sm" icon="trash" @click="resetTable">Clear Table</base-button>
+                    </div>
                     <div class="col-12">
                         <div class="table-responsive">
                             <base-table class="table align-items-center table-flush" tbody-classes="list" :data="excel">
