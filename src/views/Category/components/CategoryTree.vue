@@ -1,6 +1,6 @@
 <template>
     <div class="category-tree">
-        <ul v-if="items && items.length">
+        <ul v-if="items && items.length" class="col-12">
             <template v-for="(item, index) in items">
                 <category-node
                     :key="index"
@@ -11,9 +11,11 @@
                 />
             </template>
         </ul>
-        <base-button v-else icon="plus" type="primary" @click="$emit('add-category', null)">
-            Add Category
-        </base-button>
+        <div class="col-12">
+            <base-button size="sm" icon="plus" type="primary" @click="$emit('add-category', null)">
+                Add Category
+            </base-button>
+        </div>
     </div>
 </template>
 <script>
