@@ -92,9 +92,16 @@
                                                 type="success"
                                                 icon="upload"
                                                 size="sm"
+                                                :loading="uploading && uploading.includes(index)"
                                                 @click.prevent="uploadSingle(row, index)"
                                             ></base-button>
-                                            <base-button type="danger" icon="times" size="sm"></base-button>
+                                            <base-button
+                                                v-if="uploading && !uploading.includes(index)"
+                                                type="danger"
+                                                icon="times"
+                                                size="sm"
+                                                @click.prevent="removeRow(index)"
+                                            ></base-button>
                                         </div>
                                     </td>
                                 </template>
@@ -102,6 +109,9 @@
                         </div>
                     </div>
                 </div>
+            </div>
+            <div v-if="loading" class="over__lay">
+                <loading color="dark" />
             </div>
         </div>
     </div>
@@ -113,7 +123,7 @@ export default {
     name: 'Excel',
     data: () => ({
         excel: [],
-        loading: true,
+        loading: false,
         uploading: [],
     }),
     methods: {
@@ -156,6 +166,9 @@ export default {
 
             // download the workbook
             XLSX.writeFile(workbook, 'template.xls');
+        },
+        removeRow(index) {
+            this.excel = this.excel.splice(index, 1);
         },
         async uploadSingle(item) {
             try {
