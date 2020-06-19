@@ -98,7 +98,7 @@ export default {
                 delete this._vm.$axios.defaults.headers.common.Authorization;
             }
         },
-        async verify({ commit, dispatch }, userdata) {
+        async verify({ commit }, userdata) {
             try {
                 const response = await this._vm.$axios({
                     method: 'post',
@@ -108,7 +108,6 @@ export default {
 
                 if (response.data) {
                     commit('setVerified', true);
-                    console.log(response.data);
                 }
             } catch (err) {
                 commit('setVerified', false);
