@@ -54,7 +54,7 @@
             <div v-if="excel && excel.length" class="container-fluid">
                 <div class="row">
                     <div class="col-12 mb-3 text-center">
-                        <base-button type="success" size="sm" icon="upload">Upload All</base-button>
+                        <base-button type="success" size="sm" icon="upload" @click="uploadAll">Upload All</base-button>
                         <base-button type="danger" size="sm" icon="trash" @click="resetTable">Clear Table</base-button>
                     </div>
                     <div class="col-12">
@@ -202,6 +202,29 @@ export default {
             // fallback for when upload is not successful.
             const index = this.uploading.indexOf(item);
             if (index > -1) this.uploading.splice(index, 1);
+        },
+        async uploadAll() {
+            this.loading = true;
+
+            try {
+                const response = await this.$axios({
+                    method: 'post',
+                    url: '/inventory/multiple',
+                    data: this.excel,
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                }
+            } catch (err) {
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
+
+            this.loading = false;
         },
     },
 };
