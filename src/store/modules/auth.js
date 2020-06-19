@@ -82,6 +82,7 @@ export default {
                     // set states token and user
                     commit('setToken', response.data.token);
                     commit('setUser', user);
+                    commit('setVerified', user.verified);
 
                     // update ability with new usergroup rules
                     if (user.usergroup) {
@@ -98,23 +99,8 @@ export default {
                 delete this._vm.$axios.defaults.headers.common.Authorization;
             }
         },
-        async verify({ commit }, userdata) {
-            try {
-                const response = await this._vm.$axios({
-                    method: 'post',
-                    url: '/auth/verify',
-                    data: userdata,
-                });
-
-                if (response.data) {
-                    commit('setVerified', true);
-                }
-            } catch (err) {
-                commit('setVerified', false);
-                if (err.response && err.response.data && err.response.data.error) {
-                    this._vm.$error(err.response.data.error.message);
-                }
-            }
+        verify({ commit }, verified) {
+            commit('setVerified', verified);
         },
         logout({ commit }) {
             try {
@@ -137,6 +123,7 @@ export default {
                     this._vm.$axios.defaults.headers.common.Authorization = `Bearer ${token}`;
                     commit('setToken', token);
                     commit('setUser', user);
+                    commit('setVerified', user.verified);
                     dispatch('stores/reload', null, { root: true });
 
                     // update ability with new usergroup rules
@@ -147,6 +134,7 @@ export default {
                     throw new Error('Token expired.');
                 }
             } catch (err) {
+                this._vm.$error('Login Again', { title: 'Session Expired' });
                 dispatch('logout');
             }
         },
