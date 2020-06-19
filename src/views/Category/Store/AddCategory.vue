@@ -1,6 +1,6 @@
 <template>
     <div class="row">
-        <div class="col-12">
+        <div class="col-12 mb-3">
             <span v-if="parent"><strong>Parent:</strong> {{ parent.categoryName }}</span>
             <span v-else><strong>Parent:</strong> None</span>
         </div>
