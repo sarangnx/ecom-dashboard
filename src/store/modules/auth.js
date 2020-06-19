@@ -75,6 +75,7 @@ export default {
 
                     // Store the token to local storage
                     localStorage.setItem('authToken', response.data.token);
+                    localStorage.setItem('user', JSON.stringify(response.data.user));
 
                     // Set authentication headers for future requests
                     this._vm.$axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
@@ -95,7 +96,9 @@ export default {
                 }
                 commit('setToken', null);
                 localStorage.removeItem('authToken');
+
                 commit('setUser', null);
+                localStorage.removeItem('user');
                 delete this._vm.$axios.defaults.headers.common.Authorization;
             }
         },
@@ -106,6 +109,8 @@ export default {
             try {
                 commit('logout');
                 localStorage.removeItem('authToken');
+                localStorage.removeItem('user');
+
                 // remove stores in localstorage
                 dispatch('stores/init', null, { root: true });
                 delete this._vm.$axios.defaults.headers.common.Authorization;
@@ -115,13 +120,17 @@ export default {
             //  Check whether user is logged in after reopening browser/tab.
             try {
                 const token = getters.getToken || localStorage.getItem('authToken');
-                const user = decode(token);
+                const tokenDecoded = decode(token);
 
-                const expiry = new Date() - new Date(user.exp * 1000);
+                const expiry = new Date() - new Date(tokenDecoded.exp * 1000);
 
                 if (expiry <= 0) {
                     this._vm.$axios.defaults.headers.common.Authorization = `Bearer ${token}`;
                     commit('setToken', token);
+
+                    const userString = localStorage.getItem('user') || null;
+                    const user = JSON.parse(userString);
+
                     commit('setUser', user);
                     commit('setVerified', user.verified);
                     dispatch('stores/reload', null, { root: true });
