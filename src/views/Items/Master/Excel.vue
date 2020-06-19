@@ -63,7 +63,7 @@
                                     <th class="minwidth">Category</th>
                                     <th class="minwidth">Actions</th>
                                 </template>
-                                <template slot-scope="{ row, index }">
+                                <template slot-scope="{ row }">
                                     <td>
                                         <base-input v-model="row.itemName"></base-input>
                                     </td>
@@ -92,11 +92,12 @@
                                                 type="success"
                                                 icon="upload"
                                                 size="sm"
-                                                :loading="uploading && uploading.includes(index)"
-                                                @click.prevent="uploadSingle(row, index)"
+                                                :loading="uploading && uploading.includes(row)"
+                                                :disabled="uploading && uploading.includes(row)"
+                                                @click.prevent="uploadSingle(row)"
                                             ></base-button>
                                             <base-button
-                                                v-if="uploading && !uploading.includes(index)"
+                                                v-if="uploading && !uploading.includes(row)"
                                                 type="danger"
                                                 icon="times"
                                                 size="sm"
@@ -171,8 +172,8 @@ export default {
             const index = this.excel.indexOf(item);
             if (index > -1) this.excel.splice(index, 1);
         },
-        async uploadSingle(item, index) {
-            this.uploading.push(index);
+        async uploadSingle(item) {
+            this.uploading.push(item);
 
             try {
                 const response = await this.$axios({
@@ -184,6 +185,8 @@ export default {
                 if (response.status === 200 && response.data.message) {
                     this.$success(response.data.message);
                 }
+                // remove the row after uploading
+                this.removeRow(item);
             } catch (err) {
                 if (err.response && err.response.status === 400 && err.response.data.error) {
                     this.$error(err.response.data.error.message);
@@ -191,6 +194,10 @@ export default {
                     this.$error('Something went wrong. Please try again later.');
                 }
             }
+
+            // fallback for when upload is not successful.
+            const index = this.uploading.indexOf(item);
+            if (index > -1) this.uploading.splice(index, 1);
         },
     },
 };
