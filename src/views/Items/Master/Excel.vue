@@ -100,7 +100,7 @@
                                                 type="danger"
                                                 icon="times"
                                                 size="sm"
-                                                @click.prevent="removeRow(index)"
+                                                @click.prevent="removeRow(row)"
                                             ></base-button>
                                         </div>
                                     </td>
@@ -167,10 +167,13 @@ export default {
             // download the workbook
             XLSX.writeFile(workbook, 'template.xls');
         },
-        removeRow(index) {
-            this.excel = this.excel.splice(index, 1);
+        removeRow(item) {
+            const index = this.excel.indexOf(item);
+            if (index > -1) this.excel.splice(index, 1);
         },
-        async uploadSingle(item) {
+        async uploadSingle(item, index) {
+            this.uploading.push(index);
+
             try {
                 const response = await this.$axios({
                     method: 'post',
