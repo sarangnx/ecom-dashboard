@@ -13,7 +13,13 @@
                             placeholder="Email"
                             addon-left-icon="envelope-open"
                             autocomplete="false"
-                            :error="$v.username.$error ? 'Email Required' : null"
+                            :error="
+                                $v.username.$error && !$v.username.required
+                                    ? 'Email Required'
+                                    : $v.username.$error && !$v.username.email
+                                    ? 'Enter a valid email'
+                                    : null
+                            "
                         >
                         </base-input>
 
@@ -109,7 +115,7 @@
     </div>
 </template>
 <script>
-import { required, sameAs, minLength, requiredIf, numeric } from 'vuelidate/lib/validators';
+import { required, email, sameAs, minLength, requiredIf, numeric } from 'vuelidate/lib/validators';
 
 export default {
     name: 'Register',
@@ -130,6 +136,7 @@ export default {
     validations: {
         username: {
             required,
+            email,
         },
         password: {
             required,
