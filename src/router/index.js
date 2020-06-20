@@ -16,13 +16,24 @@ const router = new Router({
  * to routes requiring authentication.
  */
 router.beforeEach(async (to, from, next) => {
-    if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (to.matched.some((record) => record.meta && record.meta.requiresAuth)) {
+        // Check if a user is logged in
         const loggedIn = await store.dispatch('auth/checkToken');
 
         if (!loggedIn) {
             return next('/login');
         }
+
+        // if user is store owner check if phone is verified.
+        const verified = await store.getters['auth/isVerified'];
+        const user = await store.getters['auth/getUser'];
+        const route = user && user.phone ? `/verify?phone=${user.phone}` : '/verify';
+
+        if (user.usergroup === 'storeowner' && !verified) {
+            return router.push(route);
+        }
     }
+
     return next();
 });
 

@@ -151,6 +151,11 @@ export default [
                 name: 'reset password',
                 component: () => import(/* webpackChunkName: "auth" */ '@/views/Auth/Reset.vue'),
             },
+            {
+                path: '/verify',
+                name: 'verify account',
+                component: () => import(/* webpackChunkName: "auth" */ '@/views/Auth/Verify.vue'),
+            },
         ],
     },
     {

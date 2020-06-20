@@ -56,26 +56,6 @@
                 </div>
             </div>
         </div>
-        <modal :show.sync="modal" header-classes="pb-0">
-            <h5 slot="header">Verify Your OTP</h5>
-            <base-input
-                v-model="otp"
-                class="input-group-alternative"
-                placeholder="Password"
-                type="text"
-                addon-left-icon="lock"
-            >
-            </base-input>
-            <base-button
-                type="primary"
-                class="my-4"
-                :loading="loadingOtp"
-                :disabled="loadingOtp"
-                @click.prevent="verify"
-            >
-                Verify
-            </base-button>
-        </modal>
     </div>
 </template>
 <script>
@@ -97,7 +77,6 @@ export default {
         ...mapGetters({
             isLoggedIn: 'auth/isLoggedIn',
             user: 'auth/getUser',
-            isVerified: 'auth/isVerified',
         }),
     },
     validations: {
@@ -109,25 +88,6 @@ export default {
         },
     },
     methods: {
-        async verify() {
-            if (this.otp == null || this.otp == '') {
-                this.$error('Please enter a valid otp');
-            } else {
-                try {
-                    await this.$store.dispatch('auth/verify', {
-                        otp: this.otp,
-                        userId: this.userId,
-                    });
-
-                    if (this.isVerified) {
-                        this.login();
-                    }
-                } catch (err) {
-                    console.log(err);
-                    this.$error('Something went Wrong!');
-                }
-            }
-        },
         async login() {
             this.$v.$touch();
 
@@ -141,14 +101,8 @@ export default {
                         password: this.password,
                     });
 
-                    if (this.user.verified == 0 && this.user.usergroup == 'storeowner') {
-                        this.modal = true;
-                        this.userId = this.user.userId;
-                        this.$store.dispatch('auth/logout');
-                    } else {
-                        if (this.isLoggedIn) {
-                            this.$router.push('/');
-                        }
+                    if (this.isLoggedIn) {
+                        this.$router.push('/');
                     }
                 } catch (err) {
                     this.$error('Something went Wrong!');

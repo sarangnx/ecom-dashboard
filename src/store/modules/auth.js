@@ -75,6 +75,7 @@ export default {
 
                     // Store the token to local storage
                     localStorage.setItem('authToken', response.data.token);
+                    localStorage.setItem('user', JSON.stringify(response.data.user));
 
                     // Set authentication headers for future requests
                     this._vm.$axios.defaults.headers.common.Authorization = `Bearer ${response.data.token}`;
@@ -82,6 +83,7 @@ export default {
                     // set states token and user
                     commit('setToken', response.data.token);
                     commit('setUser', user);
+                    commit('setVerified', user.verified);
 
                     // update ability with new usergroup rules
                     if (user.usergroup) {
@@ -94,32 +96,25 @@ export default {
                 }
                 commit('setToken', null);
                 localStorage.removeItem('authToken');
+
                 commit('setUser', null);
+                localStorage.removeItem('user');
                 delete this._vm.$axios.defaults.headers.common.Authorization;
             }
         },
-        async verify({ commit }, userdata) {
-            try {
-                const response = await this._vm.$axios({
-                    method: 'post',
-                    url: '/auth/verify',
-                    data: userdata,
-                });
-
-                if (response.data) {
-                    commit('setVerified', true);
-                }
-            } catch (err) {
-                commit('setVerified', false);
-                if (err.response && err.response.data && err.response.data.error) {
-                    this._vm.$error(err.response.data.error.message);
-                }
-            }
+        verify({ commit, getters }, verified) {
+            commit('setVerified', verified);
+            const user = getters.getUser;
+            user.verified = verified;
+            commit('setUser', user);
+            localStorage.setItem('user', JSON.stringify(user));
         },
         logout({ commit }) {
             try {
                 commit('logout');
                 localStorage.removeItem('authToken');
+                localStorage.removeItem('user');
+
                 // remove stores in localstorage
                 dispatch('stores/init', null, { root: true });
                 delete this._vm.$axios.defaults.headers.common.Authorization;
@@ -129,14 +124,20 @@ export default {
             //  Check whether user is logged in after reopening browser/tab.
             try {
                 const token = getters.getToken || localStorage.getItem('authToken');
-                const user = decode(token);
+                if (!token) return;
+                const tokenDecoded = decode(token);
 
-                const expiry = new Date() - new Date(user.exp * 1000);
+                const expiry = new Date() - new Date(tokenDecoded.exp * 1000);
 
                 if (expiry <= 0) {
                     this._vm.$axios.defaults.headers.common.Authorization = `Bearer ${token}`;
                     commit('setToken', token);
+
+                    const userString = localStorage.getItem('user') || null;
+                    const user = JSON.parse(userString);
+
                     commit('setUser', user);
+                    commit('setVerified', user.verified);
                     dispatch('stores/reload', null, { root: true });
 
                     // update ability with new usergroup rules
@@ -147,6 +148,7 @@ export default {
                     throw new Error('Token expired.');
                 }
             } catch (err) {
+                this._vm.$error('Login Again', { title: 'Session Expired' });
                 dispatch('logout');
             }
         },
