@@ -18,6 +18,9 @@
                 {{ category.categoryName || 'None' }}
                 <font-awesome-icon icon="caret-down" pull="right" />
             </base-button>
+            <div v-if="$v.category.categoryId.$error" class="text-danger invalid-feedback p-1" style="display: block;">
+                <small>Category Required</small>
+            </div>
             <modal :show.sync="modal" body-classes="pt-0" :click-out="false">
                 <template slot="header">
                     <h4 class="modal-title">Select Category</h4>
@@ -30,6 +33,7 @@
             <base-input
                 v-model="item.price"
                 placeholder="Price of 1 unit (1Kg, 1L etc.)"
+                :error="$v.item.price.$error ? 'Price Required' : null"
                 @change="item.changed = true"
             ></base-input>
         </div>
@@ -42,6 +46,7 @@
     </div>
 </template>
 <script>
+import { required } from 'vuelidate/lib/validators';
 import CategoryTree from '../components/CategoryTree';
 
 export default {
@@ -71,6 +76,18 @@ export default {
         modal: null,
         loading: null,
     }),
+    validations: {
+        category: {
+            categoryId: {
+                required,
+            },
+        },
+        item: {
+            price: {
+                required,
+            },
+        },
+    },
     mounted() {
         if (this.selected) {
             this.item = Object.assign({}, this.selected);
@@ -90,6 +107,8 @@ export default {
                 this.$warn('No changes were made!');
                 return;
             }
+            this.$v.$touch();
+            if (this.$v.$invalid) return;
 
             this.loading = true;
 
