@@ -102,8 +102,12 @@ export default {
                 delete this._vm.$axios.defaults.headers.common.Authorization;
             }
         },
-        verify({ commit }, verified) {
+        verify({ commit, getters }, verified) {
             commit('setVerified', verified);
+            const user = getters.getUser;
+            user.verified = verified;
+            commit('setUser', user);
+            localStorage.setItem('user', JSON.stringify(user));
         },
         logout({ commit }) {
             try {
