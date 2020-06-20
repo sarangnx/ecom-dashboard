@@ -2,11 +2,7 @@
     <div class="row">
         <div class="col-12">
             <h4>Store Name</h4>
-            <base-input
-                v-model="store.name"
-                placeholder="Store Name"
-                :error="$v.store.name.$error ? 'Store Name Required' : null"
-            />
+            <base-input v-model="store.name" :error="$v.store.name.$error ? 'Store Name Required' : null" />
         </div>
         <div class="col-12 mb-3">
             <h4>Store Type</h4>
@@ -24,23 +20,27 @@
         <div class="col-12">
             <h4>Store Address</h4>
             <h5 class="text-muted">Area</h5>
-            <base-input v-model="store.area" placeholder="Area" />
+            <base-input v-model="store.area" :error="$v.store.area.$error ? 'Area Required' : null" />
         </div>
         <div class="col-6">
             <h5 class="text-muted">City</h5>
-            <base-input v-model="store.city" placeholder="City" />
+            <base-input v-model="store.city" :error="$v.store.city.$error ? 'City Required' : null" />
         </div>
         <div class="col-6">
             <h5 class="text-muted">District</h5>
-            <base-input v-model="store.district" placeholder="District" />
+            <base-input v-model="store.district" :error="$v.store.district.$error ? 'District Required' : null" />
         </div>
         <div class="col-6">
             <h5 class="text-muted">State</h5>
-            <base-input v-model="store.state" placeholder="State" />
+            <base-input v-model="store.state" :error="$v.store.state.$error ? 'State Required' : null" />
         </div>
         <div class="col-6">
             <h5 class="text-muted">Pincode</h5>
-            <base-input v-model="store.pincode" placeholder="Pincode" />
+            <base-input
+                v-model="store.pincode"
+                type="number"
+                :error="$v.store.pincode.$error ? 'Pincode Required' : null"
+            />
         </div>
         <div class="col-12">
             <h5 class="text-muted">Phones</h5>
@@ -52,7 +52,7 @@
                         :disabled="phones[index].key === 'default'"
                         class="mb-0 mr-2"
                     />
-                    <base-input v-model="phones[index].value" placeholder="Phone Number" class="mb-0" />
+                    <base-input v-model="phones[index].value" type="number" placeholder="Phone Number" class="mb-0" />
                     <base-button
                         :disabled="phones[index].key === 'default'"
                         icon="trash"
@@ -107,6 +107,21 @@ export default {
     validations: {
         store: {
             name: {
+                required,
+            },
+            area: {
+                required,
+            },
+            city: {
+                required,
+            },
+            district: {
+                required,
+            },
+            state: {
+                required,
+            },
+            pincode: {
                 required,
             },
         },
