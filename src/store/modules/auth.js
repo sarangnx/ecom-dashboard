@@ -124,6 +124,7 @@ export default {
             //  Check whether user is logged in after reopening browser/tab.
             try {
                 const token = getters.getToken || localStorage.getItem('authToken');
+                if (!token) return;
                 const tokenDecoded = decode(token);
 
                 const expiry = new Date() - new Date(tokenDecoded.exp * 1000);
