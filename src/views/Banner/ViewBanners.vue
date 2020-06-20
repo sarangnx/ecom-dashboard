@@ -1,95 +1,116 @@
 <template>
-    <div class="card shadow">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <h3>Banners</h3>
-            <div v-if="current">
-                <base-dropdown>
-                    <base-button slot="title" type="default" size="sm" class="dropdown-toggle">
-                        {{ current.name }}
-                    </base-button>
-                    <a v-for="(item, index) in stores" :key="index" class="dropdown-item" @click="change(item)">
-                        {{ item.name }}
-                    </a>
-                </base-dropdown>
+    <div>
+        <div v-if="(bannerType === 'store' && storeId) || bannerType === 'main'" class="card shadow">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h3>Banners</h3>
+                <div v-if="current">
+                    <base-dropdown>
+                        <base-button slot="title" type="default" size="sm" class="dropdown-toggle">
+                            {{ current.name }}
+                        </base-button>
+                        <a v-for="(item, index) in stores" :key="index" class="dropdown-item" @click="change(item)">
+                            {{ item.name }}
+                        </a>
+                    </base-dropdown>
+                </div>
+                <base-button size="sm" type="primary" icon="plus" @click="addModal = true">
+                    Add Banner
+                </base-button>
             </div>
-            <base-button size="sm" type="primary" icon="plus" @click="addModal = true">Add Banner</base-button>
-        </div>
-        <div class="card-body position-relative min__height">
-            <div v-if="banners && banners.length" class="container">
-                <div class="d-flex flex-wrap">
-                    <div v-for="(banner, index) in banners" :key="index" class="col-12 col-md-6 mb-3">
-                        <div class="card shadow h-100">
-                            <div class="card-header">
-                                <div class="row">
-                                    <img v-if="banner.image" :src="`${s3bucket}/${banner.image}`" class="col-12" />
-                                    <div v-else class="col-12 text-center">
-                                        <font-awesome-icon icon="image" size="5x" />
+            <div class="card-body position-relative min__height">
+                <div v-if="banners && banners.length" class="container">
+                    <div class="d-flex flex-wrap">
+                        <div v-for="(banner, index) in banners" :key="index" class="col-12 col-md-6 mb-3">
+                            <div class="card shadow h-100">
+                                <div class="card-header">
+                                    <div class="row">
+                                        <img v-if="banner.image" :src="`${s3bucket}/${banner.image}`" class="col-12" />
+                                        <div v-else class="col-12 text-center">
+                                            <font-awesome-icon icon="image" size="5x" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="card-body py-2">
-                                <div class="col-12">
-                                    <strong>Title: </strong>
-                                    <span>{{ banner.name }}</span>
+                                <div class="card-body py-2">
+                                    <div class="col-12">
+                                        <strong>Title: </strong>
+                                        <span>{{ banner.name }}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-end py-2">
-                                <base-button
-                                    size="sm"
-                                    type="danger"
-                                    icon="trash"
-                                    @click="
-                                        deleteModal = true;
-                                        selectedBanner = banner;
-                                    "
-                                >
-                                    Delete
-                                </base-button>
+                                <div class="card-footer d-flex justify-content-end py-2">
+                                    <base-button
+                                        size="sm"
+                                        type="danger"
+                                        icon="trash"
+                                        @click="
+                                            deleteModal = true;
+                                            selectedBanner = banner;
+                                        "
+                                    >
+                                        Delete
+                                    </base-button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div
+                    v-if="!(banners && banners.length) && !loading"
+                    class="col-12 p-5 d-flex justify-content-center align-items-center"
+                >
+                    <small class="p-2">no banners</small>
+                    <font-awesome-icon icon="ad" />
+                </div>
+                <div v-if="loading" class="over__lay">
+                    <loading color="dark" />
+                </div>
             </div>
-            <div
-                v-if="!(banners && banners.length) && !loading"
-                class="col-12 p-5 d-flex justify-content-center align-items-center"
-            >
-                <small class="p-2">no banners</small>
-                <font-awesome-icon icon="ad" />
-            </div>
-            <div v-if="loading" class="over__lay">
-                <loading color="dark" />
+            <!-- ADD MODAL -->
+            <modal :show.sync="addModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+                <template slot="header">
+                    <h4 class="modal-title">Add Banner</h4>
+                </template>
+                <add-banner
+                    :key="Date.now()"
+                    :banner-type="bannerType"
+                    :store-id="storeId"
+                    @done="
+                        addModal = false;
+                        getBanners();
+                    "
+                />
+            </modal>
+            <!-- DELETE MODAL -->
+            <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+                <template slot="header">
+                    <h4 class="modal-title">Delete Banner</h4>
+                </template>
+                <delete-banner
+                    :key="Date.now()"
+                    :banner="selectedBanner"
+                    @done="
+                        deleteModal = false;
+                        getBanners();
+                    "
+                />
+            </modal>
+        </div>
+        <div v-else class="card shadow p-2 p-md-5">
+            <div class="card-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <h3>You cannot view this page since you don't have any stores currently.</h3>
+                            <div class="mb-3">
+                                <span class="text-muted">You can return to this page after adding one.</span>
+                            </div>
+                            <base-button icon="external-link-alt" @click="$router.push('/settings/stores')">
+                                Go to settings
+                            </base-button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- ADD MODAL -->
-        <modal :show.sync="addModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
-            <template slot="header">
-                <h4 class="modal-title">Add Banner</h4>
-            </template>
-            <add-banner
-                :key="Date.now()"
-                :banner-type="bannerType"
-                :store-id="storeId"
-                @done="
-                    addModal = false;
-                    getBanners();
-                "
-            />
-        </modal>
-        <!-- DELETE MODAL -->
-        <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
-            <template slot="header">
-                <h4 class="modal-title">Delete Banner</h4>
-            </template>
-            <delete-banner
-                :key="Date.now()"
-                :banner="selectedBanner"
-                @done="
-                    deleteModal = false;
-                    getBanners();
-                "
-            />
-        </modal>
     </div>
 </template>
 <script>
@@ -142,6 +163,8 @@ export default {
             change: 'stores/change',
         }),
         async getBanners() {
+            if (this.bannerType === 'store' && !this.storeId) return;
+
             this.loading = true;
 
             try {
