@@ -17,6 +17,9 @@
                 {{ category.categoryName || 'None' }}
                 <font-awesome-icon icon="caret-down" pull="right" />
             </base-button>
+            <div v-if="$v.category.categoryId.$error" class="text-danger invalid-feedback p-1" style="display: block;">
+                <small>Category Required</small>
+            </div>
             <modal :show.sync="modal" body-classes="pt-0" :click-out="false">
                 <template slot="header">
                     <h4 class="modal-title">Select Category</h4>
@@ -26,7 +29,12 @@
         </div>
         <div class="col-12">
             <h5>Price</h5>
-            <base-input v-model="item.price" placeholder="Price of 1 unit (1Kg, 1L etc.)"></base-input>
+            <base-input
+                v-model="item.price"
+                type="number"
+                placeholder="Price of 1 unit (1Kg, 1L etc.)"
+                :error="$v.item.price.$error ? 'Price Required' : null"
+            ></base-input>
         </div>
         <div class="col-12">
             <base-button type="success" icon="plus" block @click.prevent.stop="add()">Add Item</base-button>
@@ -37,6 +45,7 @@
     </div>
 </template>
 <script>
+import { required } from 'vuelidate/lib/validators';
 import CategoryTree from '../components/CategoryTree';
 
 export default {
@@ -69,6 +78,18 @@ export default {
         modal: null,
         loading: null,
     }),
+    validations: {
+        category: {
+            categoryId: {
+                required,
+            },
+        },
+        item: {
+            price: {
+                required,
+            },
+        },
+    },
     mounted() {
         if (this.selected) {
             this.item = Object.assign({}, { itemId: this.selected.itemId });
@@ -80,6 +101,9 @@ export default {
             this.modal = false;
         },
         async add() {
+            this.$v.$touch();
+            if (this.$v.$invalid) return;
+
             this.loading = true;
 
             try {
