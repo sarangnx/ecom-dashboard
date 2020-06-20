@@ -13,7 +13,14 @@
                                 addon-left-icon="phone"
                             ></base-input>
                             <div class="text-center">
-                                <base-button block type="primary" class="my-4" @click.prevent="sendOtp">
+                                <base-button
+                                    block
+                                    type="primary"
+                                    class="my-4"
+                                    :loading="loading"
+                                    :disabled="loading"
+                                    @click.prevent="sendOtp"
+                                >
                                     Send OTP
                                 </base-button>
                             </div>
@@ -46,7 +53,14 @@
                                     addon-left-icon="lock"
                                 ></base-input>
                                 <div class="text-center">
-                                    <base-button block type="primary" class="my-4" @click.prevent="verifyPhone">
+                                    <base-button
+                                        block
+                                        type="primary"
+                                        class="my-4"
+                                        :loading="loading"
+                                        :disabled="loading"
+                                        @click.prevent="verifyPhone"
+                                    >
                                         Verify
                                     </base-button>
                                 </div>
