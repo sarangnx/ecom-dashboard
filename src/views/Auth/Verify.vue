@@ -110,20 +110,23 @@ export default {
             try {
                 const response = await this.$axios({
                     method: 'post',
-                    url: `/auth/forgot`,
+                    url: `/auth/otp/phone`,
                     data: {
-                        username,
+                        phone: this.phone,
                     },
                 });
-                if (response.data && response.data.status === 'success') {
-                    this.$success('OTP Sent to email');
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
                     this.gotCode = true;
                     this.usernameSet = true;
-                } else {
-                    throw new Error('Unable to send email.');
                 }
             } catch (err) {
-                this.$error('Unable to send email.');
+                if (err.response.data && err.response.data.error && err.response.data.error.message) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Something went wrong! Please try again later.');
+                }
             }
 
             this.loading = false;
