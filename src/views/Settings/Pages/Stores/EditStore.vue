@@ -20,26 +20,29 @@
         <div class="col-12">
             <h4>Store Address</h4>
             <h5 class="text-muted">Area</h5>
-            <base-input v-model="storeModel.area" :error="$v.store.area.$error ? 'Area Required' : null" />
+            <base-input v-model="storeModel.area" :error="$v.storeModel.area.$error ? 'Area Required' : null" />
         </div>
         <div class="col-6">
             <h5 class="text-muted">City</h5>
-            <base-input v-model="storeModel.city" :error="$v.store.city.$error ? 'City Required' : null" />
+            <base-input v-model="storeModel.city" :error="$v.storeModel.city.$error ? 'City Required' : null" />
         </div>
         <div class="col-6">
             <h5 class="text-muted">District</h5>
-            <base-input v-model="storeModel.district" :error="$v.store.district.$error ? 'District Required' : null" />
+            <base-input
+                v-model="storeModel.district"
+                :error="$v.storeModel.district.$error ? 'District Required' : null"
+            />
         </div>
         <div class="col-6">
             <h5 class="text-muted">State</h5>
-            <base-input v-model="storeModel.state" :error="$v.store.state.$error ? 'State Required' : null" />
+            <base-input v-model="storeModel.state" :error="$v.storeModel.state.$error ? 'State Required' : null" />
         </div>
         <div class="col-6">
             <h5 class="text-muted">Pincode</h5>
             <base-input
                 v-model="storeModel.pincode"
                 type="number"
-                :error="$v.store.pincode.$error ? 'Pincode Required' : null"
+                :error="$v.storeModel.pincode.$error ? 'Pincode Required' : null"
             />
         </div>
         <div class="col-12">
