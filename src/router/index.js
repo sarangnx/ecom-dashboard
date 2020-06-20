@@ -16,7 +16,7 @@ const router = new Router({
  * to routes requiring authentication.
  */
 router.beforeEach(async (to, from, next) => {
-    if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (to.matched.some((record) => record.meta && record.meta.requiresAuth)) {
         // Check if a user is logged in
         const loggedIn = await store.dispatch('auth/checkToken');
 
@@ -30,9 +30,10 @@ router.beforeEach(async (to, from, next) => {
         const route = user && user.phone ? `/verify?phone=${user.phone}` : '/verify';
 
         if (user.usergroup === 'storeowner' && !verified) {
-            return next(route);
+            return router.push(route);
         }
     }
+
     return next();
 });
 
