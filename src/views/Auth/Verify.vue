@@ -55,7 +55,7 @@
                         <div v-if="verified" class="d-flex align-items-center flex-column">
                             <font-awesome-icon icon="check-circle" :style="{ color: '#2dce89' }" size="4x" />
                             <div class="text-center text-muted mt-3">
-                                <base-button type="link" @click="$router.push('/')">Go to Login</base-button>
+                                <base-button type="link" @click="$router.push('/')">Continue</base-button>
                             </div>
                         </div>
                         <div v-if="!verified" class="text-center text-muted">
@@ -79,8 +79,6 @@ export default {
         phone: null,
         phoneSet: false,
         gotCode: false,
-        password: null,
-        step: 1,
         verified: false,
         otp: null,
         loading: false,
