@@ -26,9 +26,14 @@
             <template v-if="orders && orders.length">
                 <div v-for="(order, index) in orders" :key="index" class="card shadow h-100 col-md-5 mb-3">
                     <div class="card-body">
-                        <badge :type="badgeType(order.orderStatus)">
-                            {{ badgeText(order.orderStatus) }}
-                        </badge>
+                        <div class="d-flex justify-content-between">
+                            <badge :type="badgeType(order.orderStatus)">
+                                {{ badgeText(order.orderStatus) }}
+                            </badge>
+                            <badge :type="order.deliveryMethod === 'PICKUP' ? 'danger' : 'default'">
+                                {{ order.deliveryMethod }}
+                            </badge>
+                        </div>
                         <div class="d-flex text-muted">
                             <h4 class="m-0 pr-2 text-muted">Order Date</h4>
                             <small>{{ formatDate(order.orderDate) }}</small>
