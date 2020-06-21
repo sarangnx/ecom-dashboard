@@ -31,6 +31,12 @@
                                         <h5 class="d-inline m-0 pr-2">Store Type:</h5>
                                         <small>{{ item.storeType }}</small>
                                     </div>
+                                    <div>
+                                        <h5 class="d-inline m-0 pr-2">Delivery Method:</h5>
+                                        <small>
+                                            {{ item.deliveryAvailable ? 'Pickup + Home Delivery' : 'Pickup only' }}
+                                        </small>
+                                    </div>
                                 </div>
                                 <div class="card-footer d-flex flex-wrap justify-content-start py-2">
                                     <base-button
