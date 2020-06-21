@@ -4,7 +4,7 @@
             <h4>Store Name</h4>
             <base-input v-model="store.name" :error="$v.store.name.$error ? 'Store Name Required' : null" />
         </div>
-        <div class="col-12 mb-3">
+        <div class="col-5 mb-3">
             <h4>Store Type</h4>
             <div v-if="storeType">
                 <base-dropdown>
@@ -16,6 +16,10 @@
                     </a>
                 </base-dropdown>
             </div>
+        </div>
+        <div class="col-7 mb-3">
+            <h4>Delivery Method</h4>
+            <base-checkbox v-model="store.deliveryAvailable">Home Delivery Available</base-checkbox>
         </div>
         <div class="col-12">
             <h4>Store Address</h4>
