@@ -9,13 +9,22 @@
                             <base-input
                                 v-model="username"
                                 class="input-group-alternative mb-3"
-                                placeholder="Email"
+                                :placeholder="usernameType === 'email' ? 'Email' : 'Phone'"
                                 addon-left-icon="at"
-                            ></base-input>
+                            >
+                                <template slot="addonLeft">
+                                    <base-button
+                                        size="sm"
+                                        type="primary"
+                                        :icon="usernameType === 'email' ? 'at' : 'phone'"
+                                        @click="usernameType = usernameType === 'email' ? 'phone' : 'email'"
+                                    ></base-button>
+                                </template>
+                            </base-input>
                             <div class="text-center">
-                                <base-button block type="primary" class="my-4" @click.prevent="sendOtp"
-                                    >Send OTP</base-button
-                                >
+                                <base-button block type="primary" class="my-4" @click.prevent="sendOtp">
+                                    Send OTP
+                                </base-button>
                             </div>
                         </div>
                         <div class="text-center text-muted">
@@ -95,7 +104,19 @@ export default {
         step: 1,
         otp: null,
         loading: false,
+        usernameType: 'email',
     }),
+    watch: {
+        username() {
+            const phoneRegEx = /^[0-9]+$/g;
+
+            if (phoneRegEx.test(this.username)) {
+                this.usernameType = 'phone';
+            } else {
+                this.usernameType = 'email';
+            }
+        },
+    },
     methods: {
         async sendOtp() {
             const username = this.username;
