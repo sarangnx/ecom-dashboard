@@ -4,7 +4,7 @@
             <base-button size="sm" icon="arrow-left" @click="$router.push('/settings')"></base-button>
             <h3 class="m-0">Stores</h3>
         </div>
-        <div class="card-body d-flex flex-row justify-content-start flex-wrap">
+        <div class="card-body d-flex flex-row justify-content-start flex-wrap position-relative">
             <div class="container">
                 <div class="row">
                     <div class="col-12 d-flex flex-row justify-content-start flex-wrap">
@@ -152,6 +152,9 @@
                     </modal>
                 </div>
             </div>
+            <div v-if="loading" class="over__lay">
+                <loading />
+            </div>
         </div>
     </div>
 </template>
@@ -180,6 +183,7 @@ export default {
         selectedStore: {},
         locationModal: null,
         pincodes: [],
+        loading: false,
     }),
     computed: {
         ...mapGetters({
@@ -199,6 +203,8 @@ export default {
         }),
         async getStores(ownerId) {
             try {
+                this.loading = true;
+
                 const response = await this.$axios({
                     method: 'get',
                     url: '/stores/list',
@@ -217,6 +223,8 @@ export default {
             } catch (err) {
                 this.$error('Unable to get stores list.');
             }
+
+            this.loading = false;
         },
         async listPincodes(options = {}) {
             try {
