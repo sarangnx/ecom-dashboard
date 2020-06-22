@@ -114,6 +114,7 @@ export default {
         otp: null,
         loading: false,
         usernameType: 'email',
+        token: null,
     }),
     watch: {
         username() {
@@ -156,27 +157,28 @@ export default {
         },
         async verifyOtp() {
             this.loading = true;
-            const username = this.username;
-            const otp = this.otp;
 
             try {
-                await this.$axios({
+                const response = await this.$axios({
                     method: 'post',
                     url: `/auth/verify`,
                     data: {
-                        username,
-                        otp,
+                        username: this.username,
+                        otp: this.otp,
                     },
                 });
 
-                if (response.data && response.data.status === 'success') {
-                    this.$success('OTP Verified');
+                if (response.data && response.status === 200 && response.data.token) {
+                    this.$success('OTP Verified.');
                     this.step = 2;
-                } else {
-                    throw new Error('Invalid OTP.');
+                    this.token = response.data.token;
                 }
             } catch (err) {
-                this.$error('Invalid OTP. Resend OTP and try again.');
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Invalid OTP. Resend OTP and try again.');
+                }
             }
 
             this.loading = false;
