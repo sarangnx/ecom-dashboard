@@ -128,7 +128,6 @@ export default {
     },
     methods: {
         async sendOtp() {
-            const username = this.username;
             this.loading = true;
 
             try {
@@ -136,18 +135,21 @@ export default {
                     method: 'post',
                     url: `/auth/forgot`,
                     data: {
-                        username,
+                        username: this.username,
                     },
                 });
-                if (response.data && response.data.status === 'success') {
-                    this.$success('OTP Sent to email');
+
+                if (response.data && response.status === 200) {
+                    this.$success(`OTP Sent to ${this.usernameType}`);
                     this.gotCode = true;
                     this.usernameSet = true;
-                } else {
-                    throw new Error('Unable to send email.');
                 }
             } catch (err) {
-                this.$error('Unable to send email.');
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Unable to send OTP.');
+                }
             }
 
             this.loading = false;
