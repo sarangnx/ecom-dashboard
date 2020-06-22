@@ -43,9 +43,18 @@
                                     v-if="!usernameSet"
                                     v-model="username"
                                     class="input-group-alternative mb-3"
-                                    placeholder="Email"
+                                    :placeholder="usernameType === 'email' ? 'Email' : 'Phone'"
                                     addon-left-icon="at"
-                                ></base-input>
+                                >
+                                    <template slot="addonLeft">
+                                        <base-button
+                                            size="sm"
+                                            type="primary"
+                                            :icon="usernameType === 'email' ? 'at' : 'phone'"
+                                            @click="usernameType = usernameType === 'email' ? 'phone' : 'email'"
+                                        ></base-button>
+                                    </template>
+                                </base-input>
                                 <base-input
                                     v-model="otp"
                                     class="input-group-alternative mb-3"
@@ -53,9 +62,9 @@
                                     addon-left-icon="lock"
                                 ></base-input>
                                 <div class="text-center">
-                                    <base-button block type="primary" class="my-4" @click.prevent="verifyOtp"
-                                        >Verify</base-button
-                                    >
+                                    <base-button block type="primary" class="my-4" @click.prevent="verifyOtp">
+                                        Verify
+                                    </base-button>
                                 </div>
                             </div>
                             <div v-else-if="step === 2" :key="2">
@@ -67,9 +76,9 @@
                                     addon-left-icon="key"
                                 ></base-input>
                                 <div class="text-center">
-                                    <base-button block type="primary" class="my-4" @click.prevent="changePassword"
-                                        >Change Password</base-button
-                                    >
+                                    <base-button block type="primary" class="my-4" @click.prevent="changePassword">
+                                        Change Password
+                                    </base-button>
                                 </div>
                             </div>
                         </fade-transition>
