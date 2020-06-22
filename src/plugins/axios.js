@@ -14,7 +14,7 @@ export default {
                     router.push('/login').catch(() => {});
                 }
 
-                return error;
+                return Promise.reject(error);
             }
         );
     },

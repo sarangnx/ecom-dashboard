@@ -9,13 +9,29 @@
                             <base-input
                                 v-model="username"
                                 class="input-group-alternative mb-3"
-                                placeholder="Email"
+                                :placeholder="usernameType === 'email' ? 'Email' : 'Phone'"
                                 addon-left-icon="at"
-                            ></base-input>
+                            >
+                                <template slot="addonLeft">
+                                    <base-button
+                                        size="sm"
+                                        type="primary"
+                                        :icon="usernameType === 'email' ? 'at' : 'phone'"
+                                        @click="usernameType = usernameType === 'email' ? 'phone' : 'email'"
+                                    ></base-button>
+                                </template>
+                            </base-input>
                             <div class="text-center">
-                                <base-button block type="primary" class="my-4" @click.prevent="sendOtp"
-                                    >Send OTP</base-button
+                                <base-button
+                                    block
+                                    type="primary"
+                                    class="my-4"
+                                    :loading="loading"
+                                    :disabled="loading"
+                                    @click.prevent="sendOtp"
                                 >
+                                    Send OTP
+                                </base-button>
                             </div>
                         </div>
                         <div class="text-center text-muted">
@@ -34,9 +50,18 @@
                                     v-if="!usernameSet"
                                     v-model="username"
                                     class="input-group-alternative mb-3"
-                                    placeholder="Email"
+                                    :placeholder="usernameType === 'email' ? 'Email' : 'Phone'"
                                     addon-left-icon="at"
-                                ></base-input>
+                                >
+                                    <template slot="addonLeft">
+                                        <base-button
+                                            size="sm"
+                                            type="primary"
+                                            :icon="usernameType === 'email' ? 'at' : 'phone'"
+                                            @click="usernameType = usernameType === 'email' ? 'phone' : 'email'"
+                                        ></base-button>
+                                    </template>
+                                </base-input>
                                 <base-input
                                     v-model="otp"
                                     class="input-group-alternative mb-3"
@@ -44,9 +69,16 @@
                                     addon-left-icon="lock"
                                 ></base-input>
                                 <div class="text-center">
-                                    <base-button block type="primary" class="my-4" @click.prevent="verifyOtp"
-                                        >Verify</base-button
+                                    <base-button
+                                        block
+                                        type="primary"
+                                        class="my-4"
+                                        :loading="loading"
+                                        :disabled="loading"
+                                        @click.prevent="verifyOtp"
                                     >
+                                        Verify
+                                    </base-button>
                                 </div>
                             </div>
                             <div v-else-if="step === 2" :key="2">
@@ -58,16 +90,23 @@
                                     addon-left-icon="key"
                                 ></base-input>
                                 <div class="text-center">
-                                    <base-button block type="primary" class="my-4" @click.prevent="changePassword"
-                                        >Change Password</base-button
+                                    <base-button
+                                        block
+                                        type="primary"
+                                        class="my-4"
+                                        :loading="loading"
+                                        :disabled="loading"
+                                        @click.prevent="changePassword"
                                     >
+                                        Change Password
+                                    </base-button>
                                 </div>
                             </div>
                         </fade-transition>
                         <div v-if="step === 3" class="d-flex align-items-center flex-column">
                             <font-awesome-icon icon="check-circle" :style="{ color: '#2dce89' }" size="4x" />
                             <div class="text-center text-muted mt-3">
-                                <base-button type="link" @click="$router.push('/')">Go to Login</base-button>
+                                <base-button type="link" @click="$router.push('/login')">Go to Login</base-button>
                             </div>
                         </div>
                         <div v-if="step === 1" class="text-center text-muted">
@@ -95,10 +134,22 @@ export default {
         step: 1,
         otp: null,
         loading: false,
+        usernameType: 'email',
+        token: null,
     }),
+    watch: {
+        username() {
+            const phoneRegEx = /^[0-9]+$/g;
+
+            if (phoneRegEx.test(this.username)) {
+                this.usernameType = 'phone';
+            } else {
+                this.usernameType = 'email';
+            }
+        },
+    },
     methods: {
         async sendOtp() {
-            const username = this.username;
             this.loading = true;
 
             try {
@@ -106,75 +157,76 @@ export default {
                     method: 'post',
                     url: `/auth/forgot`,
                     data: {
-                        username,
+                        username: this.username,
                     },
                 });
-                if (response.data && response.data.status === 'success') {
-                    this.$success('OTP Sent to email');
+
+                if (response.data && response.status === 200) {
+                    this.$success(`OTP Sent to ${this.usernameType}`);
                     this.gotCode = true;
                     this.usernameSet = true;
-                } else {
-                    throw new Error('Unable to send email.');
                 }
             } catch (err) {
-                this.$error('Unable to send email.');
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Unable to send OTP.');
+                }
             }
 
             this.loading = false;
         },
         async verifyOtp() {
             this.loading = true;
-            const username = this.username;
-            const otp = this.otp;
 
             try {
-                await this.$axios({
+                const response = await this.$axios({
                     method: 'post',
                     url: `/auth/verify`,
                     data: {
-                        username,
-                        otp,
+                        username: this.username,
+                        otp: this.otp,
                     },
                 });
 
-                if (response.data && response.data.status === 'success') {
-                    this.$success('OTP Verified');
+                if (response.data && response.status === 200 && response.data.token) {
+                    this.$success('OTP Verified.');
                     this.step = 2;
-                } else {
-                    throw new Error('Invalid OTP.');
+                    this.token = response.data.token;
                 }
             } catch (err) {
-                this.$error('Invalid OTP. Resend OTP and try again.');
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Invalid OTP. Resend OTP and try again.');
+                }
             }
 
             this.loading = false;
         },
         async changePassword() {
             this.loading = true;
-            const username = this.username;
-            const otp = this.otp;
-            const password = this.password;
 
             try {
                 const response = await this.$axios({
                     method: 'post',
-                    baseURL: process.env.VUE_APP_API_URL,
                     url: `/auth/changepw`,
                     data: {
-                        username,
-                        otp,
-                        password,
+                        token: this.token,
+                        password: this.password,
                     },
                 });
 
-                if (response.data && response.data.status === 'success') {
-                    this.$success('Password changed.');
+                if (response.data && response.status === 200) {
+                    this.$success(response.data.message);
                     this.step = 3;
-                } else {
-                    throw new Error('Password not changed.');
                 }
             } catch (err) {
-                this.$error('Password not changed.', { title: 'Something went wrong.' });
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Password not changed.', { title: 'Something went wrong.' });
+                }
             }
 
             this.loading = false;
