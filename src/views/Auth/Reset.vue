@@ -22,7 +22,14 @@
                                 </template>
                             </base-input>
                             <div class="text-center">
-                                <base-button block type="primary" class="my-4" @click.prevent="sendOtp">
+                                <base-button
+                                    block
+                                    type="primary"
+                                    class="my-4"
+                                    :loading="loading"
+                                    :disabled="loading"
+                                    @click.prevent="sendOtp"
+                                >
                                     Send OTP
                                 </base-button>
                             </div>
@@ -62,7 +69,14 @@
                                     addon-left-icon="lock"
                                 ></base-input>
                                 <div class="text-center">
-                                    <base-button block type="primary" class="my-4" @click.prevent="verifyOtp">
+                                    <base-button
+                                        block
+                                        type="primary"
+                                        class="my-4"
+                                        :loading="loading"
+                                        :disabled="loading"
+                                        @click.prevent="verifyOtp"
+                                    >
                                         Verify
                                     </base-button>
                                 </div>
@@ -76,7 +90,14 @@
                                     addon-left-icon="key"
                                 ></base-input>
                                 <div class="text-center">
-                                    <base-button block type="primary" class="my-4" @click.prevent="changePassword">
+                                    <base-button
+                                        block
+                                        type="primary"
+                                        class="my-4"
+                                        :loading="loading"
+                                        :disabled="loading"
+                                        @click.prevent="changePassword"
+                                    >
                                         Change Password
                                     </base-button>
                                 </div>
