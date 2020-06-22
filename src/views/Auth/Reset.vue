@@ -85,7 +85,7 @@
                         <div v-if="step === 3" class="d-flex align-items-center flex-column">
                             <font-awesome-icon icon="check-circle" :style="{ color: '#2dce89' }" size="4x" />
                             <div class="text-center text-muted mt-3">
-                                <base-button type="link" @click="$router.push('/')">Go to Login</base-button>
+                                <base-button type="link" @click="$router.push('/login')">Go to Login</base-button>
                             </div>
                         </div>
                         <div v-if="step === 1" class="text-center text-muted">
@@ -185,30 +185,27 @@ export default {
         },
         async changePassword() {
             this.loading = true;
-            const username = this.username;
-            const otp = this.otp;
-            const password = this.password;
 
             try {
                 const response = await this.$axios({
                     method: 'post',
-                    baseURL: process.env.VUE_APP_API_URL,
                     url: `/auth/changepw`,
                     data: {
-                        username,
-                        otp,
-                        password,
+                        token: this.token,
+                        password: this.password,
                     },
                 });
 
-                if (response.data && response.data.status === 'success') {
-                    this.$success('Password changed.');
+                if (response.data && response.status === 200) {
+                    this.$success(response.data.message);
                     this.step = 3;
-                } else {
-                    throw new Error('Password not changed.');
                 }
             } catch (err) {
-                this.$error('Password not changed.', { title: 'Something went wrong.' });
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Password not changed.', { title: 'Something went wrong.' });
+                }
             }
 
             this.loading = false;
