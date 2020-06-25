@@ -5,6 +5,16 @@
         </div>
         <div class="card-body p-0 position-relative min__height">
             <template v-if="services && services.length">
+                <div class="p-2">
+                    <base-dropdown>
+                        <base-button slot="title" size="sm" icon="caret-down" icon-position="right">
+                            {{ perPage }}
+                        </base-button>
+                        <a class="dropdown-item" @click="perPage = 10">10</a>
+                        <a class="dropdown-item" @click="perPage = 50">50</a>
+                        <a class="dropdown-item" @click="perPage = 100">100</a>
+                    </base-dropdown>
+                </div>
                 <div class="table-responsive">
                     <base-table
                         class="table align-items-center table-flush service-table"
@@ -53,8 +63,8 @@
                 <loading color="dark" />
             </div>
         </div>
-        <div v-if="page" class="card-footer">
-            <base-pagination v-model="page" :page-count="totalPages" align="center"> </base-pagination>
+        <div v-if="totalPages" class="card-footer">
+            <base-pagination v-model="page" :page-count="totalPages" align="center" />
         </div>
         <!-- DELETE SERVICE -->
         <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
@@ -92,11 +102,23 @@ export default {
         services: null,
         totalPages: null,
         page: 1,
+        order: 'asc',
         loading: null,
         perPage: 10,
         deleteModal: null,
         selectedService: null,
     }),
+    watch: {
+        page() {
+            this.getServices();
+        },
+        perPage() {
+            this.getServices();
+        },
+        order() {
+            this.getServices();
+        },
+    },
     mounted() {
         this.getServices();
     },
@@ -108,6 +130,11 @@ export default {
                 const response = await this.$axios({
                     method: 'get',
                     url: '/services/list',
+                    params: {
+                        page: this.page,
+                        perPage: this.perPage,
+                        order: this.order,
+                    },
                 });
 
                 const services = response.data.services;
