@@ -5,15 +5,18 @@
         </div>
         <div class="card-body p-0 position-relative min__height">
             <template v-if="services && services.length">
-                <div class="p-2">
-                    <base-dropdown>
-                        <base-button slot="title" size="sm" icon="caret-down" icon-position="right">
-                            {{ perPage }}
-                        </base-button>
-                        <a class="dropdown-item" @click="perPage = 10">10</a>
-                        <a class="dropdown-item" @click="perPage = 50">50</a>
-                        <a class="dropdown-item" @click="perPage = 100">100</a>
-                    </base-dropdown>
+                <div class="p-2 d-flex">
+                    <div>
+                        <small class="mr-1 font-weight-bold">Per Page:</small>
+                        <base-dropdown>
+                            <base-button slot="title" size="sm" icon="caret-down" icon-position="right">
+                                {{ perPage }}
+                            </base-button>
+                            <a class="dropdown-item" @click="perPage = 10">10</a>
+                            <a class="dropdown-item" @click="perPage = 50">50</a>
+                            <a class="dropdown-item" @click="perPage = 100">100</a>
+                        </base-dropdown>
+                    </div>
                 </div>
                 <div class="table-responsive">
                     <base-table
@@ -22,7 +25,16 @@
                         :data="services"
                     >
                         <template slot="columns">
-                            <th class="text-center text-white name">Service Name</th>
+                            <th class="text-center text-white name">
+                                <a
+                                    class="pointer"
+                                    @click.prevent="order === 'asc' ? (order = 'desc') : (order = 'asc')"
+                                >
+                                    Service Name
+                                    <font-awesome-icon :icon="order === 'asc' ? 'caret-up' : 'caret-down'" />
+                                </a>
+                                <!-- <base-button icon="caret-up" size="sm" type="primary"></base-button> -->
+                            </th>
                             <th class="text-center text-white desc">Description</th>
                             <th class="text-center text-white actions">Actions</th>
                         </template>
