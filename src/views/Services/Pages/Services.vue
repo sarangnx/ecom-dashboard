@@ -21,7 +21,7 @@
                                 <span>{{ row.name }}</span>
                             </td>
                             <td class="desc">
-                                <span class="d-block">{{ row.description }}</span>
+                                <span class="d-block">{{ row.description | truncate }}</span>
                             </td>
                             <td>
                                 <div class="d-flex justify-content-center">
@@ -53,6 +53,12 @@
 <script>
 export default {
     name: 'Services',
+    filters: {
+        truncate(text) {
+            if (!text) return '';
+            return `${text.substring(0, 150)}...`;
+        },
+    },
     data: () => ({
         services: null,
         totalPages: null,
