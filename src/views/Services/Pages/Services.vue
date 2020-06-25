@@ -27,7 +27,15 @@
                                 <div class="d-flex justify-content-center">
                                     <base-button type="success" icon="eye" size="sm"></base-button>
                                     <base-button type="primary" icon="edit" size="sm"></base-button>
-                                    <base-button type="danger" icon="trash" size="sm"></base-button>
+                                    <base-button
+                                        type="danger"
+                                        icon="trash"
+                                        size="sm"
+                                        @click="
+                                            deleteModal = true;
+                                            selectedService = row;
+                                        "
+                                    ></base-button>
                                 </div>
                             </td>
                         </template>
@@ -48,11 +56,32 @@
         <div v-if="page" class="card-footer">
             <base-pagination v-model="page" :page-count="totalPages" align="center"> </base-pagination>
         </div>
+        <!-- DELETE SERVICE -->
+        <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+            <h4 slot="header" class="modal-title">Delete Service</h4>
+            <delete-service
+                :service="selectedService"
+                @close="
+                    deleteModal = false;
+                    selectedService = null;
+                "
+                @done="
+                    deleteModal = false;
+                    selectedService = null;
+                    getServices();
+                "
+            />
+        </modal>
     </div>
 </template>
 <script>
+import DeleteService from './components/DeleteService';
+
 export default {
     name: 'Services',
+    components: {
+        DeleteService,
+    },
     filters: {
         truncate(text) {
             if (!text) return '';
@@ -65,6 +94,8 @@ export default {
         page: 1,
         loading: null,
         perPage: 10,
+        deleteModal: null,
+        selectedService: null,
     }),
     mounted() {
         this.getServices();
