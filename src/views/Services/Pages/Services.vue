@@ -13,15 +13,15 @@
                     >
                         <template slot="columns">
                             <th class="text-center text-white name">Service Name</th>
-                            <th class="text-center text-white">Description</th>
+                            <th class="text-center text-white desc">Description</th>
                             <th class="text-center text-white actions">Actions</th>
                         </template>
                         <template slot-scope="{ row }">
                             <td class="text-center">
                                 <span>{{ row.name }}</span>
                             </td>
-                            <td>
-                                <span>{{ row.description }}</span>
+                            <td class="desc">
+                                <span class="d-block">{{ row.description }}</span>
                             </td>
                             <td>
                                 <div class="d-flex justify-content-center">
@@ -82,21 +82,16 @@ export default {
 };
 </script>
 <style scoped lang="scss">
-@import 'node_modules/bootstrap/scss/functions';
-@import 'node_modules/bootstrap/scss/variables';
-@import 'node_modules/bootstrap/scss/mixins';
 .service-table {
-    table-layout: fixed;
-    td {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-    @include media-breakpoint-up(sm) {
-        .name,
-        .actions {
-            width: 20%;
+    td.desc {
+        min-width: 300px;
+        span {
+            white-space: break-spaces;
         }
+    }
+    .name,
+    .actions {
+        width: 20%;
     }
 }
 </style>
