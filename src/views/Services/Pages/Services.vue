@@ -12,12 +12,12 @@
                         :data="services"
                     >
                         <template slot="columns">
-                            <th class="text-white">Service Name</th>
+                            <th class="text-center text-white name">Service Name</th>
                             <th class="text-center text-white">Description</th>
-                            <th class="text-center text-white">Actions</th>
+                            <th class="text-center text-white actions">Actions</th>
                         </template>
                         <template slot-scope="{ row }">
-                            <td>
+                            <td class="text-center">
                                 <span>{{ row.name }}</span>
                             </td>
                             <td>
@@ -82,12 +82,21 @@ export default {
 };
 </script>
 <style scoped lang="scss">
+@import 'node_modules/bootstrap/scss/functions';
+@import 'node_modules/bootstrap/scss/variables';
+@import 'node_modules/bootstrap/scss/mixins';
 .service-table {
     table-layout: fixed;
     td {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+    }
+    @include media-breakpoint-up(sm) {
+        .name,
+        .actions {
+            width: 20%;
+        }
     }
 }
 </style>
