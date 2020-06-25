@@ -102,6 +102,8 @@ export default {
     },
     methods: {
         async getServices() {
+            this.loading = true;
+
             try {
                 const response = await this.$axios({
                     method: 'get',
@@ -114,6 +116,8 @@ export default {
             } catch (err) {
                 this.$error('Unable to get items.');
             }
+
+            this.loading = false;
         },
     },
 };
