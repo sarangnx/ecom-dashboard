@@ -24,7 +24,8 @@
                                 <span>{{ row.description }}</span>
                             </td>
                             <td>
-                                <div class="form-group d-flex justify-content-center">
+                                <div class="d-flex justify-content-center">
+                                    <base-button type="success" icon="eye" size="sm"></base-button>
                                     <base-button type="primary" icon="edit" size="sm"></base-button>
                                     <base-button type="danger" icon="trash" size="sm"></base-button>
                                 </div>
