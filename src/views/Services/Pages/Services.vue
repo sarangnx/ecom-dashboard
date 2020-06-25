@@ -5,7 +5,7 @@
         </div>
         <div class="card-body p-0 position-relative min__height">
             <template v-if="services && services.length">
-                <div class="p-2 d-flex">
+                <div class="p-2 d-flex justify-content-between">
                     <div>
                         <small class="mr-1 font-weight-bold">Per Page:</small>
                         <base-dropdown>
@@ -16,6 +16,11 @@
                             <a class="dropdown-item" @click="perPage = 50">50</a>
                             <a class="dropdown-item" @click="perPage = 100">100</a>
                         </base-dropdown>
+                    </div>
+                    <div>
+                        <base-button icon="plus" size="sm" type="success" @click="addModal = true">
+                            Add Service
+                        </base-button>
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -78,6 +83,21 @@
         <div v-if="totalPages" class="card-footer">
             <base-pagination v-model="page" :page-count="totalPages" align="center" />
         </div>
+        <!-- ADD SERVICE -->
+        <modal :show.sync="addModal" header-classes="pb-0" :click-out="false">
+            <h4 slot="header" class="modal-title">Add Service</h4>
+            <add-service
+                @close="
+                    deleteModal = false;
+                    selectedService = null;
+                "
+                @done="
+                    deleteModal = false;
+                    selectedService = null;
+                    getServices();
+                "
+            />
+        </modal>
         <!-- DELETE SERVICE -->
         <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
             <h4 slot="header" class="modal-title">Delete Service</h4>
@@ -97,12 +117,14 @@
     </div>
 </template>
 <script>
+import AddService from './components/AddService';
 import DeleteService from './components/DeleteService';
 
 export default {
     name: 'Services',
     components: {
         DeleteService,
+        AddService,
     },
     filters: {
         truncate(text) {
@@ -117,6 +139,7 @@ export default {
         order: 'asc',
         loading: null,
         perPage: 10,
+        addModal: null,
         deleteModal: null,
         selectedService: null,
     }),
