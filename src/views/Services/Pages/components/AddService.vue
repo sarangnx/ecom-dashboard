@@ -1,5 +1,5 @@
 <template>
-    <div class="position-relative">
+    <div>
         <div class="row">
             <div class="col-12">
                 <h5>Service Name</h5>
@@ -97,8 +97,39 @@ export default {
         },
     },
     methods: {
-        addService() {
-            console.log(this.service);
+        async addService() {
+            this.$v.$touch();
+
+            if (this.$v.$invalid) return;
+            this.loading = true;
+
+            let data = Object.assign({}, this.service);
+
+            // Wrap it as FormData.
+            const formData = new FormData();
+            Object.keys(data).forEach((key) => {
+                formData.append(key, data[key]);
+            });
+
+            try {
+                const response = await this.$axios({
+                    method: 'post',
+                    url: '/services/service',
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                    data: formData,
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                }
+                this.$emit('done');
+            } catch (err) {
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
         },
         removeImage() {
             // remove selected image from buffer and data property of vue.
