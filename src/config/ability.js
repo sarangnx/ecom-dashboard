@@ -30,6 +30,7 @@ export default {
         { action: 'menu', subject: 'excel' },
         { action: 'menu', subject: 'banners' },
         { action: 'menu', subject: 'settings' },
+        { action: 'menu', subject: ['services', 'manage-services'] },
         { action: 'settings', subject: ['profile', 'password'] },
     ],
     superadmin: [
@@ -41,6 +42,7 @@ export default {
         { action: 'menu', subject: 'excel' },
         { action: 'menu', subject: 'banners' },
         { action: 'menu', subject: 'settings' },
+        { action: 'menu', subject: ['services', 'manage-services'] },
         { action: 'settings', subject: ['profile', 'password'] },
     ],
 };
