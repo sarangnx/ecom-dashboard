@@ -53,7 +53,15 @@
                             </td>
                             <td>
                                 <div class="d-flex justify-content-center">
-                                    <base-button type="success" icon="eye" size="sm"></base-button>
+                                    <base-button
+                                        type="success"
+                                        icon="eye"
+                                        size="sm"
+                                        @click="
+                                            viewModal = true;
+                                            selectedService = row;
+                                        "
+                                    ></base-button>
                                     <base-button
                                         type="primary"
                                         icon="edit"
@@ -139,12 +147,18 @@
                 "
             />
         </modal>
+        <!-- VIEW SERVICE -->
+        <modal :show.sync="viewModal" header-classes="pb-0" :click-out="false">
+            <h4 slot="header" class="modal-title"></h4>
+            <view-service :key="Date.now()" :service="selectedService" />
+        </modal>
     </div>
 </template>
 <script>
 import AddService from './components/AddService';
 import DeleteService from './components/DeleteService';
 import EditService from './components/EditService';
+import ViewService from './components/ViewService';
 
 export default {
     name: 'Services',
@@ -152,6 +166,7 @@ export default {
         AddService,
         DeleteService,
         EditService,
+        ViewService,
     },
     filters: {
         truncate(text) {
@@ -169,6 +184,7 @@ export default {
         addModal: null,
         deleteModal: null,
         editModal: null,
+        viewModal: null,
         selectedService: null,
     }),
     computed: {
