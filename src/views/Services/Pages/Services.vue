@@ -58,7 +58,7 @@
                                         icon="edit"
                                         size="sm"
                                         @click="
-                                            deleteModal = true;
+                                            editModal = true;
                                             selectedService = row;
                                         "
                                     ></base-button>
