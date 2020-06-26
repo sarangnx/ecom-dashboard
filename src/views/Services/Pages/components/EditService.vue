@@ -24,7 +24,7 @@
                     <input ref="file" type="file" class="hidden" accept="image/*" @change="loadImageFile($event)" />
                     <div class="col-12">
                         <div v-show="serviceModel.image" class="image-container">
-                            <img ref="image" src="#" class="col-6" />
+                            <img ref="image" :src="src" class="col-6" />
                             <!-- Overlay -->
                             <div class="image-overlay col-6">
                                 <div class="d-flex justify-content-center align-items-center height">
@@ -100,6 +100,14 @@ export default {
         imageModal: null,
         image: null,
     }),
+    computed: {
+        s3bucket() {
+            return process.env.VUE_APP_S3_BUCKET;
+        },
+        src() {
+            return this.serviceModel && this.serviceModel.image ? `${this.s3bucket}/${this.serviceModel.image}` : '#';
+        },
+    },
     validations: {
         serviceModel: {
             name: {
