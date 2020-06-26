@@ -80,10 +80,15 @@
             </template>
             <div
                 v-if="!(services && services.length) && !loading"
-                class="col-12 p-5 d-flex justify-content-center align-items-center"
+                class="col-12 p-5 d-flex justify-content-center flex-column align-items-center"
             >
-                <small class="p-2">no Services</small>
-                <font-awesome-icon icon="inbox" />
+                <base-button icon="plus" size="sm" type="success" class="m-0" @click="addModal = true">
+                    Add Service
+                </base-button>
+                <div>
+                    <small class="p-2">no Services</small>
+                    <font-awesome-icon icon="inbox" />
+                </div>
             </div>
             <div v-if="loading" class="over__lay">
                 <loading color="dark" />
