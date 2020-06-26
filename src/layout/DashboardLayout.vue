@@ -123,6 +123,14 @@ export default {
                 type: 'sidebaritem',
             },
             {
+                name: 'Services',
+                subject: 'services',
+                icon: 'user-tie',
+                class: 'text-blue',
+                type: 'sidebardropdown',
+                children: [{ name: 'Manage Services', path: '/services/manage-services', subject: 'manage-services' }],
+            },
+            {
                 name: 'Settings',
                 subject: 'settings',
                 icon: 'cog',
