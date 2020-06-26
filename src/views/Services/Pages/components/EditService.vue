@@ -100,6 +100,7 @@ export default {
         imageModal: null,
         image: null,
         filename: null,
+        imageChanged: false,
     }),
     computed: {
         s3bucket() {
@@ -132,7 +133,7 @@ export default {
 
             let image;
             // Convert base64 image to File to send to server as formdata.
-            if (this.serviceModel.image) {
+            if (this.serviceModel.image && this.imageChanged) {
                 const arr = this.serviceModel.image.split(',');
                 const mime = arr[0].match(/:(.*?);/)[1];
                 const bstr = atob(arr[1]);
@@ -146,11 +147,19 @@ export default {
                 image = new File([u8arr], this.filename, { type: mime });
             }
 
-            let data = Object.assign({}, this.service);
+            let data = Object.assign({}, this.serviceModel);
 
-            if (image) {
-                data.image = image;
-            }
+            // If new image file is created append
+            if (image) data.image = image;
+
+            // If image is removed
+            if (this.imageChanged && !data.image) data.image = 'null';
+
+            // If no changes are made to image
+            if (!this.imageChanged) delete data.image;
+
+            // If description is empty
+            if (!data.description) data.description = '';
 
             // Wrap it as FormData.
             const formData = new FormData();
@@ -182,6 +191,7 @@ export default {
             // remove selected image from buffer and data property of vue.
             // and set label to default.
             this.serviceModel.image = null;
+            this.imageChanged = true;
             this.image = null;
             this.filename = null;
             this.$refs.file.value = this.$refs.file.defaultValue;
@@ -196,6 +206,7 @@ export default {
             this.serviceModel.image = this.$refs.cropper.getCroppedCanvas().toDataURL();
             this.$refs.image.setAttribute('src', this.serviceModel.image);
             this.imageModal = false;
+            this.imageChanged = true;
         },
         loadImageFile(event) {
             this.image = event.target.files[0];
