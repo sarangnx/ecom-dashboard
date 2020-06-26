@@ -4,21 +4,26 @@
             <div class="col-12">
                 <h5>Service Name</h5>
                 <base-input
-                    v-model="service.name"
+                    v-model="serviceModel.name"
                     maxlength="200"
-                    :error="$v.service.name.$error ? 'Service Name Required' : null"
+                    :error="$v.serviceModel.name.$error ? 'Service Name Required' : null"
                 ></base-input>
             </div>
             <div class="col-12">
                 <h5>Description</h5>
-                <textarea v-model="service.description" class="form-control" rows="3" style="resize: none;"></textarea>
+                <textarea
+                    v-model="serviceModel.description"
+                    class="form-control"
+                    rows="3"
+                    style="resize: none;"
+                ></textarea>
             </div>
             <div class="col-12 mt-3">
                 <h5>Thumbnail</h5>
                 <div class="row">
                     <input ref="file" type="file" class="hidden" accept="image/*" @change="loadImageFile($event)" />
                     <div class="col-12">
-                        <div v-show="service.image" class="image-container">
+                        <div v-show="serviceModel.image" class="image-container">
                             <img ref="image" src="#" class="col-6" />
                             <!-- Overlay -->
                             <div class="image-overlay col-6">
@@ -30,7 +35,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div v-show="!service.image" class="input-group">
+                        <div v-show="!serviceModel.image" class="input-group">
                             <div class="custom-file">
                                 <input
                                     ref="file"
@@ -81,20 +86,31 @@ export default {
     components: {
         VueCropper,
     },
+    props: {
+        service: {
+            type: Object,
+            default: () => {},
+        },
+    },
     data: () => ({
         loading: false,
-        service: {
+        serviceModel: {
             image: null,
         },
         imageModal: null,
         image: null,
     }),
     validations: {
-        service: {
+        serviceModel: {
             name: {
                 required,
             },
         },
+    },
+    mounted() {
+        if (this.service) {
+            this.serviceModel = Object.assign({}, this.service);
+        }
     },
     methods: {
         async addService() {
