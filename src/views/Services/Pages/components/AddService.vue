@@ -126,6 +126,11 @@ export default {
                 data.image = image;
             }
 
+            // remove keys with null or undefined or 0 value.
+            for (let key in data) {
+                if (!data[key]) delete data[key];
+            }
+
             // Wrap it as FormData.
             const formData = new FormData();
             Object.keys(data).forEach((key) => {
