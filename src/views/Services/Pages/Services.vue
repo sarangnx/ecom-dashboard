@@ -87,6 +87,7 @@
         <modal :show.sync="addModal" header-classes="pb-0" :click-out="false">
             <h4 slot="header" class="modal-title">Add Service</h4>
             <add-service
+                :key="Date.now()"
                 @close="
                     deleteModal = false;
                     selectedService = null;
@@ -102,6 +103,7 @@
         <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
             <h4 slot="header" class="modal-title">Delete Service</h4>
             <delete-service
+                :key="Date.now()"
                 :service="selectedService"
                 @close="
                     deleteModal = false;
