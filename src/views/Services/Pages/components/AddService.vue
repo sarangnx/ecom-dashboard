@@ -110,6 +110,7 @@ export default {
         cancelCrop() {
             this.image = null;
             this.$refs.file.value = this.$refs.file.defaultValue;
+            this.imageModal = false;
         },
         crop() {
             this.service.image = this.$refs.cropper.getCroppedCanvas().toDataURL();
