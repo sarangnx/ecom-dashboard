@@ -8,7 +8,10 @@
         :style="styles"
         @click="handleClick"
     >
-        <span v-if="($slots.icon || (icon && $slots.default)) && !loading" class="btn-inner--icon">
+        <span
+            v-if="($slots.icon || (icon && $slots.default)) && !loading && iconPosition === 'left'"
+            class="btn-inner--icon"
+        >
             <slot name="icon">
                 <font-awesome-icon :icon="icon"></font-awesome-icon>
             </slot>
@@ -17,6 +20,14 @@
         <span v-if="($slots.icon || (icon && $slots.default)) && !loading" class="btn-inner--text">
             <slot>
                 {{ text }}
+            </slot>
+        </span>
+        <span
+            v-if="($slots.icon || (icon && $slots.default)) && !loading && iconPosition === 'right'"
+            class="btn-inner--icon"
+        >
+            <slot name="icon">
+                <font-awesome-icon :icon="icon"></font-awesome-icon>
             </slot>
         </span>
         <slot v-if="!$slots.icon && !icon && !loading"></slot>
@@ -99,6 +110,10 @@ export default {
         disabled: {
             type: Boolean,
             default: false,
+        },
+        iconPosition: {
+            type: String,
+            default: 'left',
         },
     },
     computed: {

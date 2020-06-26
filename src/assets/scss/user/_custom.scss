@@ -76,3 +76,31 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
     -moz-appearance: textfield;
 }
+
+.hidden {
+    display: none;
+}
+.height {
+    height: 100%;
+}
+.image-overlay {
+    cursor: pointer;
+}
+.image-container {
+    display: flex;
+    justify-content: center;
+}
+.image-container .image-overlay {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    height: 100%;
+    display: none;
+    color: white;
+}
+.image-container:hover .image-overlay {
+    display: block;
+    background: rgba(0, 0, 0, 0.4);
+}
