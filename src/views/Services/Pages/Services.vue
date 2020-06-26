@@ -88,13 +88,8 @@
             <h4 slot="header" class="modal-title">Add Service</h4>
             <add-service
                 :key="Date.now()"
-                @close="
-                    deleteModal = false;
-                    selectedService = null;
-                "
                 @done="
-                    deleteModal = false;
-                    selectedService = null;
+                    addModal = false;
                     getServices();
                 "
             />
