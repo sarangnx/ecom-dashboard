@@ -53,7 +53,15 @@
                             <td>
                                 <div class="d-flex justify-content-center">
                                     <base-button type="success" icon="eye" size="sm"></base-button>
-                                    <base-button type="primary" icon="edit" size="sm"></base-button>
+                                    <base-button
+                                        type="primary"
+                                        icon="edit"
+                                        size="sm"
+                                        @click="
+                                            deleteModal = true;
+                                            selectedService = row;
+                                        "
+                                    ></base-button>
                                     <base-button
                                         type="danger"
                                         icon="trash"
@@ -94,6 +102,19 @@
                 "
             />
         </modal>
+        <!-- EDIT SERVICE -->
+        <modal :show.sync="editModal" header-classes="pb-0" :click-out="false">
+            <h4 slot="header" class="modal-title">Edit Service</h4>
+            <edit-service
+                :key="Date.now()"
+                :service="selectedService"
+                @done="
+                    editModal = false;
+                    selectedService = null;
+                    getServices();
+                "
+            />
+        </modal>
         <!-- DELETE SERVICE -->
         <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
             <h4 slot="header" class="modal-title">Delete Service</h4>
@@ -116,12 +137,14 @@
 <script>
 import AddService from './components/AddService';
 import DeleteService from './components/DeleteService';
+import EditService from './components/EditService';
 
 export default {
     name: 'Services',
     components: {
-        DeleteService,
         AddService,
+        DeleteService,
+        EditService,
     },
     filters: {
         truncate(text) {
@@ -138,6 +161,7 @@ export default {
         perPage: 10,
         addModal: null,
         deleteModal: null,
+        editModal: null,
         selectedService: null,
     }),
     watch: {
