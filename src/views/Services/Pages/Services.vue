@@ -45,6 +45,7 @@
                         </template>
                         <template slot-scope="{ row }">
                             <td class="text-center">
+                                <img v-if="row.image" :src="`${s3bucket}/${row.image}`" class="service-thumb mr-2" />
                                 <span>{{ row.name }}</span>
                             </td>
                             <td class="desc">
@@ -165,6 +166,11 @@ export default {
         editModal: null,
         selectedService: null,
     }),
+    computed: {
+        s3bucket() {
+            return process.env.VUE_APP_S3_BUCKET;
+        },
+    },
     watch: {
         page() {
             this.getServices();
@@ -217,6 +223,9 @@ export default {
     .name,
     .actions {
         width: 20%;
+    }
+    .service-thumb {
+        max-height: 30px;
     }
 }
 </style>
