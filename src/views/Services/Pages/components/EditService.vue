@@ -106,7 +106,9 @@ export default {
             return process.env.VUE_APP_S3_BUCKET;
         },
         src() {
-            return this.serviceModel && this.serviceModel.image ? `${this.s3bucket}/${this.serviceModel.image}` : '#';
+            return this.serviceModel && this.serviceModel.image && this.serviceModel.image.indexOf('data:image') === -1
+                ? `${this.s3bucket}/${this.serviceModel.image}`
+                : '#';
         },
     },
     validations: {
@@ -117,11 +119,8 @@ export default {
         },
     },
     mounted() {
-        console.log(this.service);
         if (this.service) {
             this.serviceModel = Object.assign({}, this.service);
-        } else {
-            this.serviceModel = {};
         }
     },
     methods: {
@@ -133,8 +132,8 @@ export default {
 
             let image;
             // Convert base64 image to File to send to server as formdata.
-            if (this.service.image) {
-                const arr = this.service.image.split(',');
+            if (this.serviceModel.image) {
+                const arr = this.serviceModel.image.split(',');
                 const mime = arr[0].match(/:(.*?);/)[1];
                 const bstr = atob(arr[1]);
                 let n = bstr.length;
@@ -182,7 +181,7 @@ export default {
         removeImage() {
             // remove selected image from buffer and data property of vue.
             // and set label to default.
-            this.service.image = null;
+            this.serviceModel.image = null;
             this.image = null;
             this.filename = null;
             this.$refs.file.value = this.$refs.file.defaultValue;
@@ -194,8 +193,8 @@ export default {
             this.imageModal = false;
         },
         crop() {
-            this.service.image = this.$refs.cropper.getCroppedCanvas().toDataURL();
-            this.$refs.image.setAttribute('src', this.service.image);
+            this.serviceModel.image = this.$refs.cropper.getCroppedCanvas().toDataURL();
+            this.$refs.image.setAttribute('src', this.serviceModel.image);
             this.imageModal = false;
         },
         loadImageFile(event) {
