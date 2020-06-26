@@ -160,7 +160,7 @@ export default {
 
             try {
                 const response = await this.$axios({
-                    method: 'post',
+                    method: 'patch',
                     url: '/services/service',
                     headers: { 'Content-Type': 'multipart/form-data' },
                     data: formData,
