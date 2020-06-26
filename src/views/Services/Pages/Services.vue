@@ -108,6 +108,7 @@
             <edit-service
                 :key="Date.now()"
                 :service="selectedService"
+                @close="selectedService = null"
                 @done="
                     editModal = false;
                     selectedService = null;
