@@ -44,7 +44,7 @@
                             <th class="text-center text-white actions">Actions</th>
                         </template>
                         <template slot-scope="{ row }">
-                            <td class="text-center">
+                            <td class="text-left name d-flex">
                                 <img v-if="row.image" :src="`${s3bucket}/${row.image}`" class="service-thumb mr-2" />
                                 <span>{{ row.name }}</span>
                             </td>
@@ -220,9 +220,8 @@ export default {
             white-space: break-spaces;
         }
     }
-    .name,
-    .actions {
-        width: 20%;
+    .name span {
+        white-space: break-spaces;
     }
     .service-thumb {
         max-height: 30px;
