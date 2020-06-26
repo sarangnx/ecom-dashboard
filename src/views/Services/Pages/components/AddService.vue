@@ -88,6 +88,7 @@ export default {
         },
         imageModal: null,
         image: null,
+        filename: null,
     }),
     validations: {
         service: {
@@ -103,7 +104,27 @@ export default {
             if (this.$v.$invalid) return;
             this.loading = true;
 
+            let image;
+            // Convert base64 image to File to send to server as formdata.
+            if (this.service.image) {
+                const arr = this.service.image.split(',');
+                const mime = arr[0].match(/:(.*?);/)[1];
+                const bstr = atob(arr[1]);
+                let n = bstr.length;
+                const u8arr = new Uint8Array(n);
+
+                while (n--) {
+                    u8arr[n] = bstr.charCodeAt(n);
+                }
+
+                image = new File([u8arr], this.filename, { type: mime });
+            }
+
             let data = Object.assign({}, this.service);
+
+            if (image) {
+                data.image = image;
+            }
 
             // Wrap it as FormData.
             const formData = new FormData();
@@ -136,10 +157,12 @@ export default {
             // and set label to default.
             this.service.image = null;
             this.image = null;
+            this.filename = null;
             this.$refs.file.value = this.$refs.file.defaultValue;
         },
         cancelCrop() {
             this.image = null;
+            this.filename = null;
             this.$refs.file.value = this.$refs.file.defaultValue;
             this.imageModal = false;
         },
@@ -150,6 +173,7 @@ export default {
         },
         loadImageFile(event) {
             this.image = event.target.files[0];
+            this.filename = event.target.files[0].name;
             this.imageModal = true;
             if (event.target.files[0]) {
                 let reader = new FileReader();
