@@ -86,6 +86,20 @@ export default [
                 component: () => import(/* webpackChunkName: "notifications" */ '@/views/Banner/Banner.vue'),
                 meta: { requiresAuth: true },
             },
+            {
+                path: '/services',
+                name: 'services',
+                component: () => import(/* webpackChunkName: "category" */ '@/views/Services/Index.vue'),
+                meta: { requiresAuth: true },
+                children: [
+                    {
+                        path: 'manage-services',
+                        name: 'manage services',
+                        component: () =>
+                            import(/* webpackChunkName: "category" */ '@/views/Services/Pages/Services.vue'),
+                    },
+                ],
+            },
             // {
             //     path: '/notifications',
             //     name: 'notifications',
