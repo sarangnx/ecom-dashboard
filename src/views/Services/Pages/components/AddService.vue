@@ -42,6 +42,24 @@
                                 <label ref="label" class="custom-file-label">Thumbnail</label>
                             </div>
                         </div>
+                        <modal :show.sync="imageModal" body-classes="pt-0" :click-out="false">
+                            <h4 slot="header" class="modal-title">Crop Image</h4>
+                            <vue-cropper
+                                ref="cropper"
+                                :aspect-ratio="1 / 1"
+                                :view-mode="2"
+                                drag-mode="move"
+                                :container-style="{ 'max-height': '350px' }"
+                            ></vue-cropper>
+                            <div class="mt-2 d-flex justify-content-between">
+                                <base-button type="danger" size="sm" @click="cancelCrop()">
+                                    Cancel
+                                </base-button>
+                                <base-button icon="crop" type="success" size="sm" @click="crop()">
+                                    Crop & Select
+                                </base-button>
+                            </div>
+                        </modal>
                     </div>
                 </div>
             </div>
@@ -56,13 +74,20 @@
 </template>
 <script>
 import { required } from 'vuelidate/lib/validators';
+import VueCropper from 'vue-cropperjs';
+import 'cropperjs/dist/cropper.css';
 
 export default {
+    components: {
+        VueCropper,
+    },
     data: () => ({
         loading: false,
         service: {
             image: null,
         },
+        imageModal: null,
+        image: null,
     }),
     validations: {
         service: {
@@ -79,16 +104,28 @@ export default {
             // remove selected image from buffer and data property of vue.
             // and set label to default.
             this.service.image = null;
+            this.image = null;
             this.$refs.file.value = this.$refs.file.defaultValue;
-            this.$refs.label.innerHTML = 'Thumbnail';
+        },
+        cancelCrop() {
+            this.image = null;
+            this.$refs.file.value = this.$refs.file.defaultValue;
+        },
+        crop() {
+            this.service.image = this.$refs.cropper.getCroppedCanvas().toDataURL();
+            this.$refs.image.setAttribute('src', this.service.image);
+            this.imageModal = false;
         },
         loadImageFile(event) {
-            this.service.image = event.target.files[0];
+            this.image = event.target.files[0];
+            this.imageModal = true;
             if (event.target.files[0]) {
                 let reader = new FileReader();
 
                 reader.onload = (e) => {
-                    this.$refs.image.setAttribute('src', e.target.result);
+                    if (this.$refs.cropper) {
+                        this.$refs.cropper.replace(e.target.result);
+                    }
                 };
 
                 reader.readAsDataURL(event.target.files[0]);
