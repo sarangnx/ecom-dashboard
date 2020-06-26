@@ -69,7 +69,7 @@
                 </div>
             </div>
             <div class="col-12 mt-3">
-                <base-button block icon="plus" @click="addService">Add Service</base-button>
+                <base-button block icon="save" type="success" @click="editService">Save</base-button>
             </div>
         </div>
         <div v-if="loading" class="over__lay">
@@ -125,7 +125,7 @@ export default {
         }
     },
     methods: {
-        async addService() {
+        async editService() {
             this.$v.$touch();
 
             if (this.$v.$invalid) return;
