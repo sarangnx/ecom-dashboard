@@ -62,7 +62,6 @@
                                     />
                                     <base-input
                                         v-model="permanent.state"
-                                        type="number"
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="State"
@@ -119,7 +118,6 @@
                                     />
                                     <base-input
                                         v-model="present.state"
-                                        type="number"
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="State"
