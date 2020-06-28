@@ -183,6 +183,32 @@
                         <!-- STEP 4 -->
                         <div v-show="step === 4" class="row">
                             <div class="col-12 mb-3">
+                                <h3>Proof of Idendity</h3>
+                            </div>
+                            <div class="col-12 d-flex align-items-center mb-3">
+                                <h4 class="text-muted mb-0 mr-3">Select Proof Type</h4>
+                                <base-dropdown>
+                                    <base-button slot="title" size="sm" icon="caret-down" icon-position="right">
+                                        {{ id && id.selected ? id.selected.name : 'None' }}
+                                    </base-button>
+                                    <a
+                                        v-for="(type, index) in idProofTypes"
+                                        :key="index"
+                                        class="dropdown-item pointer"
+                                        @click="id.selected = type"
+                                    >
+                                        {{ type.name }}
+                                    </a>
+                                </base-dropdown>
+                            </div>
+                            <div v-if="id && id.selected" class="col-12 d-flex align-items-center mb-3">
+                                <h4 class="text-muted mb-0 mr-3">Proof ID Number</h4>
+                                <base-input v-model="id.idProofNumber" class="mb-0" maxlength="30" />
+                            </div>
+                        </div>
+                        <!-- STEP 5 -->
+                        <div v-show="step === 5" class="row">
+                            <div class="col-12 mb-3">
                                 <h3>Account Creation</h3>
                             </div>
                             <div class="col-12 col-md-6">
@@ -206,13 +232,13 @@
                 </div>
                 <div
                     class="card-footer d-flex"
-                    :class="{ 'justify-content-between': step !== 1, 'justify-content-end': step === 1 }"
+                    :class="[step === 1 ? 'justify-content-end' : 'justify-content-between']"
                 >
                     <base-button v-if="step != 1" icon="arrow-left" size="sm" type="danger" @click="previous">
                         Previous
                     </base-button>
                     <base-button
-                        v-if="step < 4"
+                        v-if="step < 5"
                         icon="arrow-right"
                         icon-position="right"
                         size="sm"
@@ -221,9 +247,9 @@
                     >
                         Next
                     </base-button>
-                    <base-button v-if="step === 4" icon="paper-plane" icon-position="right" size="sm" type="success">
-                        Submit</base-button
-                    >
+                    <base-button v-if="step === 5" icon="paper-plane" icon-position="right" size="sm" type="success">
+                        Submit
+                    </base-button>
                 </div>
             </div>
         </div>
@@ -242,6 +268,14 @@ export default {
         services: [],
         filteredServices: [],
         filter: null,
+        idProofTypes: [
+            { name: 'Aadhar Card', value: 'aadhar' },
+            { name: 'Driving License', value: 'license' },
+            { name: 'Pan Card', value: 'pan' },
+            { name: 'Voter Id', value: 'voterid' },
+            { name: 'Others', value: 'other' },
+        ],
+        id: { selected: null },
     }),
     watch: {
         filter() {
@@ -272,7 +306,7 @@ export default {
             this.step = this.step > 1 ? this.step - 1 : this.step;
         },
         next() {
-            this.step = this.step < 4 ? this.step + 1 : this.step;
+            this.step = this.step < 5 ? this.step + 1 : this.step;
         },
     },
 };
