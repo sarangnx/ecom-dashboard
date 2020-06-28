@@ -53,7 +53,11 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <h4 class="text-muted">First Name</h4>
-                                <base-input v-model="user.firstName" classes="input-group-alternative" />
+                                <base-input
+                                    v-model="user.firstName"
+                                    classes="input-group-alternative"
+                                    :error="$v.user && $v.user.firstName.$error ? 'First Name Required' : null"
+                                />
                             </div>
                             <div class="col-12 col-md-6">
                                 <h4 class="text-muted">Last Name</h4>
@@ -68,12 +72,14 @@
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="House / Flat No."
+                                        :error="$v.permanent.house.$error ? 'House Name Required' : null"
                                     />
                                     <base-input
                                         v-model="permanent.area"
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="Area"
+                                        :error="$v.permanent.area.$error ? 'Area Required' : null"
                                     />
                                     <base-input
                                         v-model="permanent.city"
@@ -92,6 +98,7 @@
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="District"
+                                        :error="$v.permanent.district.$error ? 'District Required' : null"
                                     />
                                     <base-input
                                         v-model="permanent.pincode"
@@ -99,12 +106,14 @@
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="Pincode"
+                                        :error="$v.permanent.pincode.$error ? 'Pincode Required' : null"
                                     />
                                     <base-input
                                         v-model="permanent.state"
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="State"
+                                        :error="$v.permanent.state.$error ? 'State Required' : null"
                                     />
                                 </div>
                             </div>
@@ -124,12 +133,14 @@
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="House / Flat No."
+                                        :error="$v.present.house.$error ? 'House Name Required' : null"
                                     />
                                     <base-input
                                         v-model="present.area"
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="Area"
+                                        :error="$v.present.area.$error ? 'Area Required' : null"
                                     />
                                     <base-input
                                         v-model="present.city"
@@ -148,6 +159,7 @@
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="District"
+                                        :error="$v.present.district.$error ? 'District Required' : null"
                                     />
                                     <base-input
                                         v-model="present.pincode"
@@ -155,12 +167,14 @@
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="Pincode"
+                                        :error="$v.present.pincode.$error ? 'Pincode Required' : null"
                                     />
                                     <base-input
                                         v-model="present.state"
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="State"
+                                        :error="$v.present.state.$error ? 'State Required' : null"
                                     />
                                 </div>
                             </div>
@@ -318,7 +332,7 @@
     </div>
 </template>
 <script>
-import { required } from 'vuelidate/lib/validators';
+import { required, requiredIf } from 'vuelidate/lib/validators';
 
 export default {
     data: () => ({
@@ -343,6 +357,43 @@ export default {
     }),
     validations: {
         selectedService: { required },
+        user: {
+            firstName: { required },
+        },
+        permanent: {
+            house: { required },
+            area: { required },
+            district: { required },
+            pincode: { required },
+            state: { required },
+        },
+        present: {
+            house: {
+                required: requiredIf(function () {
+                    return !this.sameAddress;
+                }),
+            },
+            area: {
+                required: requiredIf(function () {
+                    return !this.sameAddress;
+                }),
+            },
+            district: {
+                required: requiredIf(function () {
+                    return !this.sameAddress;
+                }),
+            },
+            pincode: {
+                required: requiredIf(function () {
+                    return !this.sameAddress;
+                }),
+            },
+            state: {
+                required: requiredIf(function () {
+                    return !this.sameAddress;
+                }),
+            },
+        },
     },
     watch: {
         filter() {
@@ -388,11 +439,15 @@ export default {
             switch (this.step) {
                 case 1:
                     this.$v.selectedService.$touch();
+                    if (this.$v.selectedService.$error) return;
+                    break;
+                case 2:
+                    this.$v.user.firstName.$touch();
+                    this.$v.permanent.$touch();
+                    this.$v.present.$touch();
+                    if (this.$v.user.firstName.$error || this.$v.permanent.$error || this.$v.present.$error) return;
                     break;
             }
-
-            console.log(this.$v);
-            if (this.$v.$invalid) return;
 
             this.step = this.step < 5 ? this.step + 1 : this.step;
         },
