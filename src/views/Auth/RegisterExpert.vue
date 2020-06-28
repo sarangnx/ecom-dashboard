@@ -167,7 +167,7 @@
                             <div class="col-12 col-md-6">
                                 <h4 class="text-muted">Contact Number</h4>
                                 <base-input
-                                    v-model="expert.contactNumber"
+                                    v-model="user.contactNumber"
                                     classes="input-group-alternative"
                                     addon-left-icon="phone"
                                 />
@@ -175,7 +175,7 @@
                             <div class="col-12 col-md-6">
                                 <h4 class="text-muted">WhatsApp Number</h4>
                                 <base-input
-                                    v-model="expert.whatsappNumber"
+                                    v-model="user.whatsappNumber"
                                     classes="input-group-alternative"
                                     :addon-left-icon="{ prefix: 'fab', iconName: 'whatsapp' }"
                                 />
@@ -296,7 +296,14 @@
                     >
                         Next
                     </base-button>
-                    <base-button v-if="step === 5" icon="paper-plane" icon-position="right" size="sm" type="success">
+                    <base-button
+                        v-if="step === 5"
+                        icon="paper-plane"
+                        icon-position="right"
+                        size="sm"
+                        type="success"
+                        @click="register"
+                    >
                         Submit
                     </base-button>
                 </div>
@@ -309,7 +316,6 @@ export default {
     data: () => ({
         selectedService: null,
         user: {},
-        expert: {},
         permanent: {},
         present: {},
         sameAddress: true,
@@ -378,6 +384,34 @@ export default {
             this.id.image = null;
             this.$refs.file.value = this.$refs.file.defaultValue;
             this.$refs.image.innerHTML = 'Id Proof Image';
+        },
+        async register() {
+            // prepare data
+            let data = {
+                serviceId: this.selectedService.serviceId,
+                firstName: this.user.firstName,
+                lastName: this.user.lastName,
+                username: this.user.username,
+                password: this.user.password,
+                contactNumber: this.user.contactNumber,
+                whatsappNumber: this.user.whatsappNumber,
+                idProofType: this.id.selected.value,
+                idProofNumber: this.id.idProofNumber,
+                idProofImage: this.id.image,
+                permanentAddress: this.permanent,
+                ...(!this.sameAddress && { presentAddress: this.present }),
+            };
+
+            // remove keys with null or undefined
+            for (let key in data) {
+                if (!data[key]) delete data[key];
+            }
+
+            // Wrap it as FormData.
+            const formData = new FormData();
+            Object.keys(data).forEach((key) => {
+                formData.append(key, data[key]);
+            });
         },
     },
 };
