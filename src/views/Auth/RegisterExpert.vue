@@ -7,7 +7,40 @@
                 </div>
                 <div class="card-body">
                     <div class="container">
+                        <!-- STEP 1 -->
                         <div v-show="step === 1" class="row">
+                            <div
+                                class="col-12 col-md-6 d-flex align-items-center justify-content-center justify-content-md-end"
+                            >
+                                <h3 class="mb-0">Select your profession</h3>
+                            </div>
+                            <div class="col-12 col-md-6 mt-3 mt-md-0">
+                                <base-dropdown class="w-100" menu-classes="col-12" tag="div">
+                                    <base-button slot="title" type="primary" block>
+                                        {{ (selectedService && selectedService.name) || 'Select Profession' }}
+                                    </base-button>
+                                    <template slot="search">
+                                        <base-input
+                                            id="search"
+                                            v-model="filter"
+                                            autocomplete="off"
+                                            class="dropdown-item"
+                                            placeholder="Search for profession"
+                                        />
+                                    </template>
+                                    <a
+                                        v-for="(service, index) in filteredServices"
+                                        :key="index"
+                                        class="dropdown-item pointer"
+                                        @click="selectedService = service"
+                                    >
+                                        {{ service.name }}
+                                    </a>
+                                </base-dropdown>
+                            </div>
+                        </div>
+                        <!-- STEP 2 -->
+                        <div v-show="step === 2" class="row">
                             <div class="col-12 mb-3">
                                 <h3>Personal Info</h3>
                             </div>
@@ -124,13 +157,9 @@
                                     />
                                 </div>
                             </div>
-                            <div class="col-12 d-flex justify-content-end">
-                                <base-button icon="arrow-right" icon-position="right" @click="step = 2">
-                                    Next
-                                </base-button>
-                            </div>
                         </div>
-                        <div v-show="step === 2" class="row">
+                        <!-- STEP 3 -->
+                        <div v-show="step === 3" class="row">
                             <div class="col-12 mb-3">
                                 <h3>Contact Info</h3>
                             </div>
@@ -150,16 +179,9 @@
                                     :addon-left-icon="{ prefix: 'fab', iconName: 'whatsapp' }"
                                 />
                             </div>
-                            <div class="col-12 d-flex justify-content-between">
-                                <base-button icon="arrow-left" @click="step = 1">
-                                    Previous
-                                </base-button>
-                                <base-button icon="arrow-right" icon-position="right" @click="step = 3">
-                                    Next
-                                </base-button>
-                            </div>
                         </div>
-                        <div v-show="step === 3" class="row">
+                        <!-- STEP 4 -->
+                        <div v-show="step === 4" class="row">
                             <div class="col-12 col-md-6">
                                 <h4>Email</h4>
                                 <base-input
@@ -176,16 +198,19 @@
                                     addon-left-icon="phone"
                                 />
                             </div>
-                            <div class="col-12 d-flex justify-content-between">
-                                <base-button icon="arrow-left" @click="step = 2">
-                                    Previous
-                                </base-button>
-                                <base-button icon="arrow-right" icon-position="right" @click="step = 4">
-                                    Next
-                                </base-button>
-                            </div>
                         </div>
                     </div>
+                </div>
+                <div
+                    class="card-footer d-flex"
+                    :class="{ 'justify-content-between': step !== 1, 'justify-content-end': step === 1 }"
+                >
+                    <base-button v-if="step != 1" icon="arrow-left" @click="previous">
+                        Previous
+                    </base-button>
+                    <base-button icon="arrow-right" icon-position="right" @click="next">
+                        Next
+                    </base-button>
                 </div>
             </div>
         </div>
@@ -194,6 +219,7 @@
 <script>
 export default {
     data: () => ({
+        selectedService: null,
         user: {},
         expert: {},
         permanent: {},
@@ -201,7 +227,17 @@ export default {
         sameAddress: true,
         step: 1,
         services: [],
+        filteredServices: [],
+        filter: null,
     }),
+    watch: {
+        filter() {
+            this.filteredServices = this.services.filter((service) => {
+                const regex = new RegExp(`${this.filter}`, 'i');
+                return regex.test(service.name);
+            });
+        },
+    },
     mounted() {
         this.getServices();
     },
@@ -214,9 +250,16 @@ export default {
                 });
 
                 this.services = response.data.services.rows;
+                this.filteredServices = Object.assign(this.services);
             } catch (err) {
                 this.$error('Unable to get services.');
             }
+        },
+        previous() {
+            this.step = this.step > 1 ? this.step - 1 : this.step;
+        },
+        next() {
+            this.step = this.step < 5 ? this.step + 1 : this.step;
         },
     },
 };
