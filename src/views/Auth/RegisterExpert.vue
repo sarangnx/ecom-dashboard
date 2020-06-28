@@ -33,11 +33,17 @@
                                         v-for="(service, index) in filteredServices"
                                         :key="index"
                                         class="dropdown-item pointer"
-                                        @click="selectedService = service"
+                                        @click="selectedService = Object.assign({}, service)"
                                     >
                                         {{ service.name }}
                                     </a>
                                 </base-dropdown>
+                            </div>
+                            <div
+                                v-if="$v.selectedService.$error"
+                                class="text-danger invalid-feedback d-block col-12 col-md-6 offset-md-6"
+                            >
+                                <small>You must select a profession</small>
                             </div>
                         </div>
                         <!-- STEP 2 -->
@@ -312,9 +318,11 @@
     </div>
 </template>
 <script>
+import { required } from 'vuelidate/lib/validators';
+
 export default {
     data: () => ({
-        selectedService: null,
+        selectedService: {},
         user: {},
         permanent: {},
         present: {},
@@ -333,6 +341,9 @@ export default {
         id: { selected: null, image: null },
         usernameType: 'email',
     }),
+    validations: {
+        selectedService: { required },
+    },
     watch: {
         filter() {
             this.filteredServices = this.services.filter((service) => {
@@ -374,6 +385,15 @@ export default {
             this.step = this.step > 1 ? this.step - 1 : this.step;
         },
         next() {
+            switch (this.step) {
+                case 1:
+                    this.$v.selectedService.$touch();
+                    break;
+            }
+
+            console.log(this.$v);
+            if (this.$v.$invalid) return;
+
             this.step = this.step < 5 ? this.step + 1 : this.step;
         },
         loadImage(event) {
