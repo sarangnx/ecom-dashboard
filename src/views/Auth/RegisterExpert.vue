@@ -294,6 +294,7 @@
                                     class="input-group-alternative mb-0"
                                     :placeholder="usernameType === 'email' ? 'Email' : 'Phone'"
                                     addon-left-icon="at"
+                                    :error="$v.user.username.$error ? 'Username Required.' : null"
                                 >
                                     <template slot="addonLeft">
                                         <base-button
@@ -318,6 +319,13 @@
                                     addon-left-icon="lock"
                                     type="password"
                                     placeholder="Password"
+                                    :error="
+                                        $v.user.password.$error && !$v.user.password.required
+                                            ? 'Password Required'
+                                            : $v.user.password.$error && !$v.user.password.minLength
+                                            ? 'Minimum 8 Characters Required'
+                                            : null
+                                    "
                                 ></base-input>
                             </div>
                             <div class="col-12 col-md-6">
@@ -327,6 +335,7 @@
                                     addon-left-icon="lock"
                                     type="password"
                                     placeholder="Repeat Password"
+                                    :error="$v.user.repeatPassword.$error ? `Passwords don't match` : null"
                                 ></base-input>
                             </div>
                         </div>
@@ -365,7 +374,7 @@
     </div>
 </template>
 <script>
-import { required, requiredIf, minLength } from 'vuelidate/lib/validators';
+import { required, requiredIf, minLength, sameAs } from 'vuelidate/lib/validators';
 
 export default {
     data: () => ({
@@ -394,6 +403,9 @@ export default {
             firstName: { required },
             contactNumber: { required, minLength: minLength(10) },
             whatsappNumber: { required, minLength: minLength(10) },
+            username: { required },
+            password: { required, minLength: minLength(8) },
+            repeatPassword: { required, sameAsPassword: sameAs('password') },
         },
         permanent: {
             house: { required },
@@ -512,6 +524,13 @@ export default {
             this.$refs.image.innerHTML = 'Id Proof Image';
         },
         async register() {
+            this.$v.$touch();
+
+            if (this.$v.$invalid) {
+                this.$error('Check All Fields');
+                return;
+            }
+
             // prepare data
             let data = {
                 serviceId: this.selectedService.serviceId,
