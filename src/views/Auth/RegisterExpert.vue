@@ -188,16 +188,32 @@
                                 <h4 class="text-muted">Contact Number</h4>
                                 <base-input
                                     v-model="user.contactNumber"
+                                    type="number"
                                     classes="input-group-alternative"
                                     addon-left-icon="phone"
+                                    :error="
+                                        $v.user.contactNumber.$error && !$v.user.contactNumber.required
+                                            ? 'Contact Number Required'
+                                            : $v.user.contactNumber.$error && !$v.user.contactNumber.minLength
+                                            ? 'Enter Valid Phone Number'
+                                            : null
+                                    "
                                 />
                             </div>
                             <div class="col-12 col-md-6">
                                 <h4 class="text-muted">WhatsApp Number</h4>
                                 <base-input
                                     v-model="user.whatsappNumber"
+                                    type="number"
                                     classes="input-group-alternative"
                                     :addon-left-icon="{ prefix: 'fab', iconName: 'whatsapp' }"
+                                    :error="
+                                        $v.user.whatsappNumber.$error && !$v.user.whatsappNumber.required
+                                            ? 'WhatsApp Number Required'
+                                            : $v.user.whatsappNumber.$error && !$v.user.whatsappNumber.minLength
+                                            ? 'Enter Valid Phone Number'
+                                            : null
+                                    "
                                 />
                             </div>
                         </div>
@@ -332,7 +348,7 @@
     </div>
 </template>
 <script>
-import { required, requiredIf } from 'vuelidate/lib/validators';
+import { required, requiredIf, minLength } from 'vuelidate/lib/validators';
 
 export default {
     data: () => ({
@@ -359,6 +375,8 @@ export default {
         selectedService: { required },
         user: {
             firstName: { required },
+            contactNumber: { required, minLength: minLength(10) },
+            whatsappNumber: { required, minLength: minLength(10) },
         },
         permanent: {
             house: { required },
@@ -436,6 +454,7 @@ export default {
             this.step = this.step > 1 ? this.step - 1 : this.step;
         },
         next() {
+            console.log(this.$v);
             switch (this.step) {
                 case 1:
                     this.$v.selectedService.$touch();
@@ -446,6 +465,11 @@ export default {
                     this.$v.permanent.$touch();
                     this.$v.present.$touch();
                     if (this.$v.user.firstName.$error || this.$v.permanent.$error || this.$v.present.$error) return;
+                    break;
+                case 3:
+                    this.$v.user.contactNumber.$touch();
+                    this.$v.user.whatsappNumber.$touch();
+                    if (this.$v.user.contactNumber.$error || this.$v.user.whatsappNumber.$error) return;
                     break;
             }
 
