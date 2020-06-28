@@ -6,7 +6,7 @@
                     <h2>Register as Professional</h2>
                 </div>
                 <div class="card-body">
-                    <div class="container">
+                    <form class="container">
                         <!-- STEP 1 -->
                         <div v-show="step === 1" class="row">
                             <div
@@ -23,7 +23,6 @@
                                         <base-input
                                             id="search"
                                             v-model="filter"
-                                            autocomplete="off"
                                             class="dropdown-item"
                                             placeholder="Search for profession"
                                         />
@@ -201,9 +200,11 @@
                                     </a>
                                 </base-dropdown>
                             </div>
-                            <div v-if="id && id.selected" class="col-12 d-flex align-items-center mb-3">
-                                <h4 class="text-muted mb-0 mr-3">Proof ID Number</h4>
-                                <base-input v-model="id.idProofNumber" class="mb-0" maxlength="30" />
+                            <div v-show="id && id.selected" class="col-12 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <h4 class="text-muted mb-0 mr-3">Proof ID Number</h4>
+                                    <base-input v-model="id.idProofNumber" class="mb-0" maxlength="30" />
+                                </div>
                             </div>
                         </div>
                         <!-- STEP 5 -->
@@ -211,24 +212,50 @@
                             <div class="col-12 mb-3">
                                 <h3>Account Creation</h3>
                             </div>
-                            <div class="col-12 col-md-6">
-                                <h4 class="text-muted">Email</h4>
+                            <div class="col-12 col-md-6 mb-3">
+                                <h4 class="text-muted">Username</h4>
                                 <base-input
-                                    v-model="user.email"
-                                    classes="input-group-alternative"
-                                    addon-left-icon="envelope-open"
-                                />
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <h4 class="text-muted">Phone</h4>
-                                <base-input
-                                    v-model="user.phone"
-                                    classes="input-group-alternative"
-                                    addon-left-icon="phone"
-                                />
+                                    v-model="user.username"
+                                    class="input-group-alternative mb-0"
+                                    :placeholder="usernameType === 'email' ? 'Email' : 'Phone'"
+                                    addon-left-icon="at"
+                                >
+                                    <template slot="addonLeft">
+                                        <base-button
+                                            size="sm"
+                                            type="primary"
+                                            :icon="usernameType === 'email' ? 'at' : 'phone'"
+                                            @click="usernameType = usernameType === 'email' ? 'phone' : 'email'"
+                                        ></base-button>
+                                    </template>
+                                </base-input>
+                                <small class="text-muted">Phone Number or Email</small>
                             </div>
                         </div>
-                    </div>
+                        <div v-show="step === 5" class="row">
+                            <div class="col-12">
+                                <h4 class="text-muted">Password</h4>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <base-input
+                                    v-model="user.password"
+                                    class="input-group-alternative mb-3"
+                                    addon-left-icon="lock"
+                                    type="password"
+                                    placeholder="Password"
+                                ></base-input>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <base-input
+                                    v-model="user.repeatPassword"
+                                    class="input-group-alternative mb-3"
+                                    addon-left-icon="lock"
+                                    type="password"
+                                    placeholder="Repeat Password"
+                                ></base-input>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 <div
                     class="card-footer d-flex"
@@ -276,6 +303,7 @@ export default {
             { name: 'Others', value: 'other' },
         ],
         id: { selected: null },
+        usernameType: 'email',
     }),
     watch: {
         filter() {
@@ -283,6 +311,18 @@ export default {
                 const regex = new RegExp(`${this.filter}`, 'i');
                 return regex.test(service.name);
             });
+        },
+        user: {
+            deep: true,
+            handler() {
+                const phoneRegEx = /^[0-9]+$/g;
+
+                if (phoneRegEx.test(this.user.username)) {
+                    this.usernameType = 'phone';
+                } else {
+                    this.usernameType = 'email';
+                }
+            },
         },
     },
     mounted() {
