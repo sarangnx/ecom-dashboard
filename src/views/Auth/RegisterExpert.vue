@@ -238,10 +238,21 @@
                                     </a>
                                 </base-dropdown>
                             </div>
+                            <div
+                                v-if="$v.id.selected.$error"
+                                class="text-danger invalid-feedback d-block col-12 col-md-6"
+                            >
+                                <small>You must select a proof type</small>
+                            </div>
                             <div v-show="id && id.selected" class="col-12 mb-3">
                                 <div class="d-flex align-items-center">
                                     <h4 class="text-muted mb-0 mr-3">Proof ID Number</h4>
-                                    <base-input v-model="id.idProofNumber" class="mb-0" maxlength="30" />
+                                    <base-input
+                                        v-model="id.idProofNumber"
+                                        class="mb-0"
+                                        maxlength="30"
+                                        :error="$v.id.idProofNumber.$error ? 'ID Proof Number Required' : null"
+                                    />
                                 </div>
                             </div>
                             <div v-show="id && id.selected" class="col-12 mb-3">
@@ -263,6 +274,12 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+                            <div
+                                v-if="id && id.selected && $v.id.image.$error"
+                                class="text-danger invalid-feedback d-block col-12 col-md-6"
+                            >
+                                <small>You must select proof image</small>
                             </div>
                         </div>
                         <!-- STEP 5 -->
@@ -412,6 +429,11 @@ export default {
                 }),
             },
         },
+        id: {
+            selected: { required },
+            idProofNumber: { required },
+            image: { required },
+        },
     },
     watch: {
         filter() {
@@ -454,7 +476,9 @@ export default {
             this.step = this.step > 1 ? this.step - 1 : this.step;
         },
         next() {
-            console.log(this.$v);
+            // This is required since steps can be changed only if form is valid.
+            // Chrome autocomplete cannot be disabled for all versions
+            // There is no simpler way, because autocomplete touches the form & makes it invalid.
             switch (this.step) {
                 case 1:
                     this.$v.selectedService.$touch();
@@ -471,6 +495,9 @@ export default {
                     this.$v.user.whatsappNumber.$touch();
                     if (this.$v.user.contactNumber.$error || this.$v.user.whatsappNumber.$error) return;
                     break;
+                case 4:
+                    this.$v.id.$touch();
+                    if (this.$v.id.$error) return;
             }
 
             this.step = this.step < 5 ? this.step + 1 : this.step;
