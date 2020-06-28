@@ -131,6 +131,35 @@
                             </div>
                         </div>
                         <div v-show="step === 2" class="row">
+                            <div class="col-12 mb-3">
+                                <h3>Contact Info</h3>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <h4 class="text-muted">Contact Number</h4>
+                                <base-input
+                                    v-model="expert.contactNumber"
+                                    classes="input-group-alternative"
+                                    addon-left-icon="phone"
+                                />
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <h4 class="text-muted">WhatsApp Number</h4>
+                                <base-input
+                                    v-model="expert.whatsappNumber"
+                                    classes="input-group-alternative"
+                                    :addon-left-icon="{ prefix: 'fab', iconName: 'whatsapp' }"
+                                />
+                            </div>
+                            <div class="col-12 d-flex justify-content-between">
+                                <base-button icon="arrow-left" @click="step = 1">
+                                    Previous
+                                </base-button>
+                                <base-button icon="arrow-right" icon-position="right" @click="step = 3">
+                                    Next
+                                </base-button>
+                            </div>
+                        </div>
+                        <div v-show="step === 3" class="row">
                             <div class="col-12 col-md-6">
                                 <h4>Email</h4>
                                 <base-input
@@ -147,6 +176,14 @@
                                     addon-left-icon="phone"
                                 />
                             </div>
+                            <div class="col-12 d-flex justify-content-between">
+                                <base-button icon="arrow-left" @click="step = 2">
+                                    Previous
+                                </base-button>
+                                <base-button icon="arrow-right" icon-position="right" @click="step = 4">
+                                    Next
+                                </base-button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -158,8 +195,9 @@
 export default {
     data: () => ({
         user: {},
-        present: {},
+        expert: {},
         permanent: {},
+        present: {},
         sameAddress: true,
         step: 1,
         services: [],
