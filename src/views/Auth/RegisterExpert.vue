@@ -70,14 +70,14 @@
                                 </div>
                             </div>
                             <div class="col-12 mb-3">
-                                <base-checkbox>
+                                <base-checkbox v-model="sameAddress">
                                     <span class="font-weight-bold">
                                         Present Address & Permanent Address are same.
                                     </span>
                                 </base-checkbox>
                             </div>
                             <!-- PRESENT ADDRESS -->
-                            <div class="col-12">
+                            <div v-show="!sameAddress" class="col-12">
                                 <div class="row">
                                     <h4 class="col-12 text-muted">Present Address</h4>
                                     <base-input
@@ -162,6 +162,7 @@ export default {
         user: {},
         present: {},
         permanent: {},
+        sameAddress: true,
         step: 1,
         services: [],
     }),
