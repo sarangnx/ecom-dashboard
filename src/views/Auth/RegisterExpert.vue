@@ -24,44 +24,101 @@
                                 <div class="row">
                                     <h4 class="col-12 text-muted">Permanent Address</h4>
                                     <base-input
-                                        v-model="user.house"
+                                        v-model="permanent.house"
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="House / Flat No."
                                     />
                                     <base-input
-                                        v-model="user.area"
+                                        v-model="permanent.area"
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="Area"
                                     />
                                     <base-input
-                                        v-model="user.city"
+                                        v-model="permanent.city"
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="City"
                                     />
                                     <base-input
-                                        v-model="user.landmark"
+                                        v-model="permanent.landmark"
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="Landmark"
                                     />
                                     <base-input
-                                        v-model="user.district"
+                                        v-model="permanent.district"
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="District"
                                     />
                                     <base-input
-                                        v-model="user.pincode"
+                                        v-model="permanent.pincode"
                                         type="number"
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="Pincode"
                                     />
                                     <base-input
-                                        v-model="user.state"
+                                        v-model="permanent.state"
+                                        type="number"
+                                        class="col-12 col-md-6"
+                                        classes="input-group-alternative"
+                                        placeholder="State"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <base-checkbox>
+                                    <span class="font-weight-bold">
+                                        Present Address & Permanent Address are same.
+                                    </span>
+                                </base-checkbox>
+                            </div>
+                            <!-- PRESENT ADDRESS -->
+                            <div class="col-12">
+                                <div class="row">
+                                    <h4 class="col-12 text-muted">Present Address</h4>
+                                    <base-input
+                                        v-model="present.house"
+                                        class="col-12 col-md-6"
+                                        classes="input-group-alternative"
+                                        placeholder="House / Flat No."
+                                    />
+                                    <base-input
+                                        v-model="present.area"
+                                        class="col-12 col-md-6"
+                                        classes="input-group-alternative"
+                                        placeholder="Area"
+                                    />
+                                    <base-input
+                                        v-model="present.city"
+                                        class="col-12 col-md-6"
+                                        classes="input-group-alternative"
+                                        placeholder="City"
+                                    />
+                                    <base-input
+                                        v-model="present.landmark"
+                                        class="col-12 col-md-6"
+                                        classes="input-group-alternative"
+                                        placeholder="Landmark"
+                                    />
+                                    <base-input
+                                        v-model="present.district"
+                                        class="col-12 col-md-6"
+                                        classes="input-group-alternative"
+                                        placeholder="District"
+                                    />
+                                    <base-input
+                                        v-model="present.pincode"
+                                        type="number"
+                                        class="col-12 col-md-6"
+                                        classes="input-group-alternative"
+                                        placeholder="Pincode"
+                                    />
+                                    <base-input
+                                        v-model="present.state"
                                         type="number"
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
@@ -103,6 +160,8 @@
 export default {
     data: () => ({
         user: {},
+        present: {},
+        permanent: {},
         step: 1,
         services: [],
     }),
