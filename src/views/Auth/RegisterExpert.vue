@@ -182,8 +182,11 @@
                         </div>
                         <!-- STEP 4 -->
                         <div v-show="step === 4" class="row">
+                            <div class="col-12 mb-3">
+                                <h3>Account Creation</h3>
+                            </div>
                             <div class="col-12 col-md-6">
-                                <h4>Email</h4>
+                                <h4 class="text-muted">Email</h4>
                                 <base-input
                                     v-model="user.email"
                                     classes="input-group-alternative"
@@ -191,7 +194,7 @@
                                 />
                             </div>
                             <div class="col-12 col-md-6">
-                                <h4>Phone</h4>
+                                <h4 class="text-muted">Phone</h4>
                                 <base-input
                                     v-model="user.phone"
                                     classes="input-group-alternative"
@@ -205,12 +208,22 @@
                     class="card-footer d-flex"
                     :class="{ 'justify-content-between': step !== 1, 'justify-content-end': step === 1 }"
                 >
-                    <base-button v-if="step != 1" icon="arrow-left" @click="previous">
+                    <base-button v-if="step != 1" icon="arrow-left" size="sm" type="danger" @click="previous">
                         Previous
                     </base-button>
-                    <base-button icon="arrow-right" icon-position="right" @click="next">
+                    <base-button
+                        v-if="step < 4"
+                        icon="arrow-right"
+                        icon-position="right"
+                        size="sm"
+                        type="primary"
+                        @click="next"
+                    >
                         Next
                     </base-button>
+                    <base-button v-if="step === 4" icon="paper-plane" icon-position="right" size="sm" type="success">
+                        Submit</base-button
+                    >
                 </div>
             </div>
         </div>
@@ -259,7 +272,7 @@ export default {
             this.step = this.step > 1 ? this.step - 1 : this.step;
         },
         next() {
-            this.step = this.step < 5 ? this.step + 1 : this.step;
+            this.step = this.step < 4 ? this.step + 1 : this.step;
         },
     },
 };
