@@ -3,9 +3,14 @@
 //
 
 .custom-checkbox {
+    padding-left: 2rem;
     .custom-control-input ~ .custom-control-label {
         cursor: pointer;
         font-size: $font-size-sm;
+        &::before,
+        &::after {
+            left: -2em;
+        }
     }
 
     .custom-control-input {
