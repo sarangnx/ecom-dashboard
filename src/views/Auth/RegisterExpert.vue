@@ -23,6 +23,8 @@
                                         <base-input
                                             id="search"
                                             v-model="filter"
+                                            type="search"
+                                            :autocomplete="`${Date.now()}`"
                                             class="dropdown-item"
                                             placeholder="Search for profession"
                                         />
@@ -206,6 +208,26 @@
                                     <base-input v-model="id.idProofNumber" class="mb-0" maxlength="30" />
                                 </div>
                             </div>
+                            <div v-show="id && id.selected" class="col-12 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <h4 class="text-muted mb-0 mr-3" style="white-space: nowrap;">Id Proof Image</h4>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input
+                                                ref="file"
+                                                type="file"
+                                                class="custom-file-input"
+                                                accept="image/*"
+                                                @change="loadImage($event)"
+                                            />
+                                            <label ref="image" class="custom-file-label">Id Proof Image</label>
+                                        </div>
+                                        <div v-if="id.image" class="input-group-append">
+                                            <base-button type="danger" icon="trash" @click.prevent="removeImage()" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <!-- STEP 5 -->
                         <div v-show="step === 5" class="row">
@@ -302,7 +324,7 @@ export default {
             { name: 'Voter Id', value: 'voterid' },
             { name: 'Others', value: 'other' },
         ],
-        id: { selected: null },
+        id: { selected: null, image: null },
         usernameType: 'email',
     }),
     watch: {
@@ -347,6 +369,15 @@ export default {
         },
         next() {
             this.step = this.step < 5 ? this.step + 1 : this.step;
+        },
+        loadImage(event) {
+            this.id.image = event.target.files[0];
+            this.$refs.image.innerHTML = event.target.files[0] ? event.target.files[0].name : 'Id Proof Image';
+        },
+        removeImage() {
+            this.id.image = null;
+            this.$refs.file.value = this.$refs.file.defaultValue;
+            this.$refs.image.innerHTML = 'Id Proof Image';
         },
     },
 };
