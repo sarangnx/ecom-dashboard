@@ -86,11 +86,11 @@ export default {
             description: 'Input value',
         },
         addonRightIcon: {
-            type: String,
+            type: [String, Object],
             description: 'Addon right icon',
         },
         addonLeftIcon: {
-            type: String,
+            type: [String, Object],
             description: 'Addont left icon',
         },
         classes: {
