@@ -314,7 +314,7 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <base-input
-                                    v-model="user.password"
+                                    v-model="$v.user.password.$model"
                                     class="input-group-alternative mb-3"
                                     addon-left-icon="lock"
                                     type="password"
@@ -330,7 +330,7 @@
                             </div>
                             <div class="col-12 col-md-6">
                                 <base-input
-                                    v-model="user.repeatPassword"
+                                    v-model="$v.user.repeatPassword.$model"
                                     class="input-group-alternative mb-3"
                                     addon-left-icon="lock"
                                     type="password"
@@ -379,7 +379,7 @@ import { required, requiredIf, minLength, sameAs } from 'vuelidate/lib/validator
 export default {
     data: () => ({
         selectedService: {},
-        user: {},
+        user: { password: null, repeatPassword: null },
         permanent: {},
         present: {},
         sameAddress: true,
@@ -543,8 +543,8 @@ export default {
                 idProofType: this.id.selected.value,
                 idProofNumber: this.id.idProofNumber,
                 idProofImage: this.id.image,
-                permanentAddress: this.permanent,
-                ...(!this.sameAddress && { presentAddress: this.present }),
+                permanentAddress: JSON.stringify(this.permanent),
+                ...(!this.sameAddress && { presentAddress: JSON.stringify(this.present) }),
             };
 
             // remove keys with null or undefined
@@ -557,6 +557,25 @@ export default {
             Object.keys(data).forEach((key) => {
                 formData.append(key, data[key]);
             });
+
+            try {
+                const response = await this.$axios({
+                    method: 'post',
+                    url: '/services/register',
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                    data: formData,
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                }
+            } catch (err) {
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
         },
     },
 };
