@@ -2,7 +2,7 @@
     <div class="row justify-content-center">
         <div class="col-12 col-md-7">
             <div class="card bg-secondary">
-                <div class="card-header text-center">
+                <div v-if="step !== 6" class="card-header text-center">
                     <h2>Register as Professional</h2>
                 </div>
                 <div class="card-body">
@@ -339,12 +339,32 @@
                                 ></base-input>
                             </div>
                         </div>
+                        <div v-show="step === 6" class="row py-5">
+                            <div class="col-12 text-center">
+                                <h3>Registration Complete <font-awesome-icon icon="check" class="text-success" /></h3>
+                            </div>
+                            <div class="col-12 text-center">
+                                <span class="text-muted">
+                                    Your service details will be listed in the app only after your profile is verified
+                                    by the admin. You can find the details of verification in your profile.
+                                </span>
+                            </div>
+                            <div class="col-12 text-center">
+                                <small>
+                                    You can check your profile by
+                                    <a href="/login" class="font-weight-bold" @click.prevent="$router.push('/login')">
+                                        logging in.
+                                    </a>
+                                </small>
+                            </div>
+                        </div>
                     </form>
                     <div v-if="loading" class="over__lay">
                         <loading color="dark" />
                     </div>
                 </div>
                 <div
+                    v-if="step !== 6"
                     class="card-footer d-flex"
                     :class="[step === 1 ? 'justify-content-end' : 'justify-content-between']"
                 >
@@ -574,6 +594,7 @@ export default {
 
                 if (response.status === 200 && response.data.message) {
                     this.$success(response.data.message);
+                    this.step = 6;
                 }
             } catch (err) {
                 if (err.response && err.response.status === 400 && err.response.data.error) {
