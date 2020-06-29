@@ -340,6 +340,9 @@
                             </div>
                         </div>
                     </form>
+                    <div v-if="loading" class="over__lay">
+                        <loading color="dark" />
+                    </div>
                 </div>
                 <div
                     class="card-footer d-flex"
@@ -396,6 +399,7 @@ export default {
         ],
         id: { selected: null, image: null },
         usernameType: 'email',
+        loading: false,
     }),
     validations: {
         selectedService: { required },
@@ -531,6 +535,8 @@ export default {
                 return;
             }
 
+            this.loading = true;
+
             // prepare data
             let data = {
                 serviceId: this.selectedService.serviceId,
@@ -576,6 +582,8 @@ export default {
                     this.$error('Something went wrong. Please try again later.');
                 }
             }
+
+            this.loading = false;
         },
     },
 };
