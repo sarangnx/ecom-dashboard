@@ -64,7 +64,7 @@
                                         title="View Details"
                                         @click="
                                             viewModal = true;
-                                            selectedExpert = row;
+                                            selectedExpert = Object.assign({}, row);
                                         "
                                     ></base-button>
                                     <base-button
@@ -119,7 +119,7 @@
                 {{ selectedExpert && selectedExpert.profile && selectedExpert.profile.firstName }}
                 {{ selectedExpert && selectedExpert.profile && selectedExpert.profile.lastName }}
             </h4>
-            <view-expert :key="Date.now()" :expert="selectedExpert" />
+            <view-expert :key="Date.now()" :expert="selectedExpert" @done="updateService" />
         </modal>
     </div>
 </template>
@@ -212,6 +212,15 @@ export default {
             // remove item from block array
             const index = this.blocked.indexOf(expertId);
             if (index > -1) this.blocked.splice(index, 1);
+        },
+        updateService(data) {
+            const index = this.experts.findIndex((expert) => expert.expertId === this.selectedExpert.expertId);
+
+            const serviceIndex = this.experts[index].services.findIndex(
+                (service) => service.serviceId === data.serviceId
+            );
+            this.$set(this.experts[index].services[serviceIndex].serviceExperts, 'approved', data.approved);
+            this.selectedExpert = Object.assign({}, this.experts[index]);
         },
     },
 };
