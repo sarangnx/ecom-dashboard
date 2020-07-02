@@ -142,6 +142,10 @@ export default {
                 if (response.status === 200 && response.data.message) {
                     this.$success(response.data.message);
                 }
+
+                // reflect the changes in table
+                const index = this.experts.findIndex((expert) => expert.expertId === expertId);
+                this.experts[index].blocked = blocked;
             } catch (err) {
                 const res = err.response;
                 if (res && res.status >= 400 && res.status < 500 && res.data.error) {
