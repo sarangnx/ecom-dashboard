@@ -64,7 +64,7 @@
                                         title="View Details"
                                         @click="
                                             viewModal = true;
-                                            selectedService = row;
+                                            selectedExpert = row;
                                         "
                                     ></base-button>
                                     <base-button
@@ -107,10 +107,29 @@
         <div v-if="totalPages" class="card-footer">
             <base-pagination v-model="page" :page-count="totalPages" align="center" />
         </div>
+        <!-- VIEW EXPERT -->
+        <modal
+            :show.sync="viewModal"
+            header-classes="pb-0"
+            body-classes="pt-0"
+            :click-out="false"
+            @close="selectedExpert = null"
+        >
+            <h4 slot="header" class="modal-title">
+                {{ selectedExpert && selectedExpert.profile && selectedExpert.profile.firstName }}
+                {{ selectedExpert && selectedExpert.profile && selectedExpert.profile.lastName }}
+            </h4>
+            <view-expert :key="Date.now()" :expert="selectedExpert" />
+        </modal>
     </div>
 </template>
 <script>
+import ViewExpert from './components/ViewExpert';
+
 export default {
+    components: {
+        ViewExpert,
+    },
     data: () => ({
         experts: null,
         page: 1,
@@ -119,6 +138,8 @@ export default {
         order: 'asc',
         loading: false,
         blocked: [],
+        selectedExpert: null,
+        viewModal: null,
     }),
     watch: {
         page() {
