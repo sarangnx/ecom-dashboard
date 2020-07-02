@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-        <div class="row">
+        <div v-if="service" class="row">
             <div v-if="service.image" class="col-12 d-flex justify-content-center mb-3">
                 <img :src="`${s3bucket}/${service.image}`" style="max-height: 200px;" />
             </div>
