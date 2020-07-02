@@ -80,6 +80,7 @@ export default {
 
                 if (response.status === 200 && response.data.message) {
                     this.$success(response.data.message);
+                    this.$emit('done', { serviceId, approved });
                 }
             } catch (err) {
                 const res = err.response;
