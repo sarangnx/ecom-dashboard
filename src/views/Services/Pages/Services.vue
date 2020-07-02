@@ -38,7 +38,6 @@
                                     Service Name
                                     <font-awesome-icon :icon="order === 'asc' ? 'caret-up' : 'caret-down'" />
                                 </a>
-                                <!-- <base-button icon="caret-up" size="sm" type="primary"></base-button> -->
                             </th>
                             <th class="text-center text-white desc">Description</th>
                             <th class="text-center text-white actions">Actions</th>
