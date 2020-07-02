@@ -27,6 +27,17 @@
             <div v-if="expert.idProofImage" class="col-12 my-3">
                 <img class="img" :src="`${s3bucket}/${expert.idProofImage}`" />
             </div>
+            <div class="col-12">
+                <strong class="mr-2">Expert Verification status:</strong>
+                <badge :type="expert.verified ? 'success' : 'danger'">
+                    {{ expert.verified ? 'Verified' : 'Not Verified' }}
+                </badge>
+            </div>
+            <div class="col-12 my-3">
+                <base-button :type="expert.verified ? 'danger' : 'success'" size="sm">
+                    {{ expert.verified ? 'Mark as Not Verified' : 'Mark as Verified' }}
+                </base-button>
+            </div>
             <div v-if="expert.services && expert.services.length" class="col-12 mt-3">
                 <div class="table-responsive">
                     <base-table
