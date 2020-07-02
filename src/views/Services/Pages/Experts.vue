@@ -12,7 +12,7 @@
                         :data="experts"
                     >
                         <template slot="columns">
-                            <th class="text-center text-white name">
+                            <th class="text-center text-white">
                                 <a
                                     class="pointer"
                                     @click.prevent="order === 'asc' ? (order = 'desc') : (order = 'asc')"
@@ -21,7 +21,9 @@
                                     <font-awesome-icon :icon="order === 'asc' ? 'caret-up' : 'caret-down'" />
                                 </a>
                             </th>
-                            <th class="text-center text-white actions">Actions</th>
+                            <th class="text-center text-white">Blocked</th>
+                            <th class="text-center text-white">Verified</th>
+                            <th class="text-center text-white">Actions</th>
                         </template>
                         <template slot-scope="{ row }">
                             <td class="text-center">
@@ -29,6 +31,16 @@
                                     {{ row.profile && row.profile.firstName }}
                                     {{ row.profile && row.profile.lastName }}
                                 </span>
+                            </td>
+                            <td class="text-center">
+                                <badge :type="row.blocked ? 'danger' : 'success'">
+                                    {{ row.blocked ? 'Blocked' : 'Active' }}
+                                </badge>
+                            </td>
+                            <td class="text-center">
+                                <badge :type="row.verified ? 'success' : 'danger'">
+                                    {{ row.verified ? 'Verified' : 'Not Verified' }}
+                                </badge>
                             </td>
                             <td>
                                 <div class="d-flex justify-content-center">
@@ -103,6 +115,7 @@ export default {
                 const experts = response.data.experts;
                 this.experts = experts.rows;
                 this.totalPages = Math.ceil(experts.count / this.perPage);
+                console.log(this.experts);
             } catch (err) {
                 const res = err.response;
                 if (res && res.status >= 400 && res.status < 500 && res.data.error) {
