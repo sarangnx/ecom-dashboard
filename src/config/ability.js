@@ -30,7 +30,7 @@ export default {
         { action: 'menu', subject: 'excel' },
         { action: 'menu', subject: 'banners' },
         { action: 'menu', subject: 'settings' },
-        { action: 'menu', subject: ['services', 'manage-services'] },
+        { action: 'menu', subject: ['services', 'manage-services', 'manage-experts'] },
         { action: 'settings', subject: ['profile', 'password'] },
     ],
     superadmin: [
@@ -42,7 +42,7 @@ export default {
         { action: 'menu', subject: 'excel' },
         { action: 'menu', subject: 'banners' },
         { action: 'menu', subject: 'settings' },
-        { action: 'menu', subject: ['services', 'manage-services'] },
+        { action: 'menu', subject: ['services', 'manage-services', 'manage-experts'] },
         { action: 'settings', subject: ['profile', 'password'] },
     ],
 };

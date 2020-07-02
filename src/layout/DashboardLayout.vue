@@ -128,7 +128,10 @@ export default {
                 icon: 'user-tie',
                 class: 'text-blue',
                 type: 'sidebardropdown',
-                children: [{ name: 'Manage Services', path: '/services/manage-services', subject: 'manage-services' }],
+                children: [
+                    { name: 'Manage Services', path: '/services/manage-services', subject: 'manage-services' },
+                    { name: 'Manage Experts', path: '/services/manage-experts', subject: 'manage-experts' },
+                ],
             },
             {
                 name: 'Settings',

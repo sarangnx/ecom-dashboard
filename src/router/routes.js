@@ -89,14 +89,20 @@ export default [
             {
                 path: '/services',
                 name: 'services',
-                component: () => import(/* webpackChunkName: "category" */ '@/views/Services/Index.vue'),
+                component: () => import(/* webpackChunkName: "services" */ '@/views/Services/Index.vue'),
                 meta: { requiresAuth: true },
                 children: [
                     {
                         path: 'manage-services',
                         name: 'manage services',
                         component: () =>
-                            import(/* webpackChunkName: "category" */ '@/views/Services/Pages/Services.vue'),
+                            import(/* webpackChunkName: "services" */ '@/views/Services/Pages/Services.vue'),
+                    },
+                    {
+                        path: 'manage-experts',
+                        name: 'manage experts',
+                        component: () =>
+                            import(/* webpackChunkName: "services" */ '@/views/Services/Pages/Experts.vue'),
                     },
                 ],
             },
@@ -163,7 +169,7 @@ export default [
             {
                 path: '/expert',
                 name: 'register expert',
-                component: () => import(/* webpackChunkName: "auth" */ '@/views/Auth/RegisterExpert.vue'),
+                component: () => import(/* webpackChunkName: "registerexpert" */ '@/views/Auth/RegisterExpert.vue'),
             },
             {
                 path: '/reset',
