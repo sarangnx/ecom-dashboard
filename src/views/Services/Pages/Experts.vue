@@ -119,7 +119,12 @@
                 {{ selectedExpert && selectedExpert.profile && selectedExpert.profile.firstName }}
                 {{ selectedExpert && selectedExpert.profile && selectedExpert.profile.lastName }}
             </h4>
-            <view-expert :key="Date.now()" :expert="selectedExpert" @done="updateService" />
+            <view-expert
+                :key="Date.now()"
+                :expert="selectedExpert"
+                @approved="updateService"
+                @verified="updateExpert"
+            />
         </modal>
     </div>
 </template>
@@ -220,6 +225,12 @@ export default {
                 (service) => service.serviceId === data.serviceId
             );
             this.$set(this.experts[index].services[serviceIndex].serviceExperts, 'approved', data.approved);
+            this.selectedExpert = Object.assign({}, this.experts[index]);
+        },
+        updateExpert(data) {
+            const index = this.experts.findIndex((expert) => expert.expertId === data.expertId);
+
+            this.$set(this.experts[index], 'verified', data.verified);
             this.selectedExpert = Object.assign({}, this.experts[index]);
         },
     },
