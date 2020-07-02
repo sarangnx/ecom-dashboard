@@ -45,20 +45,22 @@
                             <td>
                                 <div class="d-flex justify-content-center">
                                     <base-button
-                                        type="success"
+                                        type="primary"
                                         icon="eye"
                                         size="sm"
+                                        title="View Details"
                                         @click="
                                             viewModal = true;
                                             selectedService = row;
                                         "
                                     ></base-button>
                                     <base-button
-                                        type="primary"
-                                        icon="edit"
+                                        :type="row.blocked ? 'success' : 'warning'"
+                                        :icon="row.blocked ? 'user' : 'user-slash'"
                                         size="sm"
+                                        :title="row.blocked ? 'Unblock User' : 'Block User'"
                                         @click="
-                                            editModal = true;
+                                            viewModal = true;
                                             selectedService = row;
                                         "
                                     ></base-button>
@@ -115,7 +117,6 @@ export default {
                 const experts = response.data.experts;
                 this.experts = experts.rows;
                 this.totalPages = Math.ceil(experts.count / this.perPage);
-                console.log(this.experts);
             } catch (err) {
                 const res = err.response;
                 if (res && res.status >= 400 && res.status < 500 && res.data.error) {
