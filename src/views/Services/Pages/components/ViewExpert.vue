@@ -16,7 +16,7 @@
                 <strong class="mr-2">WhatsApp Number:</strong>
                 <span>{{ expert.whatsappNumber }}</span>
             </div>
-            <div v-if="expert.services && expert.services.length" class="col-12">
+            <div v-if="expert.services && expert.services.length" class="col-12 mt-3">
                 <div class="table-responsive">
                     <base-table
                         class="table align-items-center table-flush service-table"
@@ -24,14 +24,20 @@
                         :data="expert.services"
                     >
                         <template slot="columns">
-                            <th class="text-center text-white name">
+                            <th class="text-center text-white">
                                 Service Name
                             </th>
-                            <th class="text-center text-white actions">Actions</th>
+                            <th class="text-center text-white">Status</th>
+                            <th class="text-center text-white">Actions</th>
                         </template>
                         <template slot-scope="{ row }">
                             <td class="text-center">
                                 {{ row.name }}
+                            </td>
+                            <td class="text-center">
+                                <badge :type="row.serviceExperts.approved ? 'success' : 'danger'">
+                                    {{ row.serviceExperts.approved ? 'Active' : 'Blocked' }}
+                                </badge>
                             </td>
                             <td>
                                 <div class="d-flex justify-content-center">
