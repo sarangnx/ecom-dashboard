@@ -34,7 +34,11 @@
                 </badge>
             </div>
             <div class="col-12 my-3">
-                <base-button :type="expert.verified ? 'danger' : 'success'" size="sm">
+                <base-button
+                    :type="expert.verified ? 'danger' : 'success'"
+                    size="sm"
+                    @click="verify(expert.expertId, !expert.verified)"
+                >
                     {{ expert.verified ? 'Mark as Not Verified' : 'Mark as Verified' }}
                 </base-button>
             </div>
@@ -116,7 +120,31 @@ export default {
 
                 if (response.status === 200 && response.data.message) {
                     this.$success(response.data.message);
-                    this.$emit('done', { serviceId, approved });
+                    this.$emit('approved', { serviceId, approved });
+                }
+            } catch (err) {
+                const res = err.response;
+                if (res && res.status >= 400 && res.status < 500 && res.data.error) {
+                    this.$error(res.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
+        },
+        async verify(expertId, verified) {
+            try {
+                const response = await this.$axios({
+                    method: 'patch',
+                    url: '/services/experts/verify',
+                    data: {
+                        expertId,
+                        verified,
+                    },
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                    this.$emit('verified', { expertId, verified });
                 }
             } catch (err) {
                 const res = err.response;
