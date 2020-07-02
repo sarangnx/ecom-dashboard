@@ -16,6 +16,17 @@
                 <strong class="mr-2">WhatsApp Number:</strong>
                 <span>{{ expert.whatsappNumber }}</span>
             </div>
+            <div v-if="expert.idProofType" class="col-12">
+                <strong class="mr-2">Id Proof Type:</strong>
+                <span>{{ idProofTypes[expert.idProofType] }}</span>
+            </div>
+            <div v-if="expert.idProofNumber" class="col-12">
+                <strong class="mr-2">Id Proof Number:</strong>
+                <span>{{ expert.idProofNumber }}</span>
+            </div>
+            <div v-if="expert.idProofImage" class="col-12 my-3">
+                <img class="img" :src="`${s3bucket}/${expert.idProofImage}`" />
+            </div>
             <div v-if="expert.services && expert.services.length" class="col-12 mt-3">
                 <div class="table-responsive">
                     <base-table
@@ -65,6 +76,20 @@ export default {
             default: () => {},
         },
     },
+    data: () => ({
+        idProofTypes: {
+            aadhar: 'Aadhar Card',
+            license: 'Driving License',
+            pan: 'Pan Card',
+            voterid: 'Voter Id',
+            other: 'Others',
+        },
+    }),
+    computed: {
+        s3bucket() {
+            return process.env.VUE_APP_S3_BUCKET;
+        },
+    },
     methods: {
         async approve(serviceId, approved) {
             try {
@@ -94,3 +119,8 @@ export default {
     },
 };
 </script>
+<style scoped>
+.img {
+    width: 100%;
+}
+</style>
