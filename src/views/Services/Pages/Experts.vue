@@ -59,10 +59,9 @@
                                         :icon="row.blocked ? 'user' : 'user-slash'"
                                         size="sm"
                                         :title="row.blocked ? 'Unblock User' : 'Block User'"
-                                        @click="
-                                            viewModal = true;
-                                            selectedService = row;
-                                        "
+                                        :loading="blocked && blocked.includes(row.expertId)"
+                                        :disabled="blocked && blocked.includes(row.expertId)"
+                                        @click="blockExpert(row.expertId, !row.blocked)"
                                     ></base-button>
                                     <base-button
                                         type="danger"
@@ -102,6 +101,7 @@ export default {
         perPage: 10,
         order: 'asc',
         loading: false,
+        blocked: [],
     }),
     mounted() {
         this.getExperts();
@@ -125,6 +125,35 @@ export default {
                     this.$error('Something went wrong. Please try again later.');
                 }
             }
+        },
+        async blockExpert(expertId, blocked) {
+            this.blocked.push(expertId);
+
+            try {
+                const response = await this.$axios({
+                    method: 'patch',
+                    url: '/services/experts/block',
+                    data: {
+                        expertId,
+                        blocked,
+                    },
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                }
+            } catch (err) {
+                const res = err.response;
+                if (res && res.status >= 400 && res.status < 500 && res.data.error) {
+                    this.$error(res.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
+
+            // remove item from block array
+            const index = this.blocked.indexOf(expertId);
+            if (index > -1) this.blocked.splice(index, 1);
         },
     },
 };
