@@ -5,6 +5,19 @@
         </div>
         <div class="card-body p-0 position-relative min__height">
             <template v-if="experts && experts.length">
+                <div class="p-2 d-flex justify-content-between">
+                    <div>
+                        <small class="mr-1 font-weight-bold">Per Page:</small>
+                        <base-dropdown>
+                            <base-button slot="title" size="sm" icon="caret-down" icon-position="right">
+                                {{ perPage }}
+                            </base-button>
+                            <a class="dropdown-item" @click="perPage = 10">10</a>
+                            <a class="dropdown-item" @click="perPage = 50">50</a>
+                            <a class="dropdown-item" @click="perPage = 100">100</a>
+                        </base-dropdown>
+                    </div>
+                </div>
                 <div class="table-responsive">
                     <base-table
                         class="table align-items-center table-flush service-table"
@@ -91,18 +104,33 @@
                 <loading color="dark" />
             </div>
         </div>
+        <div v-if="totalPages" class="card-footer">
+            <base-pagination v-model="page" :page-count="totalPages" align="center" />
+        </div>
     </div>
 </template>
 <script>
 export default {
     data: () => ({
         experts: null,
+        page: 1,
         totalPages: 0,
         perPage: 10,
         order: 'asc',
         loading: false,
         blocked: [],
     }),
+    watch: {
+        page() {
+            this.getExperts();
+        },
+        perPage() {
+            this.getExperts();
+        },
+        order() {
+            this.getExperts();
+        },
+    },
     mounted() {
         this.getExperts();
     },
@@ -112,6 +140,11 @@ export default {
                 const response = await this.$axios({
                     method: 'get',
                     url: '/services/experts',
+                    params: {
+                        page: this.page,
+                        perPage: this.perPage,
+                        order: this.order,
+                    },
                 });
 
                 const experts = response.data.experts;
