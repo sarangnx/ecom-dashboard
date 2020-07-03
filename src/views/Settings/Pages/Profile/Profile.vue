@@ -113,7 +113,7 @@
                     </div>
                     <div class="col-lg-4">
                         <base-input
-                            v-model="profile.state"
+                            v-model="profile.pincode"
                             :disabled="!edit"
                             label="Pincode"
                             input-classes="form-control-alternative"
