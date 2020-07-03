@@ -9,6 +9,7 @@ export default {
     user: [],
     delivery: [],
     staff: [],
+    service: [{ action: ['menu', 'route'], subject: 'service-dashboard' }],
     storeowner: [
         {
             action: ['menu', 'route'],
