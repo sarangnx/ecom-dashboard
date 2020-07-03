@@ -79,6 +79,7 @@ export default {
             storeowner: '/dashboard',
             admin: '/admin',
             superadmin: '/admin',
+            services: '/service-dashboard',
         },
     }),
     computed: {
@@ -111,6 +112,7 @@ export default {
 
                     if (this.isLoggedIn) {
                         const route = this.home[this.user.usergroup] || '/';
+                        console.log(route);
                         this.$router.push(route);
                     }
                 } catch (err) {
