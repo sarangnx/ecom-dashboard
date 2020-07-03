@@ -147,6 +147,12 @@ export default [
                     },
                 ],
             },
+            {
+                path: '/service-dashboard',
+                name: 'Service Dashboard',
+                component: () =>
+                    import(/* webpackChunkName: "service-dashboard" */ '@/views/Dashboard/ServiceDashboard.vue'),
+            },
         ],
     },
     {
