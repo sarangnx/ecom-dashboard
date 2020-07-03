@@ -114,19 +114,6 @@ export default [
                     },
                 ],
             },
-            // {
-            //     path: '/notifications',
-            //     name: 'notifications',
-            //     component: () =>
-            //         import(/* webpackChunkName: "notifications" */ '@/views/Notifications/Notifications.vue'),
-            //     meta: { requiresAuth: true },
-            // },
-            // {
-            //     path: '/users',
-            //     name: 'users',
-            //     component: () => import(/* webpackChunkName: "users" */ '@/views/Users/Users.vue'),
-            //     meta: { requiresAuth: true },
-            // },
             {
                 path: '/settings',
                 component: () => import(/* webpackChunkName: "settings" */ '@/views/Settings/Index.vue'),
