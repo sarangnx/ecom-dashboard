@@ -117,7 +117,7 @@ export default [
             {
                 path: '/settings',
                 component: () => import(/* webpackChunkName: "settings" */ '@/views/Settings/Index.vue'),
-                meta: { requiresAuth: true },
+                meta: { requiresAuth: true, subject: 'settings' },
                 children: [
                     {
                         path: '',
@@ -129,18 +129,21 @@ export default [
                         name: 'settings / stores',
                         component: () =>
                             import(/* webpackChunkName: "settings" */ '@/views/Settings/Pages/Stores/Stores.vue'),
+                        meta: { subject: 'settings-stores' },
                     },
                     {
                         path: 'profile',
                         name: 'settings / profile',
                         component: () =>
                             import(/* webpackChunkName: "settings" */ '@/views/Settings/Pages/Profile/Profile.vue'),
+                        meta: { subject: 'settings-profile' },
                     },
                     {
                         path: 'password',
                         name: 'settings / change password',
                         component: () =>
                             import(/* webpackChunkName: "settings" */ '@/views/Settings/Pages/Profile/Password.vue'),
+                        meta: { subject: 'settings-password' },
                     },
                 ],
             },

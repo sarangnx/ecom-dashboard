@@ -24,6 +24,7 @@ export default {
                 'settings',
             ],
         },
+        { action: 'route', subject: ['settings-stores', 'settings-profile', 'settings-password'] },
         { action: 'settings', subject: ['profile', 'stores', 'password'] },
     ],
     admin: [
@@ -43,6 +44,7 @@ export default {
                 'settings',
             ],
         },
+        { action: 'route', subject: ['settings-profile', 'settings-password'] },
         { action: 'settings', subject: ['profile', 'password'] },
     ],
     superadmin: [
@@ -62,6 +64,7 @@ export default {
                 'settings',
             ],
         },
+        { action: 'route', subject: ['settings-profile', 'settings-password'] },
         { action: 'settings', subject: ['profile', 'password'] },
     ],
 };
