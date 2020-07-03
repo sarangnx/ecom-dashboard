@@ -37,4 +37,17 @@ router.beforeEach(async (to, from, next) => {
     return next();
 });
 
+router.beforeEach((to, from, next) => {
+    // find routes with subject in meta
+    const protectedRoutes = to.matched.filter((record) => record.meta && record.meta.subject);
+
+    for (let route of protectedRoutes) {
+        if (!router.app.$can('route', route.meta.subject)) {
+            return router.push('/404');
+        }
+    }
+
+    next();
+});
+
 export default router;
