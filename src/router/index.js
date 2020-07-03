@@ -27,9 +27,9 @@ router.beforeEach(async (to, from, next) => {
         // if user is store owner check if phone is verified.
         const verified = await store.getters['auth/isVerified'];
         const user = await store.getters['auth/getUser'];
-        const route = user && user.phone ? `/verify?phone=${user.phone}` : '/verify';
 
         if (user.usergroup === 'storeowner' && !verified) {
+            const route = user && user.phone ? `/verify?phone=${user.phone}` : '/verify';
             return router.push(route);
         }
     }
