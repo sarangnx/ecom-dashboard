@@ -9,39 +9,37 @@
                             <h3 class="m-0">Dashboard</h3>
                         </div>
                         <div class="card-body bg-secondary">
-                            <div class="container">
-                                <div v-if="expert && expert.blocked" class="row">
-                                    <div class="col-12">
-                                        <div class="alert alert-danger">
-                                            <font-awesome-icon icon="user-slash" class="mr-3" />
-                                            Your Account has been <span class="font-weight-bold">Blocked.</span>
-                                            For further details contact Support.
-                                        </div>
+                            <div v-if="expert && expert.blocked" class="row">
+                                <div class="col-12">
+                                    <div class="alert alert-danger">
+                                        <font-awesome-icon icon="user-slash" class="mr-3" />
+                                        Your Account has been <span class="font-weight-bold">Blocked.</span>
+                                        For further details contact Support.
                                     </div>
                                 </div>
-                                <div class="card">
-                                    <div v-if="expert" class="row card-body">
-                                        <div class="col-12 mb-2">
-                                            <small class="font-weight-bold mr-2">Name:</small>
-                                            <span v-if="expert.profile">
-                                                {{ expert.profile.firstName }}
-                                                {{ expert.profile.lastName }}
-                                            </span>
-                                        </div>
-                                        <div class="col-12 mb-2">
-                                            <small class="font-weight-bold mr-2">Contact Number:</small>
-                                            <span>{{ expert.contactNumber }}</span>
-                                        </div>
-                                        <div class="col-12 mb-2">
-                                            <small class="font-weight-bold mr-2">WhatsApp Number:</small>
-                                            <span>{{ expert.whatsappNumber }}</span>
-                                        </div>
-                                        <div class="col-12 mb-2">
-                                            <small class="font-weight-bold mr-2">Verification Status:</small>
-                                            <badge :type="expert.verified ? 'success' : 'danger'">
-                                                {{ expert.verified ? 'Verified' : 'Not Verified' }}
-                                            </badge>
-                                        </div>
+                            </div>
+                            <div class="card">
+                                <div v-if="expert" class="row card-body">
+                                    <div class="col-12 mb-2">
+                                        <small class="font-weight-bold mr-2">Name:</small>
+                                        <span v-if="expert.profile">
+                                            {{ expert.profile.firstName }}
+                                            {{ expert.profile.lastName }}
+                                        </span>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <small class="font-weight-bold mr-2">Contact Number:</small>
+                                        <span>{{ expert.contactNumber }}</span>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <small class="font-weight-bold mr-2">WhatsApp Number:</small>
+                                        <span>{{ expert.whatsappNumber }}</span>
+                                    </div>
+                                    <div class="col-12 mb-2">
+                                        <small class="font-weight-bold mr-2">Verification Status:</small>
+                                        <badge :type="expert.verified ? 'success' : 'danger'">
+                                            {{ expert.verified ? 'Verified' : 'Not Verified' }}
+                                        </badge>
                                     </div>
                                 </div>
                             </div>
