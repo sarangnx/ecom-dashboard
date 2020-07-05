@@ -56,7 +56,6 @@
                                                     Service Name
                                                 </th>
                                                 <th class="text-center text-white">Status</th>
-                                                <th class="text-center text-white">Actions</th>
                                             </template>
                                             <template slot-scope="{ row }">
                                                 <td class="text-center">
@@ -66,11 +65,6 @@
                                                     <badge :type="row.serviceExperts.approved ? 'success' : 'danger'">
                                                         {{ row.serviceExperts.approved ? 'Active' : 'Blocked' }}
                                                     </badge>
-                                                </td>
-                                                <td>
-                                                    <div class="d-flex justify-content-center">
-                                                        <base-button size="sm">Service Pincodes</base-button>
-                                                    </div>
                                                 </td>
                                             </template>
                                         </base-table>
