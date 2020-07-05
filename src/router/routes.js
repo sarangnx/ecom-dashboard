@@ -115,6 +115,13 @@ export default [
                 ],
             },
             {
+                path: '/manage-pincodes',
+                name: 'Serviceable Locations',
+                component: () =>
+                    import(/* webpackChunkName: "services" */ '@/views/Services/Pages/ServiceableLocations.vue'),
+                meta: { subject: 'manage-pincodes' },
+            },
+            {
                 path: '/settings',
                 component: () => import(/* webpackChunkName: "settings" */ '@/views/Settings/Index.vue'),
                 meta: { requiresAuth: true, subject: 'settings' },

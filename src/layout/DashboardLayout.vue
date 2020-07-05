@@ -142,6 +142,14 @@ export default {
                 ],
             },
             {
+                name: 'Serviceable Locations',
+                subject: 'manage-pincodes',
+                icon: 'user-tie',
+                class: 'text-blue',
+                path: '/manage-pincodes',
+                type: 'sidebaritem',
+            },
+            {
                 name: 'Settings',
                 subject: 'settings',
                 icon: 'cog',
