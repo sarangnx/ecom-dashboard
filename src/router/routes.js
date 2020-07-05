@@ -1,8 +1,8 @@
 export default [
     {
         path: '/',
-        redirect: 'dashboard',
         component: () => import(/* webpackChunkName: "dashboard" */ '@/layout/DashboardLayout'),
+        meta: { requiresAuth: true },
         children: [
             {
                 path: '/dashboard',
