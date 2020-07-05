@@ -67,17 +67,14 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
     name: 'ServiceableLocations',
-    props: {
-        store: {
-            type: Object,
-            default: () => {},
-        },
-    },
     data: () => ({
+        expert: null,
         pincodes: null,
-        storePincodes: [],
+        expertPincodes: [],
         removedPincodes: [],
         newPincodes: [],
         filter: null,
@@ -86,7 +83,13 @@ export default {
     }),
     computed: {
         selectedPincodes() {
-            return this.storePincodes.concat(this.newPincodes);
+            return this.expertPincodes.concat(this.newPincodes);
+        },
+        ...mapGetters({
+            user: 'auth/getUser',
+        }),
+        userId() {
+            return this.user ? this.user.userId : null;
         },
     },
     watch: {
@@ -98,13 +101,32 @@ export default {
         },
     },
     mounted() {
+        this.getProfile();
         this.listPincodes();
-        if (this.store && this.store.storeId) {
-            this.getStorePincodes();
-        }
+        this.getexpertPincodes();
         this.filteredPincodes = Object.assign({}, this.pincodes);
     },
     methods: {
+        async getProfile() {
+            try {
+                const response = await this.$axios({
+                    method: 'get',
+                    url: '/services/expert',
+                    params: {
+                        userId: this.userId,
+                    },
+                });
+
+                this.expert = response.data.expert;
+            } catch (err) {
+                const res = err.response;
+                if (res && res.status >= 400 && res.status < 500 && res.data.error) {
+                    this.$error(res.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
+        },
         async listPincodes(options = {}) {
             try {
                 const response = await this.$axios({
@@ -121,17 +143,17 @@ export default {
                 this.$error('Unable to get pincodes list.');
             }
         },
-        async getStorePincodes() {
+        async getexpertPincodes() {
             const response = await this.$axios({
                 method: 'get',
                 url: '/pincodes/list',
                 params: {
-                    storeId: this.store.storeId,
+                    expertId: 1,
                 },
             });
 
             const pincodes = response.data.pincodes;
-            this.storePincodes = pincodes.rows;
+            this.expertPincodes = pincodes.rows;
         },
         remove(pincode) {
             let index = this.newPincodes.findIndex((item) => item.pinId === pincode.pinId);
@@ -141,10 +163,10 @@ export default {
                 return;
             }
 
-            index = this.storePincodes.findIndex((item) => item.pinId === pincode.pinId);
-            // if it is in storePincodes, add it to removedPincodes list
+            index = this.expertPincodes.findIndex((item) => item.pinId === pincode.pinId);
+            // if it is in expertPincodes, add it to removedPincodes list
             if (index !== -1) {
-                const removed = this.storePincodes.splice(index, 1);
+                const removed = this.expertPincodes.splice(index, 1);
                 this.removedPincodes = this.removedPincodes.concat(removed);
                 this.changed = true;
             }
@@ -184,7 +206,7 @@ export default {
 
                     if (response.status === 200 && response.data.message) {
                         this.$success(response.data.message);
-                        this.storePincodes = this.storePincodes.concat(this.newPincodes);
+                        this.expertPincodes = this.expertPincodes.concat(this.newPincodes);
                         this.newPincodes = [];
                     }
                 } catch (err) {
