@@ -197,10 +197,10 @@ export default {
                 try {
                     const response = await this.$axios({
                         method: 'post',
-                        url: '/pincodes/store',
+                        url: '/pincodes/expert',
                         data: {
                             pincodes: addIds,
-                            storeId: this.store.storeId,
+                            expertId: this.expert.expertId,
                         },
                     });
 
@@ -224,10 +224,10 @@ export default {
                 try {
                     const response = await this.$axios({
                         method: 'delete',
-                        url: '/pincodes/store',
+                        url: '/pincodes/expert',
                         data: {
                             pincodes: removeIds,
-                            storeId: this.store.storeId,
+                            expertId: this.expert.expertId,
                         },
                     });
 
