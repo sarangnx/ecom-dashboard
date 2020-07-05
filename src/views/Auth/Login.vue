@@ -72,6 +72,15 @@ export default {
         password: '',
         userId: '',
         loading: false,
+        home: {
+            user: '/401',
+            delivery: '/orders',
+            staff: '/dashboard',
+            storeowner: '/dashboard',
+            admin: '/admin',
+            superadmin: '/admin',
+            service: '/service-dashboard',
+        },
     }),
     computed: {
         ...mapGetters({
@@ -102,7 +111,8 @@ export default {
                     });
 
                     if (this.isLoggedIn) {
-                        this.$router.push('/');
+                        const route = this.home[this.user.usergroup] || '/';
+                        this.$router.push(route);
                     }
                 } catch (err) {
                     this.$error('Something went Wrong!');

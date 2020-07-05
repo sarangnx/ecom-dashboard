@@ -59,6 +59,14 @@ export default {
                 type: 'sidebaritem',
             },
             {
+                name: 'Dashboard',
+                subject: 'service-dashboard',
+                icon: 'desktop',
+                class: 'text-blue',
+                path: '/service-dashboard',
+                type: 'sidebaritem',
+            },
+            {
                 name: 'Orders',
                 subject: 'orders',
                 icon: 'shopping-basket',
@@ -132,6 +140,14 @@ export default {
                     { name: 'Manage Services', path: '/services/manage-services', subject: 'manage-services' },
                     { name: 'Manage Experts', path: '/services/manage-experts', subject: 'manage-experts' },
                 ],
+            },
+            {
+                name: 'Serviceable Locations',
+                subject: 'manage-pincodes',
+                icon: 'user-tie',
+                class: 'text-blue',
+                path: '/manage-pincodes',
+                type: 'sidebaritem',
             },
             {
                 name: 'Settings',

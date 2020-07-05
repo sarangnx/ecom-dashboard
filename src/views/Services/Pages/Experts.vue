@@ -76,7 +76,7 @@
                                         :disabled="blocked && blocked.includes(row.expertId)"
                                         @click="blockExpert(row.expertId, !row.blocked)"
                                     ></base-button>
-                                    <base-button
+                                    <!-- <base-button
                                         type="danger"
                                         icon="trash"
                                         size="sm"
@@ -84,7 +84,7 @@
                                             deleteModal = true;
                                             selectedService = row;
                                         "
-                                    ></base-button>
+                                    ></base-button> -->
                                 </div>
                             </td>
                         </template>
@@ -162,6 +162,8 @@ export default {
     },
     methods: {
         async getExperts() {
+            this.loading = true;
+
             try {
                 const response = await this.$axios({
                     method: 'get',
@@ -184,6 +186,8 @@ export default {
                     this.$error('Something went wrong. Please try again later.');
                 }
             }
+
+            this.loading = false;
         },
         async blockExpert(expertId, blocked) {
             this.blocked.push(expertId);
