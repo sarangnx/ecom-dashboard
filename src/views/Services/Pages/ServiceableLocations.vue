@@ -8,7 +8,7 @@
                         <div class="card-header d-flex justify-content-start align-items-center">
                             <h3 class="m-0">Serviceable Locations</h3>
                         </div>
-                        <div class="card-body bg-secondary">
+                        <div class="card-body bg-secondary position-relative">
                             <div class="row">
                                 <div class="col-12">
                                     <base-dropdown class="w-100" menu-classes="col-12" tag="div">
@@ -59,6 +59,9 @@
                                     </base-button>
                                 </div>
                             </div>
+                            <div v-if="loading" class="over__lay">
+                                <loading />
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -80,6 +83,7 @@ export default {
         filter: null,
         filteredPincodes: [],
         changed: false,
+        loading: false,
     }),
     computed: {
         selectedPincodes() {
@@ -192,6 +196,7 @@ export default {
 
             let error = false;
 
+            this.loading = true;
             // send request to add pincodes if given
             if (addIds && addIds.length) {
                 try {
@@ -249,6 +254,7 @@ export default {
             if (!error) {
                 this.changed = false;
             }
+            this.loading = false;
         },
     },
 };
