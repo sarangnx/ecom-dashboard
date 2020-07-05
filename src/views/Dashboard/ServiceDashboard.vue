@@ -18,7 +18,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
+                            <div class="card shadow-lg mb-3">
                                 <div v-if="expert" class="row card-body">
                                     <div class="col-12 mb-2">
                                         <small class="font-weight-bold mr-2">Name:</small>
@@ -40,6 +40,40 @@
                                         <badge :type="expert.verified ? 'success' : 'danger'">
                                             {{ expert.verified ? 'Verified' : 'Not Verified' }}
                                         </badge>
+                                    </div>
+                                </div>
+                            </div>
+                            <div v-if="expert" class="card shadow-lg">
+                                <div class="row card-body">
+                                    <div class="col-12 mb-2 table-responsive">
+                                        <base-table
+                                            class="table align-items-center"
+                                            thead-classes="thead-dark"
+                                            :data="expert.services"
+                                        >
+                                            <template slot="columns">
+                                                <th class="text-center text-white">
+                                                    Service Name
+                                                </th>
+                                                <th class="text-center text-white">Status</th>
+                                                <th class="text-center text-white">Actions</th>
+                                            </template>
+                                            <template slot-scope="{ row }">
+                                                <td class="text-center">
+                                                    {{ row.name }}
+                                                </td>
+                                                <td class="text-center">
+                                                    <badge :type="row.serviceExperts.approved ? 'success' : 'danger'">
+                                                        {{ row.serviceExperts.approved ? 'Active' : 'Blocked' }}
+                                                    </badge>
+                                                </td>
+                                                <td>
+                                                    <div class="d-flex justify-content-center">
+                                                        <base-button size="sm">Service Pincodes</base-button>
+                                                    </div>
+                                                </td>
+                                            </template>
+                                        </base-table>
                                     </div>
                                 </div>
                             </div>
@@ -80,6 +114,7 @@ export default {
                 });
 
                 this.expert = response.data.expert;
+                console.log(this.expert);
             } catch (err) {
                 const res = err.response;
                 if (res && res.status >= 400 && res.status < 500 && res.data.error) {
