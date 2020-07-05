@@ -32,6 +32,23 @@ router.beforeEach(async (to, from, next) => {
             const route = user && user.phone ? `/verify?phone=${user.phone}` : '/verify';
             return router.push(route);
         }
+
+        // if path = '/' & user is logged in
+        // redirect them to their respective home pages
+        if (to.path === '/') {
+            const home = {
+                user: '/401',
+                delivery: '/orders',
+                staff: '/dashboard',
+                storeowner: '/dashboard',
+                admin: '/admin',
+                superadmin: '/admin',
+                service: '/service-dashboard',
+            };
+
+            const route = home[user.usergroup] || '/';
+            return router.push(route);
+        }
     }
 
     return next();
