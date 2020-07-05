@@ -100,10 +100,10 @@ export default {
             });
         },
     },
-    mounted() {
-        this.getProfile();
-        this.listPincodes();
-        this.getexpertPincodes();
+    async mounted() {
+        await this.getProfile();
+        await this.listPincodes();
+        await this.getexpertPincodes();
         this.filteredPincodes = Object.assign({}, this.pincodes);
     },
     methods: {
@@ -148,7 +148,7 @@ export default {
                 method: 'get',
                 url: '/pincodes/list',
                 params: {
-                    expertId: 1,
+                    expertId: this.expert && this.expert.expertId,
                 },
             });
 
