@@ -1,9 +1,13 @@
 <template>
     <div class="card shadow">
-        <div class="card-header d-flex justify-content-between">
-            <h3>Stores</h3>
+        <div class="card-header d-flex justify-content-start align-items-center">
+            <h3 v-if="!selectedStore">Stores</h3>
+            <template v-else>
+                <base-button icon="arrow-left" size="sm" @click="selectedStore = null"></base-button>
+                <h3 class="m-0">{{ selectedStore.name }}</h3>
+            </template>
         </div>
-        <div class="card-body p-0 position-relative min__height">
+        <div v-if="!selectedStore" class="card-body p-0 position-relative min__height">
             <template v-if="stores && stores.length">
                 <div class="p-2 d-flex justify-content-between">
                     <div>
@@ -56,7 +60,13 @@
                             </td>
                             <td>
                                 <div class="d-flex justify-content-center">
-                                    <base-button type="primary" icon="eye" size="sm" title="View Details"></base-button>
+                                    <base-button
+                                        type="primary"
+                                        icon="eye"
+                                        size="sm"
+                                        title="View Details"
+                                        @click="selectedStore = Object.assign({}, row)"
+                                    ></base-button>
                                     <base-button
                                         :type="row.blocked ? 'success' : 'warning'"
                                         :icon="row.blocked ? 'store-alt' : 'store-alt-slash'"
@@ -85,13 +95,19 @@
                 <loading color="dark" />
             </div>
         </div>
-        <div v-if="totalPages" class="card-footer">
+        <store v-if="selectedStore" :store="selectedStore" />
+        <div v-if="totalPages && !selectedStore" class="card-footer">
             <base-pagination v-model="page" :page-count="totalPages" align="center" />
         </div>
     </div>
 </template>
 <script>
+import Store from './Store';
+
 export default {
+    components: {
+        Store,
+    },
     data: () => ({
         loading: null,
         page: 1,
@@ -100,6 +116,7 @@ export default {
         totalPages: null,
         order: 'asc',
         blocked: [],
+        selectedStore: null,
     }),
     watch: {
         page() {
