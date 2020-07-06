@@ -101,6 +101,17 @@ export default {
         order: 'asc',
         blocked: [],
     }),
+    watch: {
+        page() {
+            this.getStores();
+        },
+        perPage() {
+            this.getStores();
+        },
+        order() {
+            this.getStores();
+        },
+    },
     mounted() {
         this.getStores();
     },
@@ -115,6 +126,7 @@ export default {
                     params: {
                         page: this.page,
                         perPage: this.perPage,
+                        order: this.order,
                     },
                 });
 
