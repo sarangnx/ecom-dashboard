@@ -95,7 +95,7 @@
                 <loading color="dark" />
             </div>
         </div>
-        <store v-if="selectedStore" :store="selectedStore" />
+        <store v-if="selectedStore" :store="selectedStore" @verified="updateStore" />
         <div v-if="totalPages && !selectedStore" class="card-footer">
             <base-pagination v-model="page" :page-count="totalPages" align="center" />
         </div>
@@ -193,6 +193,12 @@ export default {
             // remove item from block array
             const index = this.blocked.indexOf(storeId);
             if (index > -1) this.blocked.splice(index, 1);
+        },
+        updateStore(data) {
+            const index = this.stores.findIndex((store) => store.storeId === data.storeId);
+
+            this.$set(this.stores[index], 'verified', data.verified);
+            this.selectedStore = Object.assign({}, this.stores[index]);
         },
     },
 };
