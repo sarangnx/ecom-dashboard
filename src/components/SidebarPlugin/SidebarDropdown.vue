@@ -1,7 +1,7 @@
 <template>
     <li class="nav-item drop__down">
         <a class="nav-link" @click="toggleDropDown">
-            <font-awesome-icon :icon="icon" class="mr-2" :class="classes"></font-awesome-icon>
+            <font-awesome-icon :icon="icon" class="mr-2" fixed-width :class="classes" />
             <span>{{ title }}</span>
         </a>
         <collapse-transition>
