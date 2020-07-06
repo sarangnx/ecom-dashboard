@@ -57,6 +57,25 @@
                     </div>
                 </template>
             </div>
+            <div class="row mt-3">
+                <div class="col-12">
+                    <small class="font-weight-bold mr-2">Store Verification status:</small>
+                    <badge :type="store.verified ? 'success' : 'danger'">
+                        {{ store.verified ? 'Verified' : 'Not Verified' }}
+                    </badge>
+                </div>
+                <div class="col-12 my-3">
+                    <base-button
+                        :type="store.verified ? 'danger' : 'success'"
+                        size="sm"
+                        :disabled="loading"
+                        :loading="loading"
+                        @click="verify(store.storeId, !store.verified)"
+                    >
+                        {{ store.verified ? 'Mark as Not Verified' : 'Mark as Verified' }}
+                    </base-button>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -77,9 +96,37 @@ export default {
             VEGNFRUITS: 'Vegetables & Fruits',
             OTHERS: 'Others',
         },
+        loading: false,
     }),
-    mounted() {
-        console.log(this.store);
+    methods: {
+        async verify(storeId, verified) {
+            this.loading = true;
+
+            try {
+                const response = await this.$axios({
+                    method: 'patch',
+                    url: '/stores/store/verify',
+                    data: {
+                        storeId,
+                        verified,
+                    },
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                    this.$emit('verified', { storeId, verified });
+                }
+            } catch (err) {
+                const res = err.response;
+                if (res && res.status >= 400 && res.status < 500 && res.data.error) {
+                    this.$error(res.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
+
+            this.loading = false;
+        },
     },
 };
 </script>
