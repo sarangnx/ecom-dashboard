@@ -144,7 +144,39 @@ export default {
 
             this.loading = false;
         },
-        async blockStore() {},
+        async blockStore(storeId, blocked) {
+            this.blocked.push(storeId);
+
+            try {
+                const response = await this.$axios({
+                    method: 'patch',
+                    url: '/stores/store/block',
+                    data: {
+                        storeId,
+                        blocked,
+                    },
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                }
+
+                // reflect the changes in table
+                const index = this.stores.findIndex((store) => store.storeId === storeId);
+                this.stores[index].blocked = blocked;
+            } catch (err) {
+                const res = err.response;
+                if (res && res.status >= 400 && res.status < 500 && res.data.error) {
+                    this.$error(res.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
+
+            // remove item from block array
+            const index = this.blocked.indexOf(storeId);
+            if (index > -1) this.blocked.splice(index, 1);
+        },
     },
 };
 </script>
