@@ -123,9 +123,15 @@ export default [
             },
             {
                 path: '/stores',
-                name: 'Stores',
                 component: () => import(/* webpackChunkName: "services" */ '@/views/Stores/Index.vue'),
                 meta: { subject: 'stores' },
+                children: [
+                    {
+                        path: '',
+                        name: 'stores',
+                        component: () => import(/* webpackChunkName: "services" */ '@/views/Stores/Pages/Stores.vue'),
+                    },
+                ],
             },
             {
                 path: '/settings',
