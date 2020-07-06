@@ -37,7 +37,7 @@
                         <a slot="title" class="nav-link" href="#" role="button">
                             <div class="media align-items-center">
                                 <span class="avatar avatar-sm rounded-circle">
-                                    <img alt="Image placeholder" src="img/theme/logo.png" />
+                                    <img alt="Image placeholder" src="img/brand/icon.png" />
                                 </span>
                             </div>
                         </a>

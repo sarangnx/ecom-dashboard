@@ -142,6 +142,14 @@ export default {
                 ],
             },
             {
+                name: 'Stores',
+                subject: 'stores',
+                icon: 'store',
+                class: 'text-blue',
+                path: '/stores',
+                type: 'sidebaritem',
+            },
+            {
                 name: 'Serviceable Locations',
                 subject: 'manage-pincodes',
                 icon: 'user-tie',

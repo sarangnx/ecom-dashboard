@@ -122,6 +122,18 @@ export default [
                 meta: { subject: 'manage-pincodes' },
             },
             {
+                path: '/stores',
+                component: () => import(/* webpackChunkName: "services" */ '@/views/Stores/Index.vue'),
+                meta: { subject: 'stores' },
+                children: [
+                    {
+                        path: '',
+                        name: 'stores',
+                        component: () => import(/* webpackChunkName: "services" */ '@/views/Stores/Pages/Stores.vue'),
+                    },
+                ],
+            },
+            {
                 path: '/settings',
                 component: () => import(/* webpackChunkName: "settings" */ '@/views/Settings/Index.vue'),
                 meta: { requiresAuth: true, subject: 'settings' },

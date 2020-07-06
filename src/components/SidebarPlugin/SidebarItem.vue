@@ -9,7 +9,7 @@
             @click.native="linkClick"
         >
             <template>
-                <font-awesome-icon :icon="link.icon" class="mr-2" :class="link.class"></font-awesome-icon>
+                <font-awesome-icon :icon="link.icon" class="mr-2" fixed-width :class="link.class" />
                 <span class="nav-link-text">{{ link.name }}</span>
             </template>
         </router-link>
