@@ -11,6 +11,31 @@
                     <span>{{ storeTypes[store.storeType] }}</span>
                 </div>
             </div>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <h3 class="text-muted">Address</h3>
+                </div>
+                <div class="col-12">
+                    <small class="font-weight-bold mr-2">Area:</small>
+                    <span>{{ store.area }}</span>
+                </div>
+                <div class="col-12">
+                    <small class="font-weight-bold mr-2">City:</small>
+                    <span>{{ store.city }}</span>
+                </div>
+                <div class="col-12">
+                    <small class="font-weight-bold mr-2">District:</small>
+                    <span>{{ store.district }}</span>
+                </div>
+                <div class="col-12">
+                    <small class="font-weight-bold mr-2">Pincode:</small>
+                    <span>{{ store.pincode }}</span>
+                </div>
+                <div class="col-12">
+                    <small class="font-weight-bold mr-2">State:</small>
+                    <span>{{ store.state }}</span>
+                </div>
+            </div>
         </div>
     </div>
 </template>
