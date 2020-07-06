@@ -207,7 +207,7 @@ export default {
 
                 const response = await this.$axios({
                     method: 'get',
-                    url: '/stores/list',
+                    url: '/stores/admin',
                     params: {
                         ownerId,
                     },
