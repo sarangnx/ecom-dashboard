@@ -59,7 +59,7 @@
                                     <base-button type="primary" icon="eye" size="sm" title="View Details"></base-button>
                                     <base-button
                                         :type="row.blocked ? 'success' : 'warning'"
-                                        :icon="row.blocked ? 'user' : 'user-slash'"
+                                        :icon="row.blocked ? 'store-alt' : 'store-alt-slash'"
                                         size="sm"
                                         :title="row.blocked ? 'Unblock Store' : 'Block Store'"
                                         :loading="blocked && blocked.includes(row.storeId)"
