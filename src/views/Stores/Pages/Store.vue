@@ -36,6 +36,27 @@
                     <span>{{ store.state }}</span>
                 </div>
             </div>
+            <div class="row mt-2">
+                <div class="col-12">
+                    <h3 class="text-muted">Owners</h3>
+                </div>
+                <template v-for="(owner, index) in store.owners">
+                    <div :key="index" class="col-12">
+                        <div class="card shadow">
+                            <div class="card-body">
+                                <div>
+                                    <small class="font-weight-bold mr-2">Name:</small>
+                                    <span>{{ owner.firstName }} {{ owner.lastName }}</span>
+                                </div>
+                                <div>
+                                    <small class="font-weight-bold mr-2">Phone:</small>
+                                    <span>{{ owner.phone }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
         </div>
     </div>
 </template>
