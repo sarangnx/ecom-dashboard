@@ -15,12 +15,14 @@
                 </div>
                 <div class="row">
                     <div class="col-xl-3 col-lg-6">
-                        <div class="card">
-                            <div class="card-body">
+                        <div class="card shadow-lg">
+                            <div class="card-header pb-0">
                                 <h3>
                                     Order Stats
                                     <font-awesome-icon icon="shopping-basket" class="text-primary" pull="right" />
                                 </h3>
+                            </div>
+                            <div class="card-body bg-secondary">
                                 <div class="text-sm row">
                                     <div class="col-12">
                                         <span class="mr-2 font-weight-bold">Total Orders:</span>
