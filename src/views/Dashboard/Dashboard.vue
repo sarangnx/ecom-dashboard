@@ -60,6 +60,32 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-xl-3 col-lg-6">
+                        <div class="card shadow-lg">
+                            <div class="card-header pb-0">
+                                <h3>
+                                    Store Stats
+                                    <font-awesome-icon icon="store-alt" class="text-primary" pull="right" />
+                                </h3>
+                            </div>
+                            <div class="card-body bg-secondary">
+                                <div class="text-sm row">
+                                    <div class="col-12">
+                                        <span class="mr-2 font-weight-bold">Total Items:</span>
+                                        <span>{{ items }}</span>
+                                    </div>
+                                    <div class="col-12">
+                                        <span class="mr-2 font-weight-bold">Total Categories:</span>
+                                        <span>{{ categories }}</span>
+                                    </div>
+                                    <div class="col-12">
+                                        <span class="mr-2 font-weight-bold">Total Banners:</span>
+                                        <span>{{ banners }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </base-header>
             <div class="container-fluid mt--7">
@@ -134,6 +160,9 @@ export default {
         orderStatus: null,
         totalOrders: null,
         totalToday: null,
+        items: null,
+        categories: null,
+        banners: null,
     }),
     computed: {
         ...mapGetters({
@@ -151,10 +180,12 @@ export default {
     watch: {
         storeId() {
             this.getStats(this.storeId);
+            this.getStoreStats(this.storeId);
         },
     },
     mounted() {
         this.getStats(this.storeId);
+        this.getStoreStats(this.storeId);
     },
     methods: {
         ...mapActions({
@@ -174,6 +205,24 @@ export default {
                 this.orderStatus = Object.assign({}, stats.orderStatus);
                 this.totalOrders = stats.totalOrders;
                 this.totalToday = stats.totalToday;
+            } catch (err) {
+                this.$error('Unable to get stats.');
+            }
+        },
+        async getStoreStats(storeId) {
+            try {
+                const response = await this.$axios({
+                    method: 'get',
+                    url: '/stores/stats',
+                    params: {
+                        storeId: storeId,
+                    },
+                });
+
+                const stats = response.data.store;
+                this.items = stats.items;
+                this.categories = stats.categories;
+                this.banners = stats.banners;
             } catch (err) {
                 this.$error('Unable to get stats.');
             }
