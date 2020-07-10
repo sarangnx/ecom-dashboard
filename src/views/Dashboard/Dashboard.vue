@@ -92,36 +92,32 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="card shadow">
-                            <div class="card-header d-flex justify-content-between">
-                                <h2>Most Sold Products</h2>
+                            <div class="card-header pb-0">
+                                <h3>Most Sold Products</h3>
                             </div>
-                            <div class="card-body">
+                            <div class="card-body px-0 pt-0">
                                 <div class="table-responsive">
-                                    <!-- <base-table :data="most_sold" type="hover table-striped table-sm">
-                                    <template slot="columns">
-                                        <th>#</th>
-                                        <th>Item</th>
-                                        <th>Total Orders</th>
-                                    </template>
-
-                                    <template slot-scope="{ row, index }">
-                                        <td class="text-left">
-                                            {{ index + 1 }}
-                                        </td>
-                                        <td>
-                                            <img v-if="row.item_details.image_path" class="item-image" />
-                                            <i v-else class="fa fa-image"></i> -->
-                                    <!-- Alt Image -->
-                                    <!-- {{ row.item_details.item_name }}
-                                        </td>
-                                        <td>
-                                            {{ parseInt(row.occurance) }}
-                                        </td>
-                                    </template>
-                                </base-table> -->
-                                    <!-- Table -->
+                                    <base-table
+                                        :data="mostSoldItems"
+                                        type="hover table-striped table-sm"
+                                        thead-classes="thead-dark"
+                                    >
+                                        <template slot="columns">
+                                            <th>#</th>
+                                            <th>Item</th>
+                                            <th class="text-center">Total Orders</th>
+                                        </template>
+                                        <template slot-scope="{ row, index }">
+                                            <td class="text-left">{{ index + 1 }}</td>
+                                            <td>
+                                                {{ row.item && row.item.itemDetails && row.item.itemDetails.itemName }}
+                                            </td>
+                                            <td class="text-center">
+                                                {{ row.occurance && parseInt(row.occurance) }}
+                                            </td>
+                                        </template>
+                                    </base-table>
                                 </div>
-                                <!-- responsive-table -->
                             </div>
                         </div>
                     </div>
@@ -163,6 +159,7 @@ export default {
         items: null,
         categories: null,
         banners: null,
+        mostSoldItems: [],
     }),
     computed: {
         ...mapGetters({
@@ -223,6 +220,7 @@ export default {
                 this.items = stats.items;
                 this.categories = stats.categories;
                 this.banners = stats.banners;
+                this.mostSoldItems = stats.mostSoldItems;
             } catch (err) {
                 this.$error('Unable to get stats.');
             }
