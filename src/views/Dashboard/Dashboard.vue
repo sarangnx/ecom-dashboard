@@ -1,6 +1,17 @@
 <template>
     <div>
         <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
+            <div v-if="current" class="mb-3 d-flex">
+                <h3 class="mr-2">Store:</h3>
+                <base-dropdown>
+                    <base-button slot="title" type="default" size="sm" class="dropdown-toggle">
+                        {{ current.name }}
+                    </base-button>
+                    <a v-for="(item, index) in stores" :key="index" class="dropdown-item" @click="change(item)">
+                        {{ item.name }}
+                    </a>
+                </base-dropdown>
+            </div>
             <div class="row">
                 <div class="col-xl-3 col-lg-6">
                     <div class="card">
@@ -109,6 +120,11 @@ export default {
         },
         storeId() {
             return this.current ? this.current.storeId : null;
+        },
+    },
+    watch: {
+        storeId() {
+            this.getStats(this.storeId);
         },
     },
     mounted() {
