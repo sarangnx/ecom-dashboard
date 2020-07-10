@@ -95,7 +95,7 @@
                             <div class="card-header pb-0">
                                 <h3>Most Sold Products</h3>
                             </div>
-                            <div class="card-body px-0 pt-0">
+                            <div v-if="mostSoldItems && mostSoldItems.length" class="card-body px-0 pt-0">
                                 <div class="table-responsive">
                                     <base-table
                                         :data="mostSoldItems"
@@ -117,6 +117,19 @@
                                             </td>
                                         </template>
                                     </base-table>
+                                </div>
+                            </div>
+                            <div v-else class="card-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-12 px-0">
+                                            <div class="mb-3">
+                                                <span class="text-muted">
+                                                    No data...
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
