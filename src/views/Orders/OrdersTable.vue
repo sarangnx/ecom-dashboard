@@ -104,9 +104,11 @@
                             @click="
                                 modal = true;
                                 orderItems = order.orderItems;
+                                total = order.totalPrice;
                             "
-                            >View Order</base-button
                         >
+                            View Order
+                        </base-button>
                     </div>
                 </div>
             </template>
@@ -124,9 +126,9 @@
         <div class="card-footer">
             <base-pagination v-model="page" :page-count="totalPages" align="center" />
         </div>
-        <modal :show.sync="modal" header-classes="pb-0">
+        <modal :show.sync="modal" header-classes="pb-0" body-classes="px-0 pt-0">
             <h5 slot="header">Order Items</h5>
-            <orders-list :items="orderItems" />
+            <orders-list :items="orderItems" :total="total" />
         </modal>
     </div>
 </template>
@@ -169,6 +171,7 @@ export default {
         statusLoading: null,
         modal: false,
         orderItems: [],
+        total: 0,
     }),
     watch: {
         page() {
