@@ -1,13 +1,24 @@
 <template>
     <div>
-        <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
-            <div class="row"></div>
-        </base-header>
+        <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8"></base-header>
         <div class="container-fluid mt--7">
             <div class="row">
-                <div class="col-12">
-                    <div class="card shadow">
-                        <div class="card-body"></div>
+                <div class="col-12 col-lg-6 col-xl-3">
+                    <div class="card shadow-lg">
+                        <div class="card-header pb-0">
+                            <h3>
+                                User Stats
+                                <font-awesome-icon icon="users" class="text-primary" pull="right" />
+                            </h3>
+                        </div>
+                        <div class="card-body bg-secondary">
+                            <div class="text-sm row">
+                                <div v-for="(group, key) in userStatsText" :key="key" class="col-12">
+                                    <span class="mr-2 font-weight-bold">{{ group }}:</span>
+                                    <span>{{ userStats[key] || 0 }}</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -18,9 +29,17 @@
 export default {
     data: () => ({
         userStats: {},
+        userStatsText: {
+            total: 'Total Users',
+            admin: 'Admins',
+            user: 'Customers',
+            storeowner: 'Store Owners',
+            staff: 'Staffs',
+            delivery: 'Devlivery Boys',
+            service: 'Service Experts',
+        },
     }),
     mounted() {
-        //this.getStats(this.storeId);
         this.getUserStats();
     },
     methods: {
