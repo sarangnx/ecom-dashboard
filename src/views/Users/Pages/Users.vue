@@ -92,7 +92,9 @@
                 <loading color="dark" />
             </div>
         </div>
-        <div class="card-footer"></div>
+        <div v-if="totalPages" class="card-footer">
+            <base-pagination v-model="page" :page-count="totalPages" align="center" />
+        </div>
     </div>
 </template>
 <script>
