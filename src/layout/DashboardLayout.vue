@@ -123,14 +123,6 @@ export default {
                 type: 'sidebaritem',
             },
             {
-                name: 'Users',
-                subject: 'users',
-                icon: 'user',
-                class: 'text-blue',
-                path: '/users',
-                type: 'sidebaritem',
-            },
-            {
                 name: 'Services',
                 subject: 'services',
                 icon: 'user-tie',
@@ -155,6 +147,14 @@ export default {
                 icon: 'user-tie',
                 class: 'text-blue',
                 path: '/manage-pincodes',
+                type: 'sidebaritem',
+            },
+            {
+                name: 'Users',
+                subject: 'users',
+                icon: 'users',
+                class: 'text-blue',
+                path: '/users',
                 type: 'sidebaritem',
             },
             {

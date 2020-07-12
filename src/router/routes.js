@@ -118,18 +118,30 @@ export default [
                 path: '/manage-pincodes',
                 name: 'Serviceable Locations',
                 component: () =>
-                    import(/* webpackChunkName: "services" */ '@/views/Services/Pages/ServiceableLocations.vue'),
+                    import(/* webpackChunkName: "service" */ '@/views/Services/Pages/ServiceableLocations.vue'),
                 meta: { subject: 'manage-pincodes' },
             },
             {
                 path: '/stores',
-                component: () => import(/* webpackChunkName: "services" */ '@/views/Stores/Index.vue'),
+                component: () => import(/* webpackChunkName: "stores" */ '@/views/Stores/Index.vue'),
                 meta: { subject: 'stores' },
                 children: [
                     {
                         path: '',
                         name: 'stores',
-                        component: () => import(/* webpackChunkName: "services" */ '@/views/Stores/Pages/Stores.vue'),
+                        component: () => import(/* webpackChunkName: "stores" */ '@/views/Stores/Pages/Stores.vue'),
+                    },
+                ],
+            },
+            {
+                path: '/users',
+                component: () => import(/* webpackChunkName: "users" */ '@/views/Users/Index.vue'),
+                meta: { subject: 'users' },
+                children: [
+                    {
+                        path: '',
+                        name: 'users',
+                        component: () => import(/* webpackChunkName: "users" */ '@/views/Users/Pages/Users.vue'),
                     },
                 ],
             },
