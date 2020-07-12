@@ -8,7 +8,7 @@
                         title="Total Users"
                         type="gradient-red"
                         :sub-title="total_users.toString()"
-                        icon="fa fa-users"
+                        icon="users"
                         class="mb-4 mb-xl-0"
                     >
                     </stats-card>
@@ -18,7 +18,7 @@
                         title="Total Orders"
                         type="gradient-orange"
                         :sub-title="total_orders.toString()"
-                        icon="fa fa-shopping-basket"
+                        icon="shopping-basket"
                         class="mb-4 mb-xl-0"
                     >
                     </stats-card>
@@ -107,6 +107,7 @@
 <script>
 export default {
     data: () => ({
+        userStats: {},
         total_orders: 0,
         total_users: 0,
         most_sold: [],
@@ -129,7 +130,7 @@ export default {
     },
     mounted() {
         //this.getStats(this.storeId);
-        //this.getUserStats();
+        this.getUserStats();
     },
     methods: {
         getStats(store_id) {
@@ -146,20 +147,18 @@ export default {
                 this.most_sold = stats.most_sold_items;
             });
         },
-        getUserStats(store_id) {
-            this.$axios({
-                method: 'get',
-                url: '/users/stats',
-            }).then((response) => {
-                const stats = response.data.stats;
-                this.localbodies = stats.localbodies.map((localbody) => {
-                    localbody.user = stats.user.find((item) => item.localbody_id === localbody.localbody_id);
-                    localbody.manager = stats.manager.find((item) => item.localbody_id === localbody.localbody_id);
-                    localbody.delivery = stats.delivery.find((item) => item.localbody_id === localbody.localbody_id);
-                    return localbody;
+        async getUserStats() {
+            try {
+                const response = await this.$axios({
+                    method: 'get',
+                    url: '/users/stats',
                 });
-                this.stats = stats;
-            });
+
+                const stats = response.data.stats;
+                this.userStats = stats;
+            } catch (err) {
+                this.$error('Unable to get stats.');
+            }
         },
     },
 };
