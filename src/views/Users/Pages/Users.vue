@@ -108,6 +108,17 @@ export default {
         selectedUser: null,
         viewModal: null,
     }),
+    watch: {
+        page() {
+            this.listUsers();
+        },
+        perPage() {
+            this.listUsers();
+        },
+        order() {
+            this.listUsers();
+        },
+    },
     mounted() {
         this.listUsers();
     },
