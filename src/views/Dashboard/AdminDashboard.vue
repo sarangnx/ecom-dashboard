@@ -21,6 +21,17 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-12 col-lg-6 col-xl-3">
+                    <div class="card shadow-lg">
+                        <div class="card-body">
+                            <h3>
+                                Total Stores
+                                <font-awesome-icon icon="users" class="text-primary" pull="right" />
+                            </h3>
+                            <span class="font-weight-bold">{{ storeStats.stores }}</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -38,9 +49,11 @@ export default {
             delivery: 'Devlivery Boys',
             service: 'Service Experts',
         },
+        storeStats: {},
     }),
     mounted() {
         this.getUserStats();
+        this.getStoreStats();
     },
     methods: {
         async getUserStats() {
@@ -52,6 +65,19 @@ export default {
 
                 const stats = response.data.stats;
                 this.userStats = stats;
+            } catch (err) {
+                this.$error('Unable to get stats.');
+            }
+        },
+        async getStoreStats() {
+            try {
+                const response = await this.$axios({
+                    method: 'get',
+                    url: '/stores/stats/admin',
+                });
+
+                const stats = response.data.stats;
+                this.storeStats = stats;
             } catch (err) {
                 this.$error('Unable to get stats.');
             }
