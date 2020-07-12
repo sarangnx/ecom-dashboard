@@ -3,7 +3,7 @@
         <div class="card-header">
             <h3 class="m-0">Users</h3>
         </div>
-        <div class="card-body bg-secondary p-0">
+        <div class="card-body bg-secondary p-0 position-relative min__height">
             <template v-if="users && users.length">
                 <div class="p-2 d-flex justify-content-between">
                     <div>
@@ -79,6 +79,18 @@
                     </base-table>
                 </div>
             </template>
+            <div
+                v-if="!(users && users.length) && !loading"
+                class="col-12 p-5 d-flex justify-content-center flex-column align-items-center"
+            >
+                <div>
+                    <small class="p-2">no users</small>
+                    <font-awesome-icon icon="inbox" />
+                </div>
+            </div>
+            <div v-if="loading" class="over__lay">
+                <loading color="dark" />
+            </div>
         </div>
         <div class="card-footer"></div>
     </div>
