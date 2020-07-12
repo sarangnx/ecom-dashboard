@@ -153,6 +153,39 @@ export default {
 
             this.loading = false;
         },
+        async blockUser(userId, blocked) {
+            this.blocked.push(userId);
+
+            try {
+                const response = await this.$axios({
+                    method: 'patch',
+                    url: '/users/block',
+                    data: {
+                        userId,
+                        blocked,
+                    },
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                }
+
+                // reflect the changes in table
+                const index = this.users.findIndex((user) => user.userId === userId);
+                this.users[index].blocked = blocked;
+            } catch (err) {
+                const res = err.response;
+                if (res && res.status >= 400 && res.status < 500 && res.data.error) {
+                    this.$error(res.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
+
+            // remove item from block array
+            const index = this.blocked.indexOf(userId);
+            if (index > -1) this.blocked.splice(index, 1);
+        },
     },
 };
 </script>
