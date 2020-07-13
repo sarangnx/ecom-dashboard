@@ -4,108 +4,103 @@
             <h3 class="m-0">Users</h3>
         </div>
         <div class="card-body bg-secondary p-0 position-relative min__height">
-            <template>
-                <div class="p-2 d-flex justify-content-between">
-                    <div>
-                        <small class="mr-1 font-weight-bold">Per Page:</small>
-                        <base-dropdown>
-                            <base-button slot="title" size="sm" icon="caret-down" icon-position="right">
-                                {{ perPage }}
-                            </base-button>
-                            <a class="dropdown-item" @click="perPage = 10">10</a>
-                            <a class="dropdown-item" @click="perPage = 50">50</a>
-                            <a class="dropdown-item" @click="perPage = 100">100</a>
-                        </base-dropdown>
-                    </div>
+            <div class="p-2 d-flex justify-content-between">
+                <div>
+                    <small class="mr-1 font-weight-bold">Per Page:</small>
+                    <base-dropdown>
+                        <base-button slot="title" size="sm" icon="caret-down" icon-position="right">
+                            {{ perPage }}
+                        </base-button>
+                        <a class="dropdown-item" @click="perPage = 10">10</a>
+                        <a class="dropdown-item" @click="perPage = 50">50</a>
+                        <a class="dropdown-item" @click="perPage = 100">100</a>
+                    </base-dropdown>
                 </div>
-                <div class="table-responsive" style="min-height: 400px;">
-                    <base-table
-                        class="table align-items-center table-flush service-table"
-                        thead-classes="thead-dark"
-                        :data="users"
-                    >
-                        <template slot="columns">
-                            <th class="text-center text-white">
-                                <a
-                                    class="pointer"
-                                    @click.prevent="order === 'asc' ? (order = 'desc') : (order = 'asc')"
-                                >
-                                    Name
-                                    <font-awesome-icon :icon="order === 'asc' ? 'caret-up' : 'caret-down'" />
+            </div>
+            <div class="table-responsive" style="min-height: 400px;">
+                <base-table
+                    class="table align-items-center table-flush service-table"
+                    thead-classes="thead-dark"
+                    :data="users"
+                >
+                    <template slot="columns">
+                        <th class="text-center text-white">
+                            <a class="pointer" @click.prevent="order === 'asc' ? (order = 'desc') : (order = 'asc')">
+                                Name
+                                <font-awesome-icon :icon="order === 'asc' ? 'caret-up' : 'caret-down'" />
+                            </a>
+                        </th>
+                        <th class="text-center text-white">Blocked</th>
+                        <th class="text-center text-white">Verified</th>
+                        <th class="text-center text-white">
+                            <base-dropdown position="right">
+                                <a slot="title" type="primary" size="sm" class="dropdown-toggle">
+                                    {{ selectedGroup ? usergroupText[selectedGroup] : 'User Group' }}
                                 </a>
-                            </th>
-                            <th class="text-center text-white">Blocked</th>
-                            <th class="text-center text-white">Verified</th>
-                            <th class="text-center text-white">
-                                <base-dropdown position="right">
-                                    <a slot="title" type="primary" size="sm" class="dropdown-toggle">
-                                        {{ selectedGroup ? usergroupText[selectedGroup] : 'User Group' }}
-                                    </a>
-                                    <a class="dropdown-item text-capitalize pointer" @click="selectedGroup = null">
-                                        All
-                                    </a>
-                                    <a
-                                        v-for="(value, key) in usergroupText"
-                                        :key="key"
-                                        class="dropdown-item text-capitalize pointer"
-                                        @click="selectedGroup = key"
-                                    >
-                                        {{ value }}
-                                    </a>
-                                </base-dropdown>
-                            </th>
-                            <th class="text-center text-white">Actions</th>
-                        </template>
-                        <template slot-scope="{ row }">
-                            <td class="text-center">
-                                <span>{{ row.firstName }}{{ row.lastName }}</span>
-                            </td>
-                            <td class="text-center">
-                                <badge :type="row.blocked ? 'danger' : 'success'">
-                                    {{ row.blocked ? 'Blocked' : 'Active' }}
-                                </badge>
-                            </td>
-                            <td class="text-center">
-                                <badge :type="row.verified ? 'success' : 'danger'">
-                                    {{ row.verified ? 'Verified' : 'Not Verified' }}
-                                </badge>
-                            </td>
-                            <td class="text-center">
-                                {{ usergroupText[row.usergroup] }}
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-center">
-                                    <base-button
-                                        type="primary"
-                                        icon="eye"
-                                        size="sm"
-                                        title="View Details"
-                                        @click="
-                                            viewModal = true;
-                                            selectedUser = Object.assign({}, row);
-                                        "
-                                    ></base-button>
-                                    <base-button
-                                        :type="row.blocked ? 'success' : 'warning'"
-                                        :icon="row.blocked ? 'user' : 'user-slash'"
-                                        size="sm"
-                                        :title="row.blocked ? 'Unblock User' : 'Block User'"
-                                        :loading="blocked && blocked.includes(row.userId)"
-                                        :disabled="blocked && blocked.includes(row.userId)"
-                                        @click="blockUser(row.userId, !row.blocked)"
-                                    ></base-button>
-                                </div>
-                            </td>
-                        </template>
-                        <div slot="caption" class="col-12 p-5 d-flex justify-content-center align-items-center">
-                            <div>
-                                <span class="text-sm p-2">no users</span>
-                                <font-awesome-icon icon="users" />
+                                <a class="dropdown-item text-capitalize pointer" @click="selectedGroup = null">
+                                    All
+                                </a>
+                                <a
+                                    v-for="(value, key) in usergroupText"
+                                    :key="key"
+                                    class="dropdown-item text-capitalize pointer"
+                                    @click="selectedGroup = key"
+                                >
+                                    {{ value }}
+                                </a>
+                            </base-dropdown>
+                        </th>
+                        <th class="text-center text-white">Actions</th>
+                    </template>
+                    <template slot-scope="{ row }">
+                        <td class="text-center">
+                            <span>{{ row.firstName }}{{ row.lastName }}</span>
+                        </td>
+                        <td class="text-center">
+                            <badge :type="row.blocked ? 'danger' : 'success'">
+                                {{ row.blocked ? 'Blocked' : 'Active' }}
+                            </badge>
+                        </td>
+                        <td class="text-center">
+                            <badge :type="row.verified ? 'success' : 'danger'">
+                                {{ row.verified ? 'Verified' : 'Not Verified' }}
+                            </badge>
+                        </td>
+                        <td class="text-center">
+                            {{ usergroupText[row.usergroup] }}
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <base-button
+                                    type="primary"
+                                    icon="eye"
+                                    size="sm"
+                                    title="View Details"
+                                    @click="
+                                        viewModal = true;
+                                        selectedUser = Object.assign({}, row);
+                                    "
+                                ></base-button>
+                                <base-button
+                                    :type="row.blocked ? 'success' : 'warning'"
+                                    :icon="row.blocked ? 'user' : 'user-slash'"
+                                    size="sm"
+                                    :title="row.blocked ? 'Unblock User' : 'Block User'"
+                                    :loading="blocked && blocked.includes(row.userId)"
+                                    :disabled="blocked && blocked.includes(row.userId)"
+                                    @click="blockUser(row.userId, !row.blocked)"
+                                ></base-button>
                             </div>
+                        </td>
+                    </template>
+                    <div slot="caption" class="col-12 p-5 d-flex justify-content-center align-items-center">
+                        <div>
+                            <span class="text-sm p-2">no users</span>
+                            <font-awesome-icon icon="users" />
                         </div>
-                    </base-table>
-                </div>
-            </template>
+                    </div>
+                </base-table>
+            </div>
             <div v-if="loading" class="over__lay">
                 <loading color="dark" />
             </div>
