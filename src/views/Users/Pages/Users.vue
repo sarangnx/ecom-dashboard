@@ -18,13 +18,15 @@
                 </div>
                 <div>
                     <base-input
+                        v-model="search"
                         class="input-group-alternative mb-0"
                         placeholder="search..."
                         addon-right-class="py-0"
                         classes="shadow-lg"
+                        @keypress.enter="listUsers"
                     >
                         <template slot="addonRight" class="p-0">
-                            <base-button size="sm" icon="search" />
+                            <base-button size="sm" icon="search" @click="listUsers" />
                         </template>
                     </base-input>
                 </div>
@@ -66,7 +68,7 @@
                     </template>
                     <template slot-scope="{ row }">
                         <td class="text-center">
-                            <span>{{ row.firstName }}{{ row.lastName }}</span>
+                            <span>{{ row.firstName }} {{ row.lastName }}</span>
                         </td>
                         <td class="text-center">
                             <badge :type="row.blocked ? 'danger' : 'success'">
@@ -144,6 +146,7 @@ export default {
             service: 'Service Expert',
         },
         selectedGroup: null,
+        search: null,
     }),
     watch: {
         page() {
@@ -175,6 +178,7 @@ export default {
                         perPage: this.perPage,
                         order: this.order,
                         usergroup: this.selectedGroup,
+                        search: this.search,
                     },
                 });
 
