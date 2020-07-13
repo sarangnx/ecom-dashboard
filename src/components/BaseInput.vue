@@ -19,9 +19,9 @@
             </slot>
 
             <div v-if="addonLeftIcon || $slots.addonLeft" class="input-group-prepend">
-                <span class="input-group-text">
+                <span class="input-group-text" :class="addonLeftClass">
                     <slot name="addonLeft">
-                        <font-awesome-icon :icon="addonLeftIcon"></font-awesome-icon>
+                        <font-awesome-icon v-if="addonLeftIcon" :icon="addonLeftIcon"></font-awesome-icon>
                     </slot>
                 </span>
             </div>
@@ -36,9 +36,9 @@
                 />
             </slot>
             <div v-if="addonRightIcon || $slots.addonRight" class="input-group-append">
-                <span class="input-group-text">
+                <span class="input-group-text" :class="addonRightClass">
                     <slot name="addonRight">
-                        <font-awesome-icon :icon="addonRightIcon"></font-awesome-icon>
+                        <font-awesome-icon v-if="addonRightIcon" :icon="addonRightIcon"></font-awesome-icon>
                     </slot>
                 </span>
             </div>
@@ -95,6 +95,12 @@ export default {
         },
         classes: {
             type: String,
+        },
+        addonLeftClass: {
+            type: [String, Array],
+        },
+        addonRightClass: {
+            type: [String, Array],
         },
     },
     data() {

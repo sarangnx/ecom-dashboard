@@ -1,102 +1,50 @@
 <template>
     <div>
-        <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
-            <!-- Card stats -->
-            <div class="row">
-                <div class="col-xl-3 col-lg-6">
-                    <stats-card
-                        title="Total Users"
-                        type="gradient-red"
-                        :sub-title="total_users.toString()"
-                        icon="fa fa-users"
-                        class="mb-4 mb-xl-0"
-                    >
-                    </stats-card>
-                </div>
-                <div class="col-xl-3 col-lg-6">
-                    <stats-card
-                        title="Total Orders"
-                        type="gradient-orange"
-                        :sub-title="total_orders.toString()"
-                        icon="fa fa-shopping-basket"
-                        class="mb-4 mb-xl-0"
-                    >
-                    </stats-card>
-                </div>
-            </div>
-        </base-header>
+        <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8"></base-header>
         <div class="container-fluid mt--7">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card shadow">
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <base-table :data="localbodies" type="hover table-striped table-sm">
-                                    <template slot="columns">
-                                        <th>#</th>
-                                        <th>Localbody Name</th>
-                                        <th class="text-center">Customers</th>
-                                        <th class="text-center">Delivery Personnel</th>
-                                        <th class="text-center">Managers</th>
-                                    </template>
-
-                                    <template slot-scope="{ row, index }">
-                                        <td class="text-left">
-                                            {{ index + 1 }}
-                                        </td>
-                                        <td class="text-left">
-                                            {{ row.name }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ row.user.count }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ row.delivery.count }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ row.manager.count }}
-                                        </td>
-                                    </template>
-                                </base-table>
-                                <!-- Table -->
+            <div class="card-columns">
+                <div class="card shadow-lg">
+                    <div class="card-header pb-0">
+                        <h3>
+                            User Stats
+                            <font-awesome-icon icon="users" class="text-primary" pull="right" />
+                        </h3>
+                    </div>
+                    <div class="card-body bg-secondary">
+                        <div class="text-sm row">
+                            <div v-for="(group, key) in userStatsText" :key="key" class="col-12">
+                                <span class="mr-2 font-weight-bold">{{ group }}:</span>
+                                <span>{{ userStats[key] || 0 }}</span>
                             </div>
-                            <!-- responsive-table -->
                         </div>
                     </div>
                 </div>
-                <div class="col-12 mt-5">
-                    <div class="card shadow">
-                        <div class="card-body p-0">
-                            <div class="table-responsive">
-                                <base-table :data="most_sold" type="hover table-striped table-sm">
-                                    <template slot="columns">
-                                        <th class="text-left">#</th>
-                                        <th class="text-center">Item</th>
-                                        <th class="text-center">Total Orders</th>
-                                    </template>
-
-                                    <template slot-scope="{ row, index }">
-                                        <td class="text-left">
-                                            {{ index + 1 }}
-                                        </td>
-                                        <td class="d-flex flex-row align-items-center justify-content-between">
-                                            <img
-                                                v-if="row.item_details.image_path"
-                                                :src="`${baseUrl}/images/inventory/${row.item_details.image_path}`"
-                                                class="item-image"
-                                            />
-                                            <i v-else class="fa fa-image"></i>
-                                            <!-- Alt Image -->
-                                            {{ row.item_details.item_name }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ parseInt(row.occurance) }}
-                                        </td>
-                                    </template>
-                                </base-table>
-                                <!-- Table -->
+                <div class="card shadow-lg">
+                    <div class="card-body">
+                        <h3>
+                            Total Stores
+                            <font-awesome-icon icon="store" class="text-primary" pull="right" />
+                        </h3>
+                        <span class="font-weight-bold">{{ storeStats.stores }}</span>
+                    </div>
+                </div>
+                <div class="card shadow-lg">
+                    <div class="card-header pb-0">
+                        <h3>
+                            Inventory Stats
+                            <font-awesome-icon icon="drumstick-bite" class="text-primary" pull="right" />
+                        </h3>
+                    </div>
+                    <div class="card-body bg-secondary">
+                        <div class="text-sm row">
+                            <div class="col-12">
+                                <span class="mr-2 font-weight-bold">Total Items:</span>
+                                <span>{{ inventoryStats.items }}</span>
                             </div>
-                            <!-- responsive-table -->
+                            <div class="col-12">
+                                <span class="mr-2 font-weight-bold">Total Categories:</span>
+                                <span>{{ inventoryStats.categories }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -107,66 +55,79 @@
 <script>
 export default {
     data: () => ({
-        total_orders: 0,
-        total_users: 0,
-        most_sold: [],
-        stats: {},
-        localbodies: [],
+        userStats: {},
+        userStatsText: {
+            total: 'Total Users',
+            admin: 'Admins',
+            user: 'Customers',
+            storeowner: 'Store Owners',
+            staff: 'Staffs',
+            delivery: 'Devlivery Boys',
+            service: 'Service Experts',
+        },
+        storeStats: {},
+        inventoryStats: {},
     }),
-    computed: {
-        baseUrl() {
-            // base url of api server where images are uploaded.
-            return this.$store.getters.serverUrl;
-        },
-        storeId() {
-            const user = this.$store.getters.getUser;
-            if (user.store && user.store.length) {
-                return user.store[0].store_id;
-            } else {
-                return null;
-            }
-        },
-    },
     mounted() {
-        //this.getStats(this.storeId);
-        //this.getUserStats();
+        this.getUserStats();
+        this.getStoreStats();
+        this.getInventoryStats();
     },
     methods: {
-        getStats(store_id) {
-            this.$axios({
-                method: 'get',
-                url: '/store/dashboard',
-                params: {
-                    store_id: store_id,
-                },
-            }).then((response) => {
-                const stats = response.data.data;
-                this.total_orders = stats.total_orders;
-                this.total_users = stats.total_users;
-                this.most_sold = stats.most_sold_items;
-            });
-        },
-        getUserStats(store_id) {
-            this.$axios({
-                method: 'get',
-                url: '/users/stats',
-            }).then((response) => {
-                const stats = response.data.stats;
-                this.localbodies = stats.localbodies.map((localbody) => {
-                    localbody.user = stats.user.find((item) => item.localbody_id === localbody.localbody_id);
-                    localbody.manager = stats.manager.find((item) => item.localbody_id === localbody.localbody_id);
-                    localbody.delivery = stats.delivery.find((item) => item.localbody_id === localbody.localbody_id);
-                    return localbody;
+        async getUserStats() {
+            try {
+                const response = await this.$axios({
+                    method: 'get',
+                    url: '/users/stats',
                 });
-                this.stats = stats;
-            });
+
+                const stats = response.data.stats;
+                this.userStats = stats;
+            } catch (err) {
+                this.$error('Unable to get stats.');
+            }
+        },
+        async getStoreStats() {
+            try {
+                const response = await this.$axios({
+                    method: 'get',
+                    url: '/stores/stats/admin',
+                });
+
+                const stats = response.data.stats;
+                this.storeStats = stats;
+            } catch (err) {
+                this.$error('Unable to get stats.');
+            }
+        },
+        async getInventoryStats() {
+            try {
+                const response = await this.$axios({
+                    method: 'get',
+                    url: '/inventory/stats',
+                });
+
+                const stats = response.data.stats;
+                this.inventoryStats = stats;
+                console.log(stats);
+            } catch (err) {
+                this.$error('Unable to get stats.');
+            }
         },
     },
 };
 </script>
-<style scoped>
-.item-image {
-    max-width: 100%;
-    height: 25px;
+<style lang="scss" scoped>
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins/_breakpoints';
+.card-columns {
+    column-count: 1;
+    @include media-breakpoint-up(md) {
+        column-count: 2;
+    }
+    @include media-breakpoint-up(lg) {
+        column-count: 3;
+    }
 }
 </style>
