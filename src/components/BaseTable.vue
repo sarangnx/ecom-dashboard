@@ -16,6 +16,13 @@
                 </slot>
             </tr>
         </tbody>
+        <caption v-if="($slots.caption || showCaption) && (!data || (data && !data.length))">
+            <slot name="caption">
+                <div class="text-center">
+                    <span class="text-sm">No Data</span>
+                </div>
+            </slot>
+        </caption>
     </table>
 </template>
 <script>
@@ -46,6 +53,10 @@ export default {
             type: String,
             default: '',
             description: '<tbody> css classes',
+        },
+        showCaption: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {
