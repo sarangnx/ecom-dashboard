@@ -77,7 +77,13 @@
             <base-pagination v-model="page" :page-count="totalPages" align="center"> </base-pagination>
         </div>
         <!-- ADD ITEM -->
-        <modal :show.sync="addModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+        <modal
+            :show.sync="addModal"
+            header-classes="pb-0"
+            body-classes="pt-0 custom__scrollbar"
+            :click-out="false"
+            scrollable
+        >
             <template slot="header">
                 <h4 class="modal-title">Add Item</h4>
             </template>
