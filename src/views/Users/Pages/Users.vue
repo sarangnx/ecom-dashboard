@@ -4,7 +4,7 @@
             <h3 class="m-0">Users</h3>
         </div>
         <div class="card-body bg-secondary p-0 position-relative min__height">
-            <div class="p-2 d-flex justify-content-between">
+            <div class="p-2 d-flex justify-content-between align-items-center">
                 <div>
                     <small class="mr-1 font-weight-bold">Per Page:</small>
                     <base-dropdown>
@@ -15,6 +15,18 @@
                         <a class="dropdown-item" @click="perPage = 50">50</a>
                         <a class="dropdown-item" @click="perPage = 100">100</a>
                     </base-dropdown>
+                </div>
+                <div>
+                    <base-input
+                        class="input-group-alternative mb-0"
+                        placeholder="search..."
+                        addon-right-class="py-0"
+                        classes="shadow-lg"
+                    >
+                        <template slot="addonRight" class="p-0">
+                            <base-button size="sm" icon="search" />
+                        </template>
+                    </base-input>
                 </div>
             </div>
             <div class="table-responsive" style="min-height: 400px;">
