@@ -4,7 +4,7 @@
             <h3 class="m-0">Users</h3>
         </div>
         <div class="card-body bg-secondary p-0 position-relative min__height">
-            <template v-if="users && users.length">
+            <template>
                 <div class="p-2 d-flex justify-content-between">
                     <div>
                         <small class="mr-1 font-weight-bold">Per Page:</small>
@@ -97,18 +97,15 @@
                                 </div>
                             </td>
                         </template>
+                        <div slot="caption" class="col-12 p-5 d-flex justify-content-center align-items-center">
+                            <div>
+                                <span class="text-sm p-2">no users</span>
+                                <font-awesome-icon icon="users" />
+                            </div>
+                        </div>
                     </base-table>
                 </div>
             </template>
-            <div
-                v-if="!(users && users.length) && !loading"
-                class="col-12 p-5 d-flex justify-content-center flex-column align-items-center"
-            >
-                <div>
-                    <small class="p-2">no users</small>
-                    <font-awesome-icon icon="inbox" />
-                </div>
-            </div>
             <div v-if="loading" class="over__lay">
                 <loading color="dark" />
             </div>
