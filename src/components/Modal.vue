@@ -11,7 +11,11 @@
         >
             <div
                 class="modal-dialog modal-dialog-centered"
-                :class="[{ 'modal-notice': type === 'notice' }, modalClasses]"
+                :class="[
+                    { 'modal-notice': type === 'notice' },
+                    modalClasses,
+                    { 'modal-dialog-scrollable': scrollable },
+                ]"
             >
                 <div class="modal-content" :class="[gradient ? `bg-gradient-${gradient}` : '', modalContentClasses]">
                     <div v-if="$slots.header" class="modal-header" :class="[headerClasses]">
@@ -97,6 +101,10 @@ export default {
             type: Number,
             default: 500,
             description: 'Modal transition duration',
+        },
+        scrollable: {
+            type: Boolean,
+            default: false,
         },
     },
     watch: {
