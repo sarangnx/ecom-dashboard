@@ -130,7 +130,7 @@
         <div class="card-footer">
             <base-pagination v-model="page" :page-count="totalPages" align="center" />
         </div>
-        <modal :show.sync="modal" header-classes="pb-0" body-classes="px-0 pt-0 custom__scrollbar" scrollable>
+        <modal :show.sync="modal" header-classes="pb-0" body-classes="px-0 pt-0" scrollable>
             <h5 slot="header">Order Items</h5>
             <orders-list :items="orderItems" :total="total" />
         </modal>

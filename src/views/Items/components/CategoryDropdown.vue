@@ -4,7 +4,7 @@
             {{ selected.categoryName }}
             <font-awesome-icon icon="caret-down" class="ml-2" />
         </base-button>
-        <modal :show.sync="modal" header-classes="d-flex align-items-center pb-0" :click-out="false">
+        <modal :show.sync="modal" header-classes="d-flex align-items-center pb-0" :click-out="false" scrollable>
             <template slot="header">
                 <h3 class="modal-title">Select Category</h3>
             </template>

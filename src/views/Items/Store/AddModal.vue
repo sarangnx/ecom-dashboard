@@ -20,7 +20,7 @@
             <div v-if="$v.category.categoryId.$error" class="text-danger invalid-feedback p-1" style="display: block;">
                 <small>Category Required</small>
             </div>
-            <modal :show.sync="modal" body-classes="pt-0" :click-out="false">
+            <modal :show.sync="modal" body-classes="pt-0" :click-out="false" scrollable>
                 <template slot="header">
                     <h4 class="modal-title">Select Category</h4>
                 </template>

@@ -81,7 +81,13 @@
                             </div>
                         </div>
                     </div>
-                    <modal :show.sync="addModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+                    <modal
+                        :show.sync="addModal"
+                        header-classes="pb-0"
+                        body-classes="pt-0"
+                        :click-out="false"
+                        scrollable
+                    >
                         <template slot="header">
                             <h4 class="modal-title">Add Store</h4>
                         </template>
@@ -99,6 +105,7 @@
                         header-classes="pb-0"
                         body-classes="pt-0"
                         :click-out="false"
+                        scrollable
                         @close="selectedStore = null"
                     >
                         <template slot="header">
@@ -138,6 +145,7 @@
                         header-classes="pb-0"
                         body-classes="pt-0"
                         :click-out="false"
+                        scrollable
                         @close="selectedStore = null"
                     >
                         <template slot="header">
