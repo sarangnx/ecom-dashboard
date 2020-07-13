@@ -98,7 +98,13 @@
             />
         </modal>
         <!-- EDIT ITEM -->
-        <modal :show.sync="editModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
+        <modal
+            :show.sync="editModal"
+            header-classes="pb-0"
+            body-classes="pt-0 custom__scrollbar"
+            :click-out="false"
+            scrollable
+        >
             <template slot="header">
                 <h4 class="modal-title">Edit Item</h4>
             </template>
