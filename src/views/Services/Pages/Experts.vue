@@ -17,6 +17,20 @@
                             <a class="dropdown-item" @click="perPage = 100">100</a>
                         </base-dropdown>
                     </div>
+                    <div>
+                        <base-input
+                            v-model="search"
+                            class="input-group-alternative mb-0"
+                            placeholder="search..."
+                            addon-right-class="py-0"
+                            classes="shadow-lg"
+                            @keypress.enter="getExperts"
+                        >
+                            <template slot="addonRight" class="p-0">
+                                <base-button size="sm" icon="search" @click="getExperts" />
+                            </template>
+                        </base-input>
+                    </div>
                 </div>
                 <div class="table-responsive">
                     <base-table
@@ -76,15 +90,6 @@
                                         :disabled="blocked && blocked.includes(row.expertId)"
                                         @click="blockExpert(row.expertId, !row.blocked)"
                                     ></base-button>
-                                    <!-- <base-button
-                                        type="danger"
-                                        icon="trash"
-                                        size="sm"
-                                        @click="
-                                            deleteModal = true;
-                                            selectedService = row;
-                                        "
-                                    ></base-button> -->
                                 </div>
                             </td>
                         </template>
@@ -146,6 +151,7 @@ export default {
         blocked: [],
         selectedExpert: null,
         viewModal: null,
+        search: null,
     }),
     watch: {
         page() {
@@ -173,6 +179,7 @@ export default {
                         page: this.page,
                         perPage: this.perPage,
                         order: this.order,
+                        search: this.search,
                     },
                 });
 
