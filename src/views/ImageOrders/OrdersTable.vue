@@ -72,6 +72,10 @@
                                     <small class="text-muted font-weight-bold">Pincode:</small>
                                     {{ order.deliveryAddress.pincode }}
                                 </span>
+                                <span v-if="order.deliveryAddress.phone">
+                                    <small class="text-muted font-weight-bold">Phone:</small>
+                                    {{ order.deliveryAddress.phone }}
+                                </span>
                             </div>
                             <div v-else class="d-flex flex-column">
                                 <small class="text-muted">Not Provided</small>
@@ -126,7 +130,7 @@
         <div class="card-footer">
             <base-pagination v-model="page" :page-count="totalPages" align="center" />
         </div>
-        <modal :show.sync="modal" header-classes="pb-0">
+        <modal :show.sync="modal" header-classes="pb-0" scrollable>
             <h5 slot="header">Order Items</h5>
             <img v-if="!isText" :src="`${s3bucket}/${orderFile}`" style="width: 75%; height: auto;" />
             <div v-if="isText" class="row">

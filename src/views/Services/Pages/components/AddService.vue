@@ -42,7 +42,7 @@
                                 <label ref="label" class="custom-file-label">Thumbnail</label>
                             </div>
                         </div>
-                        <modal :show.sync="imageModal" body-classes="pt-0" :click-out="false">
+                        <modal :show.sync="imageModal" body-classes="pt-0" :click-out="false" scrollable>
                             <h4 slot="header" class="modal-title">Crop Image</h4>
                             <vue-cropper
                                 ref="cropper"

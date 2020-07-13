@@ -28,7 +28,7 @@
                     </div>
                 </div>
             </div>
-            <modal :show.sync="addModal" header-classes="d-flex align-items-center pb-0" :click-out="false">
+            <modal :show.sync="addModal" header-classes="d-flex align-items-center pb-0" :click-out="false" scrollable>
                 <template slot="header">
                     <h3 class="modal-title">Add Category</h3>
                 </template>
@@ -42,7 +42,7 @@
                     "
                 />
             </modal>
-            <modal :show.sync="editModal" header-classes="d-flex align-items-center pb-0" :click-out="false">
+            <modal :show.sync="editModal" header-classes="d-flex align-items-center pb-0" :click-out="false" scrollable>
                 <template slot="header">
                     <h3 class="modal-title">Edit Category</h3>
                 </template>

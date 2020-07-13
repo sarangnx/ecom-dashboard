@@ -105,7 +105,7 @@
             <base-pagination v-model="page" :page-count="totalPages" align="center" />
         </div>
         <!-- ADD SERVICE -->
-        <modal :show.sync="addModal" header-classes="pb-0" :click-out="false">
+        <modal :show.sync="addModal" header-classes="pb-0" :click-out="false" scrollable>
             <h4 slot="header" class="modal-title">Add Service</h4>
             <add-service
                 :key="Date.now()"
@@ -116,7 +116,7 @@
             />
         </modal>
         <!-- EDIT SERVICE -->
-        <modal :show.sync="editModal" header-classes="pb-0" :click-out="false">
+        <modal :show.sync="editModal" header-classes="pb-0" :click-out="false" scrollable>
             <h4 slot="header" class="modal-title">Edit Service</h4>
             <edit-service
                 :key="Date.now()"
@@ -147,7 +147,7 @@
             />
         </modal>
         <!-- VIEW SERVICE -->
-        <modal :show.sync="viewModal" header-classes="pb-0" :click-out="false">
+        <modal :show.sync="viewModal" header-classes="pb-0" :click-out="false" scrollable>
             <h4 slot="header" class="modal-title"></h4>
             <view-service :key="Date.now()" :service="selectedService" />
         </modal>

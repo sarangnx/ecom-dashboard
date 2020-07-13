@@ -52,7 +52,7 @@
                 <h5>Category</h5>
                 <base-input v-model="item.category.categoryName" class="mr-sm-2" @focus="selectCategoryModal = true">
                 </base-input>
-                <modal :show.sync="selectCategoryModal" body-classes="pt-0" :click-out="false">
+                <modal :show.sync="selectCategoryModal" body-classes="pt-0" :click-out="false" scrollable>
                     <template slot="header">
                         <h4 class="modal-title">Select Category</h4>
                     </template>
