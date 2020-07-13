@@ -34,7 +34,7 @@
                         </slot>
                     </div>
 
-                    <div class="modal-body" :class="bodyClasses">
+                    <div class="modal-body" :class="[bodyClasses, { custom__scrollbar: scrollable }]">
                         <slot></slot>
                     </div>
 
