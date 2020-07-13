@@ -14,13 +14,13 @@ body,
 }
 
 .custom__scrollbar::-webkit-scrollbar-track {
-    background: #ececec;
+    background: #fff;
     border-radius: 10px;
 }
 
 .custom__scrollbar::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    background: #5e72e4;
+    background: #c7c7c7;
 }
 
 // Overlay for loading animation
