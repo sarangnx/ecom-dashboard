@@ -36,6 +36,7 @@
                             </th>
                             <th class="text-center text-white">Blocked</th>
                             <th class="text-center text-white">Verified</th>
+                            <th class="text-center text-white">User Group</th>
                             <th class="text-center text-white">Actions</th>
                         </template>
                         <template slot-scope="{ row }">
@@ -51,6 +52,9 @@
                                 <badge :type="row.verified ? 'success' : 'danger'">
                                     {{ row.verified ? 'Verified' : 'Not Verified' }}
                                 </badge>
+                            </td>
+                            <td class="text-center">
+                                {{ usergroupText[row.usergroup] }}
                             </td>
                             <td>
                                 <div class="d-flex justify-content-center">
@@ -109,6 +113,15 @@ export default {
         blocked: [],
         selectedUser: null,
         viewModal: null,
+        usergroupText: {
+            superadmin: 'Super Admin',
+            admin: 'Admin',
+            user: 'Customer',
+            storeowner: 'Store Owner',
+            staff: 'Staff',
+            delivery: 'Devlivery Boy',
+            service: 'Service Expert',
+        },
     }),
     watch: {
         page() {
