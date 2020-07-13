@@ -72,6 +72,10 @@
                                     <small class="text-muted font-weight-bold">Pincode:</small>
                                     {{ order.deliveryAddress.pincode }}
                                 </span>
+                                <span v-if="order.deliveryAddress.phone">
+                                    <small class="text-muted font-weight-bold">Phone:</small>
+                                    {{ order.deliveryAddress.phone }}
+                                </span>
                             </div>
                             <div v-else class="d-flex flex-column">
                                 <small class="text-muted">Not Provided</small>
