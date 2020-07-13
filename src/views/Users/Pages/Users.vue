@@ -18,7 +18,7 @@
                         </base-dropdown>
                     </div>
                 </div>
-                <div class="table-responsive">
+                <div class="table-responsive" style="min-height: 400px;">
                     <base-table
                         class="table align-items-center table-flush service-table"
                         thead-classes="thead-dark"
@@ -36,7 +36,24 @@
                             </th>
                             <th class="text-center text-white">Blocked</th>
                             <th class="text-center text-white">Verified</th>
-                            <th class="text-center text-white">User Group</th>
+                            <th class="text-center text-white">
+                                <base-dropdown position="right">
+                                    <a slot="title" type="primary" size="sm" class="dropdown-toggle">
+                                        {{ selectedGroup ? usergroupText[selectedGroup] : 'User Group' }}
+                                    </a>
+                                    <a class="dropdown-item text-capitalize pointer" @click="selectedGroup = null">
+                                        All
+                                    </a>
+                                    <a
+                                        v-for="(value, key) in usergroupText"
+                                        :key="key"
+                                        class="dropdown-item text-capitalize pointer"
+                                        @click="selectedGroup = key"
+                                    >
+                                        {{ value }}
+                                    </a>
+                                </base-dropdown>
+                            </th>
                             <th class="text-center text-white">Actions</th>
                         </template>
                         <template slot-scope="{ row }">
@@ -122,6 +139,7 @@ export default {
             delivery: 'Devlivery Boy',
             service: 'Service Expert',
         },
+        selectedGroup: null,
     }),
     watch: {
         page() {
@@ -131,6 +149,9 @@ export default {
             this.listUsers();
         },
         order() {
+            this.listUsers();
+        },
+        selectedGroup() {
             this.listUsers();
         },
     },
@@ -149,6 +170,7 @@ export default {
                         page: this.page,
                         perPage: this.perPage,
                         order: this.order,
+                        usergroup: this.selectedGroup,
                     },
                 });
 
