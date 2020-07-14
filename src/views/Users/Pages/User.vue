@@ -33,6 +33,58 @@
                         </span>
                     </div>
                 </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <h3>Address</h3>
+                    </div>
+                    <template v-if="user.addresses && user.addresses.permanentAddress">
+                        <div class="col-12">
+                            <h5 class="m-0 text-muted">Permanent Address</h5>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-sm font-weight-bold mr-2">House:</span>
+                            <span class="text-sm" :class="[{ 'text-muted': !user.addresses.permanentAddress.house }]">
+                                {{ user.addresses.permanentAddress.house || 'Not Provided' }}
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-sm font-weight-bold mr-2">Area:</span>
+                            <span class="text-sm" :class="[{ 'text-muted': !user.addresses.permanentAddress.area }]">
+                                {{ user.addresses.permanentAddress.area || 'Not Provided' }}
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-sm font-weight-bold mr-2">City:</span>
+                            <span class="text-sm" :class="[{ 'text-muted': !user.addresses.permanentAddress.city }]">
+                                {{ user.addresses.permanentAddress.city || 'Not Provided' }}
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-sm font-weight-bold mr-2">District:</span>
+                            <span :class="[{ 'text-muted': !user.addresses.permanentAddress.district }, 'text-sm']">
+                                {{ user.addresses.permanentAddress.district || 'Not Provided' }}
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-sm font-weight-bold mr-2">State:</span>
+                            <span class="text-sm" :class="[{ 'text-muted': !user.addresses.permanentAddress.state }]">
+                                {{ user.addresses.permanentAddress.state || 'Not Provided' }}
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-sm font-weight-bold mr-2">Pincode:</span>
+                            <span class="text-sm" :class="[{ 'text-muted': !user.addresses.permanentAddress.pincode }]">
+                                {{ user.addresses.permanentAddress.pincode || 'Not Provided' }}
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-sm font-weight-bold mr-2">Landmark:</span>
+                            <span :class="[{ 'text-muted': !user.addresses.permanentAddress.landmark }, 'text-sm']">
+                                {{ user.addresses.permanentAddress.landmark || 'Not Provided' }}
+                            </span>
+                        </div>
+                    </template>
+                </div>
             </div>
             <div v-if="!loading && !user" class="col-12 p-5 d-flex justify-content-center align-items-center">
                 <div class="text-muted">
