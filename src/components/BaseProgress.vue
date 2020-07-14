@@ -1,5 +1,5 @@
 <template>
-    <div class="progress-wrapper">
+    <div class="progress-wrapper disable-user-select">
         <div v-if="$slots.label || label || $slots.percentage || showPercentage" class="progress-info">
             <div v-if="$slots.label || label" class="progress-label">
                 <span>

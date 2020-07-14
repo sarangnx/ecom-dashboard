@@ -1,7 +1,7 @@
 <template>
     <component
         :is="tag"
-        class="badge"
+        class="badge disable-user-select"
         :class="[`badge-${type}`, rounded ? `badge-pill` : '', circle && 'badge-circle']"
     >
         <slot>

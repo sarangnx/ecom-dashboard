@@ -1,5 +1,5 @@
 <template>
-    <div class="custom-control custom-radio" :class="[inlineClass, { disabled: disabled }]">
+    <div class="custom-control custom-radio disable-user-select" :class="[inlineClass, { disabled: disabled }]">
         <input
             :id="cbId"
             v-model="model"

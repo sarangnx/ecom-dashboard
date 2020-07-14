@@ -1,5 +1,5 @@
 <template>
-    <div class="input-slider-container">
+    <div class="input-slider-container disable-user-select">
         <div ref="slider" class="input-slider" :class="[`slider-${type}`]" :disabled="disabled"></div>
     </div>
 </template>

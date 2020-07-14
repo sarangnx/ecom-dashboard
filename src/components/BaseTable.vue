@@ -1,6 +1,6 @@
 <template>
     <table class="table tablesorter" :class="tableClass">
-        <thead :class="theadClasses">
+        <thead :class="[theadClasses, 'disable-user-select']">
             <tr>
                 <slot name="columns" :columns="columns">
                     <th v-for="column in columns" :key="column">{{ column }}</th>

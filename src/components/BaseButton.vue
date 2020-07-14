@@ -2,7 +2,7 @@
     <component
         :is="tag"
         :type="tag === 'button' ? nativeType : ''"
-        class="btn"
+        class="btn disable-user-select"
         :class="classes"
         :disabled="disabled"
         :style="styles"

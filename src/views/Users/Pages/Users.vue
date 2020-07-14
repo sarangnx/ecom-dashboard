@@ -38,7 +38,7 @@
                     :data="users"
                 >
                     <template slot="columns">
-                        <th class="text-center text-white">
+                        <th class="text-center text-white" title="Sort By Name">
                             <a class="pointer" @click.prevent="order === 'asc' ? (order = 'desc') : (order = 'asc')">
                                 Name
                                 <font-awesome-icon :icon="order === 'asc' ? 'caret-up' : 'caret-down'" />
@@ -46,7 +46,7 @@
                         </th>
                         <th class="text-center text-white">Blocked</th>
                         <th class="text-center text-white">Verified</th>
-                        <th class="text-center text-white">
+                        <th class="text-center text-white" title="Filter By Usergroup">
                             <base-dropdown position="right">
                                 <a slot="title" type="primary" size="sm" class="dropdown-toggle">
                                     {{ selectedGroup ? usergroupText[selectedGroup] : 'User Group' }}

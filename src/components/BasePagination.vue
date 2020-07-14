@@ -1,5 +1,8 @@
 <template>
-    <ul class="pagination" :class="[size && `pagination-${size}`, align && `justify-content-${align}`]">
+    <ul
+        class="pagination disable-user-select"
+        :class="[size && `pagination-${size}`, align && `justify-content-${align}`]"
+    >
         <li class="page-item prev-page" :class="{ disabled: value === 1 }">
             <a class="page-link" aria-label="Previous" @click="prevPage">
                 <span aria-hidden="true">
