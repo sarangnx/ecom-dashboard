@@ -37,6 +37,53 @@
                     <div class="col-12">
                         <h3>Address</h3>
                     </div>
+                    <template v-if="user.addresses && user.addresses.presentAddress">
+                        <div class="col-12">
+                            <h5 class="m-0 text-muted">Present Address</h5>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-sm font-weight-bold mr-2">House:</span>
+                            <span class="text-sm" :class="[{ 'text-muted': !user.addresses.presentAddress.house }]">
+                                {{ user.addresses.presentAddress.house || 'Not Provided' }}
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-sm font-weight-bold mr-2">Area:</span>
+                            <span class="text-sm" :class="[{ 'text-muted': !user.addresses.presentAddress.area }]">
+                                {{ user.addresses.presentAddress.area || 'Not Provided' }}
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-sm font-weight-bold mr-2">City:</span>
+                            <span class="text-sm" :class="[{ 'text-muted': !user.addresses.presentAddress.city }]">
+                                {{ user.addresses.presentAddress.city || 'Not Provided' }}
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-sm font-weight-bold mr-2">District:</span>
+                            <span :class="[{ 'text-muted': !user.addresses.presentAddress.district }, 'text-sm']">
+                                {{ user.addresses.presentAddress.district || 'Not Provided' }}
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-sm font-weight-bold mr-2">State:</span>
+                            <span class="text-sm" :class="[{ 'text-muted': !user.addresses.presentAddress.state }]">
+                                {{ user.addresses.presentAddress.state || 'Not Provided' }}
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-sm font-weight-bold mr-2">Pincode:</span>
+                            <span class="text-sm" :class="[{ 'text-muted': !user.addresses.presentAddress.pincode }]">
+                                {{ user.addresses.presentAddress.pincode || 'Not Provided' }}
+                            </span>
+                        </div>
+                        <div class="col-12">
+                            <span class="text-sm font-weight-bold mr-2">Landmark:</span>
+                            <span :class="[{ 'text-muted': !user.addresses.presentAddress.landmark }, 'text-sm']">
+                                {{ user.addresses.presentAddress.landmark || 'Not Provided' }}
+                            </span>
+                        </div>
+                    </template>
                     <template v-if="user.addresses && user.addresses.permanentAddress">
                         <div class="col-12">
                             <h5 class="m-0 text-muted">Permanent Address</h5>
