@@ -1,7 +1,7 @@
 <template>
     <div class="card shadow-lg min__height">
         <div class="card-header">
-            <h3 class="m-0">{{ user ? `${user.firstName} ${user.lastName}` : 'User' }}</h3>
+            <h3 class="m-0">{{ user ? `${user.firstName} ${user.lastName || ''}` : 'User' }}</h3>
         </div>
         <div class="card-body bg-secondary position-relative">
             <div v-if="user">
