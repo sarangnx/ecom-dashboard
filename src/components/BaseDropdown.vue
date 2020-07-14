@@ -2,7 +2,7 @@
     <component
         :is="tag"
         v-click-outside="closeDropDown"
-        class="dropdown"
+        class="dropdown disable-user-select"
         :class="[{ show: isOpen }, { dropdown: direction === 'down' }, { dropup: direction === 'up' }]"
         aria-haspopup="true"
         :aria-expanded="isOpen"

@@ -1,5 +1,5 @@
 <template>
-    <div class="form-group">
+    <div class="form-group disable-user-select">
         <div
             :class="[
                 { 'input-group': hasIcon },

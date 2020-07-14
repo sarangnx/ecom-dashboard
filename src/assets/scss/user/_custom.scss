@@ -108,3 +108,10 @@ input[type='number'] {
     display: block;
     background: rgba(0, 0, 0, 0.4);
 }
+
+.disable-user-select {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

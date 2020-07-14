@@ -1,5 +1,5 @@
 <template>
-    <div class="spinner" :class="[size]">
+    <div class="spinner disable-user-select" :class="[size]">
         <div class="rect1" :class="{ [`bg-${color}`]: color }"></div>
         <div class="rect2" :class="{ [`bg-${color}`]: color }"></div>
         <div class="rect3" :class="{ [`bg-${color}`]: color }"></div>
