@@ -46,8 +46,5 @@ export default {
             type: [String, Number],
         },
     },
-    mounted() {
-        console.log(this.items);
-    },
 };
 </script>
