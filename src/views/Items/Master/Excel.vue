@@ -3,7 +3,7 @@
         <div class="card-header d-flex justify-content-between">
             <h3>Add Items From Excel</h3>
         </div>
-        <div class="card-body position-relative min__height">
+        <div class="card-body px-0 position-relative min__height">
             <div v-if="!excel || !excel.length" class="container-fluid">
                 <div class="row">
                     <div class="col-12">
@@ -51,47 +51,54 @@
                     </div>
                 </div>
             </div>
-            <div v-if="excel && excel.length" class="container-fluid">
+            <div v-if="excel && excel.length">
                 <div class="row">
                     <div class="col-12 mb-3 text-center">
                         <base-button type="success" size="sm" icon="upload" @click="uploadAll">Upload All</base-button>
                         <base-button type="danger" size="sm" icon="trash" @click="resetTable">Clear Table</base-button>
                     </div>
                     <div class="col-12">
-                        <div class="table-responsive">
-                            <base-table class="table align-items-center table-flush" tbody-classes="list" :data="excel">
+                        <div class="table-responsive custom__scrollbar">
+                            <base-table
+                                class="table align-items-center table-flush"
+                                thead-classes="thead-dark"
+                                tbody-classes="list"
+                                :data="excel"
+                            >
                                 <template slot="columns">
-                                    <th class="minwidth">Product Name</th>
-                                    <th class="minwidth">Quantity</th>
-                                    <th class="minwidth">Unit</th>
-                                    <th class="minwidth">Category</th>
-                                    <th class="minwidth">Actions</th>
+                                    <th class="text-center text-white">Product Name</th>
+                                    <th class="text-center text-white">Quantity</th>
+                                    <th class="text-center text-white">Unit</th>
+                                    <th class="text-center text-white">Category</th>
+                                    <th class="text-center text-white">Actions</th>
                                 </template>
                                 <template slot-scope="{ row }">
                                     <td>
-                                        <base-input v-model="row.itemName"></base-input>
+                                        <base-input v-model="row.itemName" class="m-0"></base-input>
                                     </td>
                                     <td>
-                                        <base-input v-model="row.baseQuantity"></base-input>
+                                        <base-input v-model="row.baseQuantity" class="m-0"></base-input>
                                     </td>
                                     <td>
-                                        <div class="form-group">
-                                            <select v-model="row.baseUnit" class="custom-select mr-sm-2">
-                                                <option>kg</option>
-                                                <option>g</option>
-                                                <option>l</option>
-                                                <option>ml</option>
-                                                <option>count</option>
-                                            </select>
-                                        </div>
+                                        <base-dropdown class="nav-item w-100" position="right">
+                                            <base-button slot="title" block type="secondary" size="sm">
+                                                {{ row.baseUnit && units[row.baseUnit] ? units[row.baseUnit] : 'None' }}
+                                            </base-button>
+                                            <a
+                                                v-for="(value, key) in units"
+                                                :key="key"
+                                                class="dropdown-item"
+                                                @click="row.baseUnit = key"
+                                            >
+                                                {{ value }}
+                                            </a>
+                                        </base-dropdown>
                                     </td>
                                     <td>
-                                        <div class="form-group">
-                                            <base-input v-model="row.categoryName" class="mr-sm-2"> </base-input>
-                                        </div>
+                                        <base-input v-model="row.categoryName" class="m-0"> </base-input>
                                     </td>
                                     <td>
-                                        <div class="form-group d-flex justify-content-center">
+                                        <div class="d-flex justify-content-center">
                                             <base-button
                                                 type="success"
                                                 icon="upload"
@@ -130,6 +137,15 @@ export default {
         excel: [],
         loading: false,
         uploading: [],
+        units: {
+            kg: 'Kilogram',
+            g: 'Gram',
+            l: 'Litre',
+            ml: 'Millilitre',
+            m: 'Metre',
+            u: 'Unit',
+            p: 'Plate',
+        },
     }),
     methods: {
         resetTable() {
