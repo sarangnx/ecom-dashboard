@@ -25,21 +25,16 @@
 
             <div class="col-6">
                 <h5>Base Unit</h5>
-                <select
-                    v-model="item.baseUnit"
-                    class="custom-select mr-sm-2"
-                    :class="[{ 'is-invalid': $v.item.baseUnit.$error }]"
-                    @change="item.changed = true"
-                >
-                    <option value="null">None</option>
-                    <option>kg</option>
-                    <option>g</option>
-                    <option>l</option>
-                    <option>ml</option>
-                    <option>count</option>
-                </select>
-                <div v-if="$v.item.baseUnit.$error" class="text-danger invalid-feedback" style="display: block;">
-                    Unit Required
+                <base-dropdown class="nav-item w-100" position="right">
+                    <base-button slot="title" block :type="$v.item.baseUnit.$error ? 'danger' : 'secondary'">
+                        {{ item.baseUnit ? units[item.baseUnit] : 'None' }}
+                    </base-button>
+                    <a v-for="(value, key) in units" :key="key" class="dropdown-item" @click="item.baseUnit = key">
+                        {{ value }}
+                    </a>
+                </base-dropdown>
+                <div v-if="$v.item.baseUnit.$error" class="p-1 text-danger invalid-feedback" style="display: block;">
+                    <small>Base Unit Required</small>
                 </div>
             </div>
             <div class="col-6">
@@ -144,6 +139,15 @@ export default {
         },
         selectCategoryModal: false,
         loading: null,
+        units: {
+            kg: 'Kilogram',
+            g: 'Gram',
+            l: 'Litre',
+            ml: 'Millilitre',
+            m: 'Metre',
+            u: 'Unit',
+            p: 'Plate',
+        },
     }),
     computed: {
         s3bucket() {
