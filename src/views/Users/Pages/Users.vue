@@ -90,10 +90,7 @@
                                     icon="eye"
                                     size="sm"
                                     title="View Details"
-                                    @click="
-                                        viewModal = true;
-                                        selectedUser = Object.assign({}, row);
-                                    "
+                                    @click="$router.push(`/users/${row.userId}`)"
                                 ></base-button>
                                 <base-button
                                     :type="row.blocked ? 'success' : 'warning'"

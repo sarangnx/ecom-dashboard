@@ -143,6 +143,11 @@ export default [
                         name: 'users',
                         component: () => import(/* webpackChunkName: "users" */ '@/views/Users/Pages/Users.vue'),
                     },
+                    {
+                        path: ':userId',
+                        name: 'user',
+                        component: () => import(/* webpackChunkName: "users" */ '@/views/Users/Pages/User.vue'),
+                    },
                 ],
             },
             {
