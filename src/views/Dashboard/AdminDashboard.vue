@@ -2,7 +2,7 @@
     <div class="container-fluid pt-5 pt-md-7">
         <div class="d-flex flex-wrap">
             <div class="col-12 col-md-4 mb-3 mb-md-0">
-                <div class="card shadow-lg">
+                <div class="card shadow-sm shadow--hover">
                     <div class="card-header pb-0">
                         <h3>
                             User Stats
@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-4 mb-3 mb-md-0">
-                <div class="card shadow-lg">
+                <div class="card shadow-sm shadow--hover">
                     <div class="card-body">
                         <h3>
                             Total Stores
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="col-12 col-md-4">
-                <div class="card shadow-lg">
+                <div class="card shadow-sm shadow--hover">
                     <div class="card-header pb-0">
                         <h3>
                             Inventory Stats
