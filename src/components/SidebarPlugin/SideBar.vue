@@ -1,8 +1,8 @@
 <template>
     <nav
         id="sidenav-main"
-        class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light custom__scrollbar"
-        :class="[`bg-${bgColor}`]"
+        class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light"
+        :class="[`bg-${bgColor}`, { custom__scrollbar: !isMobile }]"
     >
         <div class="container-fluid">
             <!--Toggler-->
@@ -74,6 +74,15 @@ export default {
             type: String,
             default: 'white',
         },
+    },
+    data: () => ({
+        isMobile: false,
+    }),
+    mounted() {
+        this.isMobile = window.innerWidth < 768;
+        window.addEventListener('resize', () => {
+            this.isMobile = window.innerWidth < 768;
+        });
     },
     provide() {
         return {
