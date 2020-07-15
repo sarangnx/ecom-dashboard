@@ -24,7 +24,7 @@
                         <div class="dropdown-header noti-title">
                             <h6 class="text-overflow m-0">Welcome!</h6>
                         </div>
-                        <router-link to="/" class="dropdown-item">
+                        <router-link to="/settings" class="dropdown-item">
                             <font-awesome-icon icon="cogs"></font-awesome-icon>
                             <span>Settings</span>
                         </router-link>

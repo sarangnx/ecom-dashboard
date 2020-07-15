@@ -74,11 +74,9 @@
                 <div class="navbar-collapse-header d-md-none">
                     <div class="row">
                         <div class="col-6 collapse-brand">
-                            <router-link to="/">
-                                <img :src="logo" />
-                            </router-link>
+                            <img :src="logo" />
                         </div>
-                        <div class="col-6 collapse-close">
+                        <div class="col-6 collapse-close d-flex justify-content-end align-items-center">
                             <navbar-toggle-button @click.native="closeSidebar"></navbar-toggle-button>
                         </div>
                     </div>
