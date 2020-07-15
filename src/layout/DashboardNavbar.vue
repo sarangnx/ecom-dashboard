@@ -21,14 +21,10 @@
                     </div>
 
                     <template>
-                        <div class="dropdown-header noti-title">
-                            <h6 class="text-overflow m-0">Welcome!</h6>
-                        </div>
                         <router-link to="/settings" class="dropdown-item">
                             <font-awesome-icon icon="cogs"></font-awesome-icon>
                             <span>Settings</span>
                         </router-link>
-                        <div class="dropdown-divider"></div>
                         <router-link to="/logout" class="dropdown-item">
                             <font-awesome-icon icon="sign-out-alt"></font-awesome-icon>
                             <span>Logout</span>
