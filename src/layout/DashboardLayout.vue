@@ -15,7 +15,7 @@
                 </template>
             </template>
         </side-bar>
-        <div class="main-content custom__scrollbar" :data="sidebarBackground">
+        <div class="main-content" :data="sidebarBackground">
             <dashboard-navbar></dashboard-navbar>
 
             <div @click="toggleSidebar">
