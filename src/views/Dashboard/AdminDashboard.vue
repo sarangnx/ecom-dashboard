@@ -1,47 +1,53 @@
 <template>
     <div class="container-fluid pt-5 pt-md-7">
-        <div class="card-columns">
-            <div class="card shadow-lg">
-                <div class="card-header pb-0">
-                    <h3>
-                        User Stats
-                        <font-awesome-icon icon="users" class="text-primary" pull="right" />
-                    </h3>
-                </div>
-                <div class="card-body bg-secondary">
-                    <div class="text-sm row">
-                        <div v-for="(group, key) in userStatsText" :key="key" class="col-12">
-                            <span class="mr-2 font-weight-bold">{{ group }}:</span>
-                            <span>{{ userStats[key] || 0 }}</span>
+        <div class="d-flex flex-wrap">
+            <div class="col-12 col-md-4 mb-3 mb-md-0">
+                <div class="card shadow-lg">
+                    <div class="card-header pb-0">
+                        <h3>
+                            User Stats
+                            <font-awesome-icon icon="users" class="text-primary" pull="right" />
+                        </h3>
+                    </div>
+                    <div class="card-body bg-secondary">
+                        <div class="text-sm row">
+                            <div v-for="(group, key) in userStatsText" :key="key" class="col-12">
+                                <span class="mr-2 font-weight-bold">{{ group }}:</span>
+                                <span>{{ userStats[key] || 0 }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card shadow-lg">
-                <div class="card-body">
-                    <h3>
-                        Total Stores
-                        <font-awesome-icon icon="store" class="text-primary" pull="right" />
-                    </h3>
-                    <span class="font-weight-bold">{{ storeStats.stores }}</span>
+            <div class="col-12 col-md-4 mb-3 mb-md-0">
+                <div class="card shadow-lg">
+                    <div class="card-body">
+                        <h3>
+                            Total Stores
+                            <font-awesome-icon icon="store" class="text-primary" pull="right" />
+                        </h3>
+                        <span class="font-weight-bold">{{ storeStats.stores }}</span>
+                    </div>
                 </div>
             </div>
-            <div class="card shadow-lg">
-                <div class="card-header pb-0">
-                    <h3>
-                        Inventory Stats
-                        <font-awesome-icon icon="drumstick-bite" class="text-primary" pull="right" />
-                    </h3>
-                </div>
-                <div class="card-body bg-secondary">
-                    <div class="text-sm row">
-                        <div class="col-12">
-                            <span class="mr-2 font-weight-bold">Total Items:</span>
-                            <span>{{ inventoryStats.items }}</span>
-                        </div>
-                        <div class="col-12">
-                            <span class="mr-2 font-weight-bold">Total Categories:</span>
-                            <span>{{ inventoryStats.categories }}</span>
+            <div class="col-12 col-md-4">
+                <div class="card shadow-lg">
+                    <div class="card-header pb-0">
+                        <h3>
+                            Inventory Stats
+                            <font-awesome-icon icon="drumstick-bite" class="text-primary" pull="right" />
+                        </h3>
+                    </div>
+                    <div class="card-body bg-secondary">
+                        <div class="text-sm row">
+                            <div class="col-12">
+                                <span class="mr-2 font-weight-bold">Total Items:</span>
+                                <span>{{ inventoryStats.items }}</span>
+                            </div>
+                            <div class="col-12">
+                                <span class="mr-2 font-weight-bold">Total Categories:</span>
+                                <span>{{ inventoryStats.categories }}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
