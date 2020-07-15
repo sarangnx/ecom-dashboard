@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid pt-5 pt-md-7">
+    <div class="container-fluid pt-4 pt-md-8">
         <div class="d-flex flex-wrap">
             <div class="col-12 col-md-4 mb-3 mb-md-0">
                 <div class="card shadow-sm shadow--hover">
