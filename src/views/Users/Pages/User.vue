@@ -182,7 +182,6 @@ export default {
                 });
 
                 this.user = response.data.user;
-                console.log(this.user);
             } catch (err) {
                 const res = err.response;
                 if (res && res.status >= 400 && res.status < 500 && res.data.error) {

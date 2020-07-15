@@ -2,7 +2,7 @@
     <nav
         id="sidenav-main"
         class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light"
-        :class="[`bg-${bgColor}`]"
+        :class="[`bg-${bgColor}`, { custom__scrollbar: !isMobile }]"
     >
         <div class="container-fluid">
             <!--Toggler-->
@@ -16,56 +16,19 @@
             <slot name="mobile-right">
                 <ul class="nav align-items-center d-md-none">
                     <base-dropdown class="nav-item" position="right">
-                        <a
-                            slot="title"
-                            class="nav-link nav-link-icon"
-                            href="#"
-                            role="button"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false"
-                        >
-                            <i class="ni ni-bell-55"></i>
-                        </a>
-
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </base-dropdown>
-                    <base-dropdown class="nav-item" position="right">
                         <a slot="title" class="nav-link" href="#" role="button">
-                            <div class="media align-items-center">
-                                <span class="avatar avatar-sm rounded-circle">
-                                    <img alt="Image placeholder" src="img/brand/icon.png" />
-                                </span>
+                            <div>
+                                <base-button icon="cog" type="dark" text size="sm" icon-only rounded />
                             </div>
                         </a>
-
-                        <div class="dropdown-header noti-title">
-                            <h6 class="text-overflow m-0">Welcome!</h6>
-                        </div>
-                        <router-link to="/profile" class="dropdown-item">
-                            <i class="ni ni-single-02"></i>
-                            <span>My profile</span>
-                        </router-link>
-                        <router-link to="/profile" class="dropdown-item">
-                            <i class="ni ni-settings-gear-65"></i>
+                        <router-link to="/settings" class="dropdown-item">
+                            <font-awesome-icon icon="cogs"></font-awesome-icon>
                             <span>Settings</span>
                         </router-link>
-                        <router-link to="/profile" class="dropdown-item">
-                            <i class="ni ni-calendar-grid-58"></i>
-                            <span>Activity</span>
-                        </router-link>
-                        <router-link to="/profile" class="dropdown-item">
-                            <i class="ni ni-support-16"></i>
-                            <span>Support</span>
-                        </router-link>
-                        <div class="dropdown-divider"></div>
-                        <a href="#!" class="dropdown-item">
-                            <i class="ni ni-user-run"></i>
+                        <router-link to="/logout" class="dropdown-item">
+                            <font-awesome-icon icon="sign-out-alt"></font-awesome-icon>
                             <span>Logout</span>
-                        </a>
+                        </router-link>
                     </base-dropdown>
                 </ul>
             </slot>
@@ -74,11 +37,9 @@
                 <div class="navbar-collapse-header d-md-none">
                     <div class="row">
                         <div class="col-6 collapse-brand">
-                            <router-link to="/">
-                                <img :src="logo" />
-                            </router-link>
+                            <img :src="logo" />
                         </div>
-                        <div class="col-6 collapse-close">
+                        <div class="col-6 collapse-close d-flex justify-content-end align-items-center">
                             <navbar-toggle-button @click.native="closeSidebar"></navbar-toggle-button>
                         </div>
                     </div>
@@ -102,8 +63,7 @@ export default {
     props: {
         logo: {
             type: String,
-            default: '/img/brand/icon.png',
-            description: 'Evide',
+            default: '/img/logo-rect.webp',
         },
         autoClose: {
             type: Boolean,
@@ -114,6 +74,15 @@ export default {
             type: String,
             default: 'white',
         },
+    },
+    data: () => ({
+        isMobile: false,
+    }),
+    mounted() {
+        this.isMobile = window.innerWidth < 768;
+        window.addEventListener('resize', () => {
+            this.isMobile = window.innerWidth < 768;
+        });
     },
     provide() {
         return {

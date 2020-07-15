@@ -109,7 +109,6 @@ export default {
 
                 const stats = response.data.stats;
                 this.inventoryStats = stats;
-                console.log(stats);
             } catch (err) {
                 this.$error('Unable to get stats.');
             }
