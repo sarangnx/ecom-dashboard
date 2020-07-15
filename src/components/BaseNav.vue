@@ -21,7 +21,7 @@
             <div
                 :id="contentId"
                 v-click-outside="closeMenu"
-                class="collapse navbar-collapse"
+                class="collapse navbar-collapse d-flex justify-content-end"
                 :class="{ show: toggled }"
             >
                 <slot :close-menu="closeMenu"></slot>
