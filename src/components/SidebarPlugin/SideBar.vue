@@ -1,7 +1,7 @@
 <template>
     <nav
         id="sidenav-main"
-        class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light"
+        class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light custom__scrollbar"
         :class="[`bg-${bgColor}`]"
     >
         <div class="container-fluid">
