@@ -13,8 +13,8 @@
                 </base-dropdown>
             </div>
             <div class="row">
-                <div class="col-xl-3 col-lg-6">
-                    <div class="card shadow-lg">
+                <div class="col-xl-3 col-lg-6 mb-4 mb-md-0">
+                    <div class="card shadow-sm shadow--hover">
                         <div class="card-header pb-0">
                             <h3>
                                 Order Stats
@@ -60,7 +60,7 @@
                     </div>
                 </div>
                 <div class="col-xl-3 col-lg-6">
-                    <div class="card shadow-lg">
+                    <div class="card shadow-sm shadow--hover">
                         <div class="card-header pb-0">
                             <h3>
                                 Store Stats
@@ -86,7 +86,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <div class="row mt-4">
                 <div class="col-12">
                     <div class="card shadow">
                         <div class="card-header pb-0">
