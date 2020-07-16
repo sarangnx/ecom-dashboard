@@ -224,6 +224,17 @@ export default [
         ],
     },
     {
+        path: '/',
+        component: () => import(/* webpackChunkName: "terms" */ '@/layout/Content'),
+        children: [
+            {
+                path: '/terms',
+                name: 'Terms & Conditions',
+                component: () => import(/* webpackChunkName: "terms" */ '@/views/Pages/Terms'),
+            },
+        ],
+    },
+    {
         path: '/logout',
         name: 'logout',
         component: () => import(/* webpackChunkName: "auth" */ '@/views/Auth/Logout.vue'),
