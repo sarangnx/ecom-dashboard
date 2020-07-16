@@ -22,7 +22,7 @@
                     <div class="d-flex flex-wrap">
                         <div v-for="(banner, index) in banners" :key="index" class="col-12 col-lg-6 col-xl-4 mb-3">
                             <div class="card shadow-sm shadow--hover h-100">
-                                <div class="card-header">
+                                <div class="card-header border-0">
                                     <div class="row">
                                         <img v-if="banner.image" :src="`${s3bucket}/${banner.image}`" class="col-12" />
                                         <div v-else class="col-12 text-center">
@@ -36,7 +36,7 @@
                                         <span>{{ banner.name }}</span>
                                     </div>
                                 </div>
-                                <div class="card-footer d-flex justify-content-end py-2">
+                                <div class="card-footer d-flex justify-content-end">
                                     <base-button
                                         size="sm"
                                         type="danger"
