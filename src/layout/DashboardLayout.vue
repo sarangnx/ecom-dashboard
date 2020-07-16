@@ -18,10 +18,10 @@
         <div class="main-content" :data="sidebarBackground">
             <dashboard-navbar></dashboard-navbar>
 
-            <div @click="toggleSidebar">
+            <div style="min-height: 100%;" class="d-flex flex-column" @click="toggleSidebar">
                 <fade-transition :duration="200" origin="center top" mode="out-in">
                     <!-- your content here -->
-                    <router-view></router-view>
+                    <router-view class="flex-grow-1"></router-view>
                 </fade-transition>
                 <content-footer v-if="!$route.meta.hideFooter"></content-footer>
             </div>
