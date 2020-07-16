@@ -38,12 +38,12 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="d-flex text-muted">
-                                    <h4 class="m-0 pr-2 text-muted">Order Date</h4>
+                                <div class="d-flex flex-wrap text-muted">
+                                    <span class="text-sm font-weight-bold pr-2 text-muted">Order Date</span>
                                     <small>{{ formatDate(order.orderDate) }}</small>
                                 </div>
-                                <div class="d-flex align-items-center">
-                                    <h4 class="m-0 pr-2">Name</h4>
+                                <div class="d-flex flex-wrap">
+                                    <span class="text-sm text-default font-weight-bold pr-2">Name</span>
                                     <span v-if="order.user && order.user.firstName">
                                         {{ order.user.firstName }}
                                     </span>
