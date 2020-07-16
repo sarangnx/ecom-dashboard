@@ -18,10 +18,10 @@
                 </base-button>
             </div>
             <div class="card-body position-relative min__height">
-                <div v-if="banners && banners.length" class="container">
+                <div v-if="banners && banners.length">
                     <div class="d-flex flex-wrap">
-                        <div v-for="(banner, index) in banners" :key="index" class="col-12 col-md-6 mb-3">
-                            <div class="card shadow h-100">
+                        <div v-for="(banner, index) in banners" :key="index" class="col-12 col-lg-6 col-xl-4 mb-3">
+                            <div class="card shadow-sm shadow--hover h-100">
                                 <div class="card-header">
                                     <div class="row">
                                         <img v-if="banner.image" :src="`${s3bucket}/${banner.image}`" class="col-12" />
