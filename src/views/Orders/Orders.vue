@@ -52,7 +52,7 @@
                 </div>
             </div>
             <!-- Tables -->
-            <div class="row">
+            <div class="row mt-4">
                 <div class="col">
                     <orders-table :store-id="storeId"></orders-table>
                 </div>
