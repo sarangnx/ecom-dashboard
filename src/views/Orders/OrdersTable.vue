@@ -24,7 +24,7 @@
         </div>
         <div class="card-body position-relative min__height">
             <template v-if="orders && orders.length">
-                <fade-transition group tag="div" class="d-flex flex-row justify-content-around flex-wrap">
+                <fade-transition group tag="div" class="d-flex flex-row justify-content-start flex-wrap">
                     <div v-for="(order, index) in orders" :key="index" class="col-12 col-lg-6 col-xl-4 mb-3">
                         <div class="card shadow-sm shadow--hover h-100">
                             <div class="card-header">

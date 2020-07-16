@@ -22,7 +22,7 @@
                 </a>
             </base-dropdown>
         </div>
-        <div class="card-body d-flex flex-row justify-content-around flex-wrap position-relative min__height">
+        <div class="card-body d-flex flex-row justify-content-start flex-wrap position-relative min__height">
             <template v-if="orders && orders.length">
                 <div v-for="(order, index) in orders" :key="index" class="card shadow h-100 col-md-5 mb-3">
                     <div class="card-body">
