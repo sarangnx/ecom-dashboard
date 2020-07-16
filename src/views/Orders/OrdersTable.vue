@@ -27,7 +27,7 @@
                 <fade-transition group tag="div" class="d-flex flex-row justify-content-around flex-wrap">
                     <div v-for="(order, index) in orders" :key="index" class="col-12 col-lg-6 col-xl-4 mb-3">
                         <div class="card shadow-sm shadow--hover h-100">
-                            <div class="card-body">
+                            <div class="card-header">
                                 <div class="d-flex justify-content-between">
                                     <badge :type="badgeType(order.orderStatus)">
                                         {{ badgeText(order.orderStatus) }}
@@ -36,6 +36,8 @@
                                         {{ order.deliveryMethod }}
                                     </badge>
                                 </div>
+                            </div>
+                            <div class="card-body">
                                 <div class="d-flex text-muted">
                                     <h4 class="m-0 pr-2 text-muted">Order Date</h4>
                                     <small>{{ formatDate(order.orderDate) }}</small>
@@ -84,7 +86,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-footer py-2">
+                            <div class="card-footer">
                                 <base-dropdown>
                                     <base-button
                                         slot="title"
