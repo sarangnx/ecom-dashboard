@@ -4,9 +4,9 @@
             <div class="col-lg-6">
                 <div class="copyright text-center text-lg-left text-muted">
                     © {{ year }}
-                    <a href="https://www.daflow.in" class="font-weight-bold ml-1" target="_blank"
-                        >Daflow Technologies</a
-                    >
+                    <a href="https://www.doitnow.co.in" class="font-weight-bold ml-1" target="_blank">
+                        doITnow Technologies
+                    </a>
                 </div>
             </div>
         </div>
@@ -14,10 +14,8 @@
 </template>
 <script>
 export default {
-    data() {
-        return {
-            year: new Date().getFullYear(),
-        };
-    },
+    data: () => ({
+        year: new Date().getFullYear(),
+    }),
 };
 </script>
