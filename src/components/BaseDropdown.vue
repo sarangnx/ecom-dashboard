@@ -14,19 +14,25 @@
                 <span class="no-icon">{{ title }}</span>
             </a>
         </slot>
-        <ul
-            ref="menu"
-            class="dropdown-menu drop__down"
-            :class="[{ 'dropdown-menu-right': position === 'right' }, { show: isOpen }, menuClasses]"
-        >
-            <slot name="search"></slot>
-            <slot></slot>
-        </ul>
+        <collapse-transition>
+            <ul
+                v-show="isOpen"
+                ref="menu"
+                class="dropdown-menu drop__down show"
+                :class="[{ 'dropdown-menu-right': position === 'right' }, menuClasses]"
+            >
+                <slot name="search"></slot>
+                <slot></slot>
+            </ul>
+        </collapse-transition>
     </component>
 </template>
 <script>
+import { CollapseTransition } from 'vue2-transitions';
+
 export default {
     name: 'BaseDropdown',
+    components: { CollapseTransition },
     props: {
         direction: {
             type: String,

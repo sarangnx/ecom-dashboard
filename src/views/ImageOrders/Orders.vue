@@ -1,70 +1,65 @@
 <template>
     <div>
-        <div v-if="storeId">
-            <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
-                <div v-if="current" class="mb-3 d-flex">
-                    <h3 class="mr-2">Store:</h3>
-                    <base-dropdown>
-                        <base-button slot="title" type="default" size="sm" class="dropdown-toggle">
-                            {{ current.name }}
-                        </base-button>
-                        <a v-for="(item, index) in stores" :key="index" class="dropdown-item" @click="change(item)">
-                            {{ item.name }}
-                        </a>
-                    </base-dropdown>
+        <div v-if="storeId" class="container-fluid pt-4 pt-md-7">
+            <div v-if="current" class="mb-3 d-flex">
+                <h3 class="mr-2">Store:</h3>
+                <base-dropdown>
+                    <base-button slot="title" type="default" size="sm" class="dropdown-toggle">
+                        {{ current.name }}
+                    </base-button>
+                    <a v-for="(item, index) in stores" :key="index" class="dropdown-item" @click="change(item)">
+                        {{ item.name }}
+                    </a>
+                </base-dropdown>
+            </div>
+            <!-- Card stats -->
+            <div class="row">
+                <div class="col-sm-6 col-md-3">
+                    <stats-card
+                        title="Total Orders"
+                        type="gradient-red"
+                        :sub-title="`${totalOrders}`"
+                        class="mb-4 h-100 mb-xl-0 shadow-sm shadow--hover"
+                    >
+                    </stats-card>
                 </div>
-                <!-- Card stats -->
-                <div class="row">
-                    <div class="col-sm-6 col-md-3">
-                        <stats-card
-                            title="Total Orders"
-                            type="gradient-red"
-                            :sub-title="`${totalOrders}`"
-                            class="mb-4 mb-xl-0"
-                        >
-                        </stats-card>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <stats-card
-                            title="Today's Orders"
-                            type="gradient-orange"
-                            :sub-title="`${totalToday}`"
-                            class="mb-4 mb-xl-0"
-                        >
-                        </stats-card>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <stats-card
-                            title="Items Pending"
-                            type="gradient-green"
-                            :sub-title="`${orderStatus.pending}`"
-                            class="mb-4 mb-xl-0"
-                        >
-                        </stats-card>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <stats-card
-                            title="Out for Delivery"
-                            type="gradient-info"
-                            :sub-title="`${orderStatus.outfordelivery}`"
-                            class="mb-4 mb-xl-0"
-                        >
-                        </stats-card>
-                    </div>
+                <div class="col-sm-6 col-md-3">
+                    <stats-card
+                        title="Today's Orders"
+                        type="gradient-orange"
+                        :sub-title="`${totalToday}`"
+                        class="mb-4 h-100 mb-xl-0 shadow-sm shadow--hover"
+                    >
+                    </stats-card>
                 </div>
-            </base-header>
+                <div class="col-sm-6 col-md-3">
+                    <stats-card
+                        title="Items Pending"
+                        type="gradient-green"
+                        :sub-title="`${orderStatus.pending}`"
+                        class="mb-4 h-100 mb-xl-0 shadow-sm shadow--hover"
+                    >
+                    </stats-card>
+                </div>
+                <div class="col-sm-6 col-md-3">
+                    <stats-card
+                        title="Out for Delivery"
+                        type="gradient-info"
+                        :sub-title="`${orderStatus.outfordelivery}`"
+                        class="mb-4 h-100 mb-xl-0 shadow-sm shadow--hover"
+                    >
+                    </stats-card>
+                </div>
+            </div>
             <!-- Tables -->
-            <div class="container-fluid mt--7">
-                <div class="row">
-                    <div class="col">
-                        <orders-table :store-id="storeId"></orders-table>
-                    </div>
+            <div class="row mt-4">
+                <div class="col">
+                    <orders-table :store-id="storeId"></orders-table>
                 </div>
             </div>
         </div>
         <div v-else>
-            <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8"> </base-header>
-            <div class="container-fluid mt--7">
+            <div class="container-fluid pt-4 pt-md-7">
                 <div class="card shadow p-2 p-md-5">
                     <div class="card-body">
                         <div class="container">

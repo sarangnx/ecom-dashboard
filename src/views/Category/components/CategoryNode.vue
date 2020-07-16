@@ -28,21 +28,30 @@
                 </a>
             </base-dropdown>
         </div>
-        <ul v-if="item.subCategory && item.subCategory.length && open" class="category-list">
-            <category-node
-                v-for="(category, index) in item.subCategory"
-                :key="index"
-                :item="category"
-                @add-category="$emit('add-category', $event)"
-                @edit-category="$emit('edit-category', $event)"
-                @delete-category="$emit('delete-category', $event)"
-            />
-        </ul>
+        <collapse-transition>
+            <ul
+                v-show="item.subCategory && item.subCategory.length && open"
+                class="category-list"
+                style="overflow: inherit;"
+            >
+                <category-node
+                    v-for="(category, index) in item.subCategory"
+                    :key="index"
+                    :item="category"
+                    @add-category="$emit('add-category', $event)"
+                    @edit-category="$emit('edit-category', $event)"
+                    @delete-category="$emit('delete-category', $event)"
+                />
+            </ul>
+        </collapse-transition>
     </li>
 </template>
 <script>
+import { CollapseTransition } from 'vue2-transitions';
+
 export default {
     name: 'CategoryNode',
+    components: { CollapseTransition },
     props: {
         item: {
             type: Object,

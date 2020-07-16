@@ -1,133 +1,129 @@
 <template>
-    <div>
+    <div class="container-fluid pt-4 pt-md-8">
         <template v-if="storeId">
-            <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8">
-                <div v-if="current" class="mb-3 d-flex">
-                    <h3 class="mr-2">Store:</h3>
-                    <base-dropdown>
-                        <base-button slot="title" type="default" size="sm" class="dropdown-toggle">
-                            {{ current.name }}
-                        </base-button>
-                        <a v-for="(item, index) in stores" :key="index" class="dropdown-item" @click="change(item)">
-                            {{ item.name }}
-                        </a>
-                    </base-dropdown>
-                </div>
-                <div class="row">
-                    <div class="col-xl-3 col-lg-6">
-                        <div class="card shadow-lg">
-                            <div class="card-header pb-0">
-                                <h3>
-                                    Order Stats
-                                    <font-awesome-icon icon="shopping-basket" class="text-primary" pull="right" />
-                                </h3>
-                            </div>
-                            <div class="card-body bg-secondary">
-                                <div class="text-sm row">
-                                    <div class="col-12">
-                                        <span class="mr-2 font-weight-bold">Total Orders:</span>
-                                        <span>{{ totalOrders }}</span>
-                                    </div>
-                                    <div class="col-12">
-                                        <span class="mr-2 font-weight-bold">Total Orders Today:</span>
-                                        <span>{{ totalToday }}</span>
-                                    </div>
-                                    <div class="col-12">
-                                        <span class="mr-2 font-weight-bold">Pending:</span>
-                                        <span>{{ orderStatus && orderStatus.pending }}</span>
-                                    </div>
-                                    <div class="col-12">
-                                        <span class="mr-2 font-weight-bold">Processing:</span>
-                                        <span>{{ orderStatus && orderStatus.processing }}</span>
-                                    </div>
-                                    <div class="col-12">
-                                        <span class="mr-2 font-weight-bold">Ready:</span>
-                                        <span>{{ orderStatus && orderStatus.ready }}</span>
-                                    </div>
-                                    <div class="col-12">
-                                        <span class="mr-2 font-weight-bold">Out for Delivery:</span>
-                                        <span>{{ orderStatus && orderStatus.outfordelivery }}</span>
-                                    </div>
-                                    <div class="col-12">
-                                        <span class="mr-2 font-weight-bold">Delivered:</span>
-                                        <span>{{ orderStatus && orderStatus.delivered }}</span>
-                                    </div>
-                                    <div class="col-12">
-                                        <span class="mr-2 font-weight-bold">Cancelled:</span>
-                                        <span>{{ orderStatus && orderStatus.cancelled }}</span>
-                                    </div>
-                                </div>
-                            </div>
+            <div v-if="current" class="mb-3 d-flex">
+                <h3 class="mr-2">Store:</h3>
+                <base-dropdown>
+                    <base-button slot="title" type="default" size="sm" class="dropdown-toggle">
+                        {{ current.name }}
+                    </base-button>
+                    <a v-for="(item, index) in stores" :key="index" class="dropdown-item" @click="change(item)">
+                        {{ item.name }}
+                    </a>
+                </base-dropdown>
+            </div>
+            <div class="row">
+                <div class="col-xl-3 col-lg-6 mb-4 mb-md-0">
+                    <div class="card shadow-sm shadow--hover">
+                        <div class="card-header pb-0">
+                            <h3>
+                                Order Stats
+                                <font-awesome-icon icon="shopping-basket" class="text-primary" pull="right" />
+                            </h3>
                         </div>
-                    </div>
-                    <div class="col-xl-3 col-lg-6">
-                        <div class="card shadow-lg">
-                            <div class="card-header pb-0">
-                                <h3>
-                                    Store Stats
-                                    <font-awesome-icon icon="store-alt" class="text-primary" pull="right" />
-                                </h3>
-                            </div>
-                            <div class="card-body bg-secondary">
-                                <div class="text-sm row">
-                                    <div class="col-12">
-                                        <span class="mr-2 font-weight-bold">Total Items:</span>
-                                        <span>{{ items }}</span>
-                                    </div>
-                                    <div class="col-12">
-                                        <span class="mr-2 font-weight-bold">Total Categories:</span>
-                                        <span>{{ categories }}</span>
-                                    </div>
-                                    <div class="col-12">
-                                        <span class="mr-2 font-weight-bold">Total Banners:</span>
-                                        <span>{{ banners }}</span>
-                                    </div>
+                        <div class="card-body bg-secondary">
+                            <div class="text-sm row">
+                                <div class="col-12">
+                                    <span class="mr-2 font-weight-bold">Total Orders:</span>
+                                    <span>{{ totalOrders }}</span>
+                                </div>
+                                <div class="col-12">
+                                    <span class="mr-2 font-weight-bold">Total Orders Today:</span>
+                                    <span>{{ totalToday }}</span>
+                                </div>
+                                <div class="col-12">
+                                    <span class="mr-2 font-weight-bold">Pending:</span>
+                                    <span>{{ orderStatus && orderStatus.pending }}</span>
+                                </div>
+                                <div class="col-12">
+                                    <span class="mr-2 font-weight-bold">Processing:</span>
+                                    <span>{{ orderStatus && orderStatus.processing }}</span>
+                                </div>
+                                <div class="col-12">
+                                    <span class="mr-2 font-weight-bold">Ready:</span>
+                                    <span>{{ orderStatus && orderStatus.ready }}</span>
+                                </div>
+                                <div class="col-12">
+                                    <span class="mr-2 font-weight-bold">Out for Delivery:</span>
+                                    <span>{{ orderStatus && orderStatus.outfordelivery }}</span>
+                                </div>
+                                <div class="col-12">
+                                    <span class="mr-2 font-weight-bold">Delivered:</span>
+                                    <span>{{ orderStatus && orderStatus.delivered }}</span>
+                                </div>
+                                <div class="col-12">
+                                    <span class="mr-2 font-weight-bold">Cancelled:</span>
+                                    <span>{{ orderStatus && orderStatus.cancelled }}</span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </base-header>
-            <div class="container-fluid mt--7">
-                <div class="row">
-                    <div class="col-12">
-                        <div class="card shadow">
-                            <div class="card-header pb-0">
-                                <h3>Most Sold Products</h3>
-                            </div>
-                            <div v-if="mostSoldItems && mostSoldItems.length" class="card-body px-0 pt-0">
-                                <div class="table-responsive">
-                                    <base-table
-                                        :data="mostSoldItems"
-                                        type="hover table-striped table-sm"
-                                        thead-classes="thead-dark"
-                                    >
-                                        <template slot="columns">
-                                            <th>#</th>
-                                            <th>Item</th>
-                                            <th class="text-center">Total Orders</th>
-                                        </template>
-                                        <template slot-scope="{ row, index }">
-                                            <td class="text-left">{{ index + 1 }}</td>
-                                            <td>
-                                                {{ row.item && row.item.itemDetails && row.item.itemDetails.itemName }}
-                                            </td>
-                                            <td class="text-center">
-                                                {{ row.occurance && parseInt(row.occurance) }}
-                                            </td>
-                                        </template>
-                                    </base-table>
+                <div class="col-xl-3 col-lg-6">
+                    <div class="card shadow-sm shadow--hover">
+                        <div class="card-header pb-0">
+                            <h3>
+                                Store Stats
+                                <font-awesome-icon icon="store-alt" class="text-primary" pull="right" />
+                            </h3>
+                        </div>
+                        <div class="card-body bg-secondary">
+                            <div class="text-sm row">
+                                <div class="col-12">
+                                    <span class="mr-2 font-weight-bold">Total Items:</span>
+                                    <span>{{ items }}</span>
+                                </div>
+                                <div class="col-12">
+                                    <span class="mr-2 font-weight-bold">Total Categories:</span>
+                                    <span>{{ categories }}</span>
+                                </div>
+                                <div class="col-12">
+                                    <span class="mr-2 font-weight-bold">Total Banners:</span>
+                                    <span>{{ banners }}</span>
                                 </div>
                             </div>
-                            <div v-else class="card-body">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-12 px-0">
-                                            <div class="mb-3">
-                                                <span class="text-muted">
-                                                    No data...
-                                                </span>
-                                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="card shadow">
+                        <div class="card-header pb-0">
+                            <h3>Most Sold Products</h3>
+                        </div>
+                        <div v-if="mostSoldItems && mostSoldItems.length" class="card-body px-0 pt-0">
+                            <div class="table-responsive">
+                                <base-table
+                                    :data="mostSoldItems"
+                                    type="hover table-striped table-sm"
+                                    thead-classes="thead-dark"
+                                >
+                                    <template slot="columns">
+                                        <th>#</th>
+                                        <th>Item</th>
+                                        <th class="text-center">Total Orders</th>
+                                    </template>
+                                    <template slot-scope="{ row, index }">
+                                        <td class="text-left">{{ index + 1 }}</td>
+                                        <td>
+                                            {{ row.item && row.item.itemDetails && row.item.itemDetails.itemName }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ row.occurance && parseInt(row.occurance) }}
+                                        </td>
+                                    </template>
+                                </base-table>
+                            </div>
+                        </div>
+                        <div v-else class="card-body">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-12 px-0">
+                                        <div class="mb-3">
+                                            <span class="text-muted">
+                                                No data...
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -138,8 +134,7 @@
             </div>
         </template>
         <div v-else>
-            <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8"> </base-header>
-            <div class="container-fluid mt--7">
+            <div class="container-fluid">
                 <div class="card shadow p-2 p-md-5">
                     <div class="card-body">
                         <div class="container">

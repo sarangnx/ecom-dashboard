@@ -24,58 +24,61 @@
                     />
                 </div>
             </div>
-            <div class="card-body d-flex flex-row justify-content-start flex-wrap p-2 position-relative min__height">
+            <div class="card-body position-relative min__height">
                 <template v-if="items && items.length">
-                    <div v-for="item of items" :key="item.itemId" class="col-md-4 mb-2 p-1">
-                        <div class="card shadow h-100">
-                            <div class="card-header border-0 d-flex justify-content-center align-items-center">
-                                <img v-if="item.image" :src="`${s3bucket}/${item.image}`" class="col p-0" />
-                                <font-awesome-icon v-else icon="image" size="5x"></font-awesome-icon>
-                            </div>
-                            <div class="card-body d-flex justify-content-end flex-column py-2">
-                                <div>
-                                    <h5 class="d-inline m-0 pr-2">Product Name:</h5>
-                                    <span>{{ item.itemName }}</span>
+                    <fade-transition group tag="div" class="d-flex flex-row justify-content-start flex-wrap">
+                        <div v-for="item of items" :key="item.itemId" class="col-md-4 mb-4 px-md-3">
+                            <div class="card shadow-sm shadow--hover h-100">
+                                <div class="card-header border-0 d-flex justify-content-center align-items-center">
+                                    <img v-if="item.image" :src="`${s3bucket}/${item.image}`" class="col p-0" />
+                                    <font-awesome-icon v-else icon="image" size="5x"></font-awesome-icon>
                                 </div>
-                                <div v-if="item.baseQuantity">
-                                    <h5 class="d-inline m-0 pr-2">Quantity:</h5>
-                                    <span>{{ parseFloat(item.baseQuantity) }}</span>
+                                <div class="card-body d-flex justify-content-end flex-column py-2">
+                                    <div>
+                                        <h5 class="d-inline m-0 pr-2">Product Name:</h5>
+                                        <span>{{ item.itemName }}</span>
+                                    </div>
+                                    <div v-if="item.baseQuantity">
+                                        <h5 class="d-inline m-0 pr-2">Quantity:</h5>
+                                        <span>{{ parseFloat(item.baseQuantity) }}</span>
+                                    </div>
+                                    <div v-if="item.baseUnit">
+                                        <h5 class="d-inline m-0 pr-2">Unit:</h5>
+                                        <small>{{ item.baseUnit | toUpper }}</small>
+                                    </div>
                                 </div>
-                                <div v-if="item.baseUnit">
-                                    <h5 class="d-inline m-0 pr-2">Unit:</h5>
-                                    <small>{{ item.baseUnit | toUpper }}</small>
+                                <div class="card-footer d-flex justify-content-end py-2">
+                                    <base-button
+                                        v-if="item.storeItems && item.storeItems.length"
+                                        size="sm"
+                                        type="danger"
+                                        icon="trash"
+                                        @click="
+                                            deleteModal = true;
+                                            selectedItem = item;
+                                            selectedItem.itemDetails = item;
+                                            selectedItem.storeItemId =
+                                                item.storeItems && item.storeItems[0].storeItemId;
+                                        "
+                                    >
+                                        Remove
+                                    </base-button>
+                                    <base-button
+                                        v-else
+                                        size="sm"
+                                        type="success"
+                                        icon="plus"
+                                        @click="
+                                            addModal = true;
+                                            selectedItem = item;
+                                        "
+                                    >
+                                        Add
+                                    </base-button>
                                 </div>
-                            </div>
-                            <div class="card-footer d-flex justify-content-end py-2">
-                                <base-button
-                                    v-if="item.storeItems && item.storeItems.length"
-                                    size="sm"
-                                    type="danger"
-                                    icon="trash"
-                                    @click="
-                                        deleteModal = true;
-                                        selectedItem = item;
-                                        selectedItem.itemDetails = item;
-                                        selectedItem.storeItemId = item.storeItems && item.storeItems[0].storeItemId;
-                                    "
-                                >
-                                    Remove
-                                </base-button>
-                                <base-button
-                                    v-else
-                                    size="sm"
-                                    type="success"
-                                    icon="plus"
-                                    @click="
-                                        addModal = true;
-                                        selectedItem = item;
-                                    "
-                                >
-                                    Add
-                                </base-button>
                             </div>
                         </div>
-                    </div>
+                    </fade-transition>
                 </template>
                 <div
                     v-if="!(items && items.length) && !loading"
@@ -143,6 +146,7 @@
     </div>
 </template>
 <script>
+import { FadeTransition } from 'vue2-transitions';
 import { mapGetters, mapActions } from 'vuex';
 import AddModal from './AddModal';
 import DeleteModal from './DeleteModal';
@@ -154,6 +158,7 @@ export default {
         AddModal,
         DeleteModal,
         CategoryDropdown,
+        FadeTransition,
     },
     filters: {
         toUpper(string) {

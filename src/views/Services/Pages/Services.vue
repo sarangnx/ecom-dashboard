@@ -4,98 +4,87 @@
             <h3>Services</h3>
         </div>
         <div class="card-body p-0 position-relative min__height">
-            <template v-if="services && services.length">
-                <div class="p-2 d-flex justify-content-between">
-                    <div>
-                        <small class="mr-1 font-weight-bold">Per Page:</small>
-                        <base-dropdown>
-                            <base-button slot="title" size="sm" icon="caret-down" icon-position="right">
-                                {{ perPage }}
-                            </base-button>
-                            <a class="dropdown-item" @click="perPage = 10">10</a>
-                            <a class="dropdown-item" @click="perPage = 50">50</a>
-                            <a class="dropdown-item" @click="perPage = 100">100</a>
-                        </base-dropdown>
-                    </div>
-                    <div>
-                        <base-button icon="plus" size="sm" type="success" @click="addModal = true">
-                            Add Service
-                        </base-button>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <base-table
-                        class="table align-items-center table-flush service-table"
-                        thead-classes="thead-dark"
-                        :data="services"
-                    >
-                        <template slot="columns">
-                            <th class="text-center text-white name">
-                                <a
-                                    class="pointer"
-                                    @click.prevent="order === 'asc' ? (order = 'desc') : (order = 'asc')"
-                                >
-                                    Service Name
-                                    <font-awesome-icon :icon="order === 'asc' ? 'caret-up' : 'caret-down'" />
-                                </a>
-                            </th>
-                            <th class="text-center text-white desc">Description</th>
-                            <th class="text-center text-white actions">Actions</th>
-                        </template>
-                        <template slot-scope="{ row }">
-                            <td class="text-left name d-flex">
-                                <img v-if="row.image" :src="`${s3bucket}/${row.image}`" class="service-thumb mr-2" />
-                                <span>{{ row.name }}</span>
-                            </td>
-                            <td class="desc">
-                                <span class="d-block">{{ row.description | truncate }}</span>
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-center">
-                                    <base-button
-                                        type="success"
-                                        icon="eye"
-                                        size="sm"
-                                        @click="
-                                            viewModal = true;
-                                            selectedService = row;
-                                        "
-                                    ></base-button>
-                                    <base-button
-                                        type="primary"
-                                        icon="edit"
-                                        size="sm"
-                                        @click="
-                                            editModal = true;
-                                            selectedService = row;
-                                        "
-                                    ></base-button>
-                                    <base-button
-                                        type="danger"
-                                        icon="trash"
-                                        size="sm"
-                                        @click="
-                                            deleteModal = true;
-                                            selectedService = row;
-                                        "
-                                    ></base-button>
-                                </div>
-                            </td>
-                        </template>
-                    </base-table>
-                </div>
-            </template>
-            <div
-                v-if="!(services && services.length) && !loading"
-                class="col-12 p-5 d-flex justify-content-center flex-column align-items-center"
-            >
-                <base-button icon="plus" size="sm" type="success" class="m-0" @click="addModal = true">
-                    Add Service
-                </base-button>
+            <div class="p-2 d-flex justify-content-between">
                 <div>
-                    <small class="p-2">no Services</small>
-                    <font-awesome-icon icon="inbox" />
+                    <small class="mr-1 font-weight-bold">Per Page:</small>
+                    <base-dropdown>
+                        <base-button slot="title" size="sm" icon="caret-down" icon-position="right">
+                            {{ perPage }}
+                        </base-button>
+                        <a class="dropdown-item" @click="perPage = 10">10</a>
+                        <a class="dropdown-item" @click="perPage = 50">50</a>
+                        <a class="dropdown-item" @click="perPage = 100">100</a>
+                    </base-dropdown>
                 </div>
+                <div>
+                    <base-button icon="plus" size="sm" type="success" @click="addModal = true">
+                        Add Service
+                    </base-button>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <base-table
+                    class="table align-items-center table-flush service-table"
+                    thead-classes="thead-dark"
+                    :data="services"
+                >
+                    <template slot="columns">
+                        <th class="text-center text-white name">
+                            <a class="pointer" @click.prevent="order === 'asc' ? (order = 'desc') : (order = 'asc')">
+                                Service Name
+                                <font-awesome-icon :icon="order === 'asc' ? 'caret-up' : 'caret-down'" />
+                            </a>
+                        </th>
+                        <th class="text-center text-white desc">Description</th>
+                        <th class="text-center text-white actions">Actions</th>
+                    </template>
+                    <template slot-scope="{ row }">
+                        <td class="text-left name d-flex">
+                            <img v-if="row.image" :src="`${s3bucket}/${row.image}`" class="service-thumb mr-2" />
+                            <span>{{ row.name }}</span>
+                        </td>
+                        <td class="desc">
+                            <span class="d-block">{{ row.description | truncate }}</span>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <base-button
+                                    type="success"
+                                    icon="eye"
+                                    size="sm"
+                                    @click="
+                                        viewModal = true;
+                                        selectedService = row;
+                                    "
+                                ></base-button>
+                                <base-button
+                                    type="primary"
+                                    icon="edit"
+                                    size="sm"
+                                    @click="
+                                        editModal = true;
+                                        selectedService = row;
+                                    "
+                                ></base-button>
+                                <base-button
+                                    type="danger"
+                                    icon="trash"
+                                    size="sm"
+                                    @click="
+                                        deleteModal = true;
+                                        selectedService = row;
+                                    "
+                                ></base-button>
+                            </div>
+                        </td>
+                    </template>
+                    <div slot="caption" class="col-12 p-5 d-flex justify-content-center align-items-center">
+                        <div>
+                            <span class="text-sm p-2">no services</span>
+                            <font-awesome-icon icon="user-tie" />
+                        </div>
+                    </div>
+                </base-table>
             </div>
             <div v-if="loading" class="over__lay">
                 <loading color="dark" />

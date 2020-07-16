@@ -1,6 +1,6 @@
 <template>
     <div class="card shadow">
-        <div class="card-header d-flex justify-content-between flex-column flex-md-row align-items-center">
+        <div class="card-header d-flex justify-content-between flex-row align-items-center">
             <h3>Orders</h3>
             <!-- FILTER BY STATUS -->
             <base-dropdown position="right">
@@ -22,99 +22,105 @@
                 </a>
             </base-dropdown>
         </div>
-        <div class="card-body d-flex flex-row justify-content-around flex-wrap position-relative min__height">
+        <div class="card-body position-relative min__height">
             <template v-if="orders && orders.length">
-                <div v-for="(order, index) in orders" :key="index" class="card shadow h-100 col-md-5 mb-3">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between">
-                            <badge :type="badgeType(order.orderStatus)">
-                                {{ badgeText(order.orderStatus) }}
-                            </badge>
-                            <badge :type="order.deliveryMethod === 'PICKUP' ? 'danger' : 'default'">
-                                {{ order.deliveryMethod }}
-                            </badge>
-                        </div>
-                        <div class="d-flex text-muted">
-                            <h4 class="m-0 pr-2 text-muted">Order Date</h4>
-                            <small>{{ formatDate(order.orderDate) }}</small>
-                        </div>
-                        <div class="d-flex align-items-center">
-                            <h4 class="m-0 pr-2">Name</h4>
-                            <span v-if="order.user && order.user.firstName">
-                                {{ order.user.firstName }}
-                            </span>
-                            <small v-else class="text-muted">Not Provided</small>
-                        </div>
-                        <div class="d-flex flex-column">
-                            <h4 class="m-0 pr-2">Address</h4>
-                            <div v-if="order.deliveryAddress" class="d-flex flex-column">
-                                <span v-if="order.deliveryAddress.house">
-                                    <small class="text-muted font-weight-bold">House:</small>
-                                    {{ order.deliveryAddress.house }},
-                                </span>
-                                <span v-if="order.deliveryAddress.area">
-                                    <small class="text-muted font-weight-bold">Area:</small>
-                                    {{ order.deliveryAddress.area }},
-                                </span>
-                                <span v-if="order.deliveryAddress.city">
-                                    <small class="text-muted font-weight-bold">City:</small>
-                                    {{ order.deliveryAddress.city }},
-                                </span>
-                                <span v-if="order.deliveryAddress.landmark">
-                                    <small class="text-muted font-weight-bold">Landmark:</small>
-                                    {{ order.deliveryAddress.landmark }}
-                                </span>
-                                <span v-if="order.deliveryAddress.district">
-                                    <small class="text-muted font-weight-bold">District:</small>
-                                    {{ order.deliveryAddress.district }}
-                                </span>
-                                <span v-if="order.deliveryAddress.pincode">
-                                    <small class="text-muted font-weight-bold">Pincode:</small>
-                                    {{ order.deliveryAddress.pincode }}
-                                </span>
-                                <span v-if="order.deliveryAddress.phone">
-                                    <small class="text-muted font-weight-bold">Phone:</small>
-                                    {{ order.deliveryAddress.phone }}
-                                </span>
+                <fade-transition group tag="div" class="d-flex flex-row justify-content-start flex-wrap">
+                    <div v-for="(order, index) in orders" :key="index" class="col-12 col-lg-6 col-xl-4 mb-3">
+                        <div class="card shadow-sm shadow--hover h-100">
+                            <div class="card-header">
+                                <div class="d-flex justify-content-between">
+                                    <badge :type="badgeType(order.orderStatus)">
+                                        {{ badgeText(order.orderStatus) }}
+                                    </badge>
+                                    <badge :type="order.deliveryMethod === 'PICKUP' ? 'danger' : 'default'">
+                                        {{ order.deliveryMethod }}
+                                    </badge>
+                                </div>
                             </div>
-                            <div v-else class="d-flex flex-column">
-                                <small class="text-muted">Not Provided</small>
+                            <div class="card-body">
+                                <div class="d-flex flex-wrap text-muted">
+                                    <span class="text-sm font-weight-bold pr-2 text-muted">Order Date</span>
+                                    <small>{{ formatDate(order.orderDate) }}</small>
+                                </div>
+                                <div class="d-flex flex-wrap">
+                                    <span class="text-sm text-default font-weight-bold pr-2">Name</span>
+                                    <span v-if="order.user && order.user.firstName">
+                                        {{ order.user.firstName }}
+                                    </span>
+                                    <small v-else class="text-muted">Not Provided</small>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <h4 class="m-0 pr-2">Address</h4>
+                                    <div v-if="order.deliveryAddress" class="d-flex flex-column">
+                                        <span v-if="order.deliveryAddress.house">
+                                            <small class="text-muted font-weight-bold">House:</small>
+                                            {{ order.deliveryAddress.house }},
+                                        </span>
+                                        <span v-if="order.deliveryAddress.area">
+                                            <small class="text-muted font-weight-bold">Area:</small>
+                                            {{ order.deliveryAddress.area }},
+                                        </span>
+                                        <span v-if="order.deliveryAddress.city">
+                                            <small class="text-muted font-weight-bold">City:</small>
+                                            {{ order.deliveryAddress.city }},
+                                        </span>
+                                        <span v-if="order.deliveryAddress.landmark">
+                                            <small class="text-muted font-weight-bold">Landmark:</small>
+                                            {{ order.deliveryAddress.landmark }}
+                                        </span>
+                                        <span v-if="order.deliveryAddress.district">
+                                            <small class="text-muted font-weight-bold">District:</small>
+                                            {{ order.deliveryAddress.district }}
+                                        </span>
+                                        <span v-if="order.deliveryAddress.pincode">
+                                            <small class="text-muted font-weight-bold">Pincode:</small>
+                                            {{ order.deliveryAddress.pincode }}
+                                        </span>
+                                        <span v-if="order.deliveryAddress.phone">
+                                            <small class="text-muted font-weight-bold">Phone:</small>
+                                            {{ order.deliveryAddress.phone }}
+                                        </span>
+                                    </div>
+                                    <div v-else class="d-flex flex-column">
+                                        <small class="text-muted">Not Provided</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <base-dropdown>
+                                    <base-button
+                                        slot="title"
+                                        size="sm"
+                                        :type="badgeType(order.orderStatus)"
+                                        :loading="statusLoading == order.orderId"
+                                    >
+                                        {{ badgeText(order.orderStatus) }}
+                                        <font-awesome-icon icon="caret-down" />
+                                    </base-button>
+                                    <a
+                                        v-for="(value, key) of statusText"
+                                        :key="key"
+                                        class="dropdown-item pointer"
+                                        :class="[`text-${badgeType(key)}`]"
+                                        @click="!statusLoading && changeStatus(order.orderId, key, index)"
+                                    >
+                                        {{ value }}
+                                    </a>
+                                </base-dropdown>
+                                <base-button
+                                    size="sm"
+                                    @click="
+                                        modal = true;
+                                        orderItems = order.orderItems;
+                                        total = order.totalPrice;
+                                    "
+                                >
+                                    View Order
+                                </base-button>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer py-2">
-                        <base-dropdown>
-                            <base-button
-                                slot="title"
-                                size="sm"
-                                :type="badgeType(order.orderStatus)"
-                                :loading="statusLoading == order.orderId"
-                            >
-                                {{ badgeText(order.orderStatus) }}
-                                <font-awesome-icon icon="caret-down" />
-                            </base-button>
-                            <a
-                                v-for="(value, key) of statusText"
-                                :key="key"
-                                class="dropdown-item pointer"
-                                :class="[`text-${badgeType(key)}`]"
-                                @click="!statusLoading && changeStatus(order.orderId, key, index)"
-                            >
-                                {{ value }}
-                            </a>
-                        </base-dropdown>
-                        <base-button
-                            size="sm"
-                            @click="
-                                modal = true;
-                                orderItems = order.orderItems;
-                                total = order.totalPrice;
-                            "
-                        >
-                            View Order
-                        </base-button>
-                    </div>
-                </div>
+                </fade-transition>
             </template>
             <div
                 v-if="!(orders && orders.length) && !loading"
@@ -137,12 +143,14 @@
     </div>
 </template>
 <script>
+import { FadeTransition } from 'vue2-transitions';
 import OrdersList from './OrdersList';
 
 export default {
     name: 'OrdersTable',
     components: {
         OrdersList,
+        FadeTransition,
     },
     props: {
         storeId: {

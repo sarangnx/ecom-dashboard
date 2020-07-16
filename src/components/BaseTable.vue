@@ -7,7 +7,7 @@
                 </slot>
             </tr>
         </thead>
-        <tbody :class="tbodyClasses">
+        <zoom-x-transition group tag="tbody" :class="tbodyClasses">
             <tr v-for="(item, index) in data" :key="index">
                 <slot :row="item" :index="index">
                     <td v-for="(column, index2) in colsWithValue(item)" :key="index2">
@@ -15,7 +15,7 @@
                     </td>
                 </slot>
             </tr>
-        </tbody>
+        </zoom-x-transition>
         <caption v-if="($slots.caption || showCaption) && (!data || (data && !data.length))">
             <slot name="caption">
                 <div class="text-center">
@@ -26,8 +26,13 @@
     </table>
 </template>
 <script>
+import { ZoomXTransition } from 'vue2-transitions';
+
 export default {
     name: 'BaseTable',
+    components: {
+        ZoomXTransition,
+    },
     props: {
         columns: {
             type: Array,

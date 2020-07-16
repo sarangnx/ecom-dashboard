@@ -1,9 +1,8 @@
 <template>
-    <div>
-        <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8"></base-header>
-        <div class="container-fluid mt--7">
-            <div class="card-columns">
-                <div class="card shadow-lg">
+    <div class="container-fluid pt-4 pt-md-8">
+        <div class="d-flex flex-wrap">
+            <div class="col-12 col-md-4 mb-3 mb-md-0">
+                <div class="card shadow-sm shadow--hover">
                     <div class="card-header pb-0">
                         <h3>
                             User Stats
@@ -19,7 +18,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="card shadow-lg">
+            </div>
+            <div class="col-12 col-md-4 mb-3 mb-md-0">
+                <div class="card shadow-sm shadow--hover">
                     <div class="card-body">
                         <h3>
                             Total Stores
@@ -28,7 +29,9 @@
                         <span class="font-weight-bold">{{ storeStats.stores }}</span>
                     </div>
                 </div>
-                <div class="card shadow-lg">
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card shadow-sm shadow--hover">
                     <div class="card-header pb-0">
                         <h3>
                             Inventory Stats
