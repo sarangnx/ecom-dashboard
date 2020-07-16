@@ -18,8 +18,8 @@
         <div class="card-body position-relative min__height">
             <template v-show="items && items.length">
                 <fade-transition group tag="div" class="d-flex flex-row justify-content-start flex-wrap">
-                    <div v-for="item of items" :key="item.itemId" class="col-md-4 mb-2 p-1">
-                        <div class="card shadow-sm shadow--hover">
+                    <div v-for="item of items" :key="item.itemId" class="col-md-4 mb-4 px-md-3">
+                        <div class="card shadow-sm shadow--hover h-100">
                             <div class="card-header border-0 d-flex justify-content-center align-items-center">
                                 <img v-if="item.image" :src="`${s3bucket}/${item.image}`" class="col p-0" />
                                 <font-awesome-icon v-else icon="image" size="5x"></font-awesome-icon>
