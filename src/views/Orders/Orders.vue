@@ -19,7 +19,7 @@
                         title="Total Orders"
                         type="gradient-red"
                         :sub-title="`${totalOrders}`"
-                        class="mb-4 mb-xl-0 shadow-sm shadow--hover"
+                        class="h-100 mb-4 mb-xl-0 shadow-sm shadow--hover"
                     >
                     </stats-card>
                 </div>
@@ -28,7 +28,7 @@
                         title="Today's Orders"
                         type="gradient-orange"
                         :sub-title="`${totalToday}`"
-                        class="mb-4 mb-xl-0 shadow-sm shadow--hover"
+                        class="h-100 mb-4 mb-xl-0 shadow-sm shadow--hover"
                     >
                     </stats-card>
                 </div>
@@ -37,7 +37,7 @@
                         title="Items Pending"
                         type="gradient-green"
                         :sub-title="`${orderStatus.pending}`"
-                        class="mb-4 mb-xl-0 shadow-sm shadow--hover"
+                        class="h-100 mb-4 mb-xl-0 shadow-sm shadow--hover"
                     >
                     </stats-card>
                 </div>
@@ -46,7 +46,7 @@
                         title="Out for Delivery"
                         type="gradient-info"
                         :sub-title="`${orderStatus.outfordelivery}`"
-                        class="mb-4 mb-xl-0 shadow-sm shadow--hover"
+                        class="h-100 mb-4 mb-xl-0 shadow-sm shadow--hover"
                     >
                     </stats-card>
                 </div>
