@@ -59,8 +59,7 @@
             </div>
         </div>
         <div v-else>
-            <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8"> </base-header>
-            <div class="container-fluid mt--7">
+            <div class="container-fluid pt-4 pt-md-7">
                 <div class="card shadow p-2 p-md-5">
                     <div class="card-body">
                         <div class="container">
