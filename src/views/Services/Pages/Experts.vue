@@ -4,107 +4,100 @@
             <h3>Experts</h3>
         </div>
         <div class="card-body p-0 position-relative min__height">
-            <template v-if="experts && experts.length">
-                <div class="p-2 d-flex justify-content-between">
-                    <div>
-                        <small class="mr-1 font-weight-bold">Per Page:</small>
-                        <base-dropdown>
-                            <base-button slot="title" size="sm" icon="caret-down" icon-position="right">
-                                {{ perPage }}
-                            </base-button>
-                            <a class="dropdown-item" @click="perPage = 10">10</a>
-                            <a class="dropdown-item" @click="perPage = 50">50</a>
-                            <a class="dropdown-item" @click="perPage = 100">100</a>
-                        </base-dropdown>
-                    </div>
-                    <div>
-                        <base-input
-                            v-model="search"
-                            class="input-group-alternative mb-0"
-                            placeholder="search..."
-                            addon-right-class="py-0"
-                            classes="shadow-lg"
-                            @keypress.enter="getExperts"
-                        >
-                            <template slot="addonRight" class="p-0">
-                                <base-button size="sm" icon="search" @click="getExperts" />
-                            </template>
-                        </base-input>
-                    </div>
-                </div>
-                <div class="table-responsive">
-                    <base-table
-                        class="table align-items-center table-flush service-table"
-                        thead-classes="thead-dark"
-                        :data="experts"
-                    >
-                        <template slot="columns">
-                            <th class="text-center text-white">
-                                <a
-                                    class="pointer"
-                                    @click.prevent="order === 'asc' ? (order = 'desc') : (order = 'asc')"
-                                >
-                                    Name
-                                    <font-awesome-icon :icon="order === 'asc' ? 'caret-up' : 'caret-down'" />
-                                </a>
-                            </th>
-                            <th class="text-center text-white">Blocked</th>
-                            <th class="text-center text-white">Verified</th>
-                            <th class="text-center text-white">Actions</th>
-                        </template>
-                        <template slot-scope="{ row }">
-                            <td class="text-center">
-                                <span>
-                                    {{ row.profile && row.profile.firstName }}
-                                    {{ row.profile && row.profile.lastName }}
-                                </span>
-                            </td>
-                            <td class="text-center">
-                                <badge :type="row.blocked ? 'danger' : 'success'">
-                                    {{ row.blocked ? 'Blocked' : 'Active' }}
-                                </badge>
-                            </td>
-                            <td class="text-center">
-                                <badge :type="row.verified ? 'success' : 'danger'">
-                                    {{ row.verified ? 'Verified' : 'Not Verified' }}
-                                </badge>
-                            </td>
-                            <td>
-                                <div class="d-flex justify-content-center">
-                                    <base-button
-                                        type="primary"
-                                        icon="eye"
-                                        size="sm"
-                                        title="View Details"
-                                        @click="
-                                            viewModal = true;
-                                            selectedExpert = Object.assign({}, row);
-                                        "
-                                    ></base-button>
-                                    <base-button
-                                        :type="row.blocked ? 'success' : 'warning'"
-                                        :icon="row.blocked ? 'user' : 'user-slash'"
-                                        size="sm"
-                                        :title="row.blocked ? 'Unblock User' : 'Block User'"
-                                        :loading="blocked && blocked.includes(row.expertId)"
-                                        :disabled="blocked && blocked.includes(row.expertId)"
-                                        @click="blockExpert(row.expertId, !row.blocked)"
-                                    ></base-button>
-                                </div>
-                            </td>
-                        </template>
-                    </base-table>
-                </div>
-            </template>
-            <div
-                v-if="!(experts && experts.length) && !loading"
-                class="col-12 p-5 d-flex justify-content-center flex-column align-items-center"
-            >
+            <div class="p-2 d-flex justify-content-between">
                 <div>
-                    <small class="p-2">no experts</small>
-                    <font-awesome-icon icon="inbox" />
+                    <small class="mr-1 font-weight-bold">Per Page:</small>
+                    <base-dropdown>
+                        <base-button slot="title" size="sm" icon="caret-down" icon-position="right">
+                            {{ perPage }}
+                        </base-button>
+                        <a class="dropdown-item" @click="perPage = 10">10</a>
+                        <a class="dropdown-item" @click="perPage = 50">50</a>
+                        <a class="dropdown-item" @click="perPage = 100">100</a>
+                    </base-dropdown>
+                </div>
+                <div>
+                    <base-input
+                        v-model="search"
+                        class="input-group-alternative mb-0"
+                        placeholder="search..."
+                        addon-right-class="py-0"
+                        classes="shadow-lg"
+                        @keypress.enter="getExperts"
+                    >
+                        <template slot="addonRight" class="p-0">
+                            <base-button size="sm" icon="search" @click="getExperts" />
+                        </template>
+                    </base-input>
                 </div>
             </div>
+            <div class="table-responsive">
+                <base-table
+                    class="table align-items-center table-flush service-table"
+                    thead-classes="thead-dark"
+                    :data="experts"
+                >
+                    <template slot="columns">
+                        <th class="text-center text-white">
+                            <a class="pointer" @click.prevent="order === 'asc' ? (order = 'desc') : (order = 'asc')">
+                                Name
+                                <font-awesome-icon :icon="order === 'asc' ? 'caret-up' : 'caret-down'" />
+                            </a>
+                        </th>
+                        <th class="text-center text-white">Blocked</th>
+                        <th class="text-center text-white">Verified</th>
+                        <th class="text-center text-white">Actions</th>
+                    </template>
+                    <template slot-scope="{ row }">
+                        <td class="text-center">
+                            <span>
+                                {{ row.profile && row.profile.firstName }}
+                                {{ row.profile && row.profile.lastName }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <badge :type="row.blocked ? 'danger' : 'success'">
+                                {{ row.blocked ? 'Blocked' : 'Active' }}
+                            </badge>
+                        </td>
+                        <td class="text-center">
+                            <badge :type="row.verified ? 'success' : 'danger'">
+                                {{ row.verified ? 'Verified' : 'Not Verified' }}
+                            </badge>
+                        </td>
+                        <td>
+                            <div class="d-flex justify-content-center">
+                                <base-button
+                                    type="primary"
+                                    icon="eye"
+                                    size="sm"
+                                    title="View Details"
+                                    @click="
+                                        viewModal = true;
+                                        selectedExpert = Object.assign({}, row);
+                                    "
+                                ></base-button>
+                                <base-button
+                                    :type="row.blocked ? 'success' : 'warning'"
+                                    :icon="row.blocked ? 'user' : 'user-slash'"
+                                    size="sm"
+                                    :title="row.blocked ? 'Unblock User' : 'Block User'"
+                                    :loading="blocked && blocked.includes(row.expertId)"
+                                    :disabled="blocked && blocked.includes(row.expertId)"
+                                    @click="blockExpert(row.expertId, !row.blocked)"
+                                ></base-button>
+                            </div>
+                        </td>
+                    </template>
+                    <div slot="caption" class="col-12 p-5 d-flex justify-content-center align-items-center">
+                        <div>
+                            <span class="text-sm p-2">no experts</span>
+                            <font-awesome-icon icon="user-tie" />
+                        </div>
+                    </div>
+                </base-table>
+            </div>
+
             <div v-if="loading" class="over__lay">
                 <loading color="dark" />
             </div>
