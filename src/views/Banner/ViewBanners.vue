@@ -1,18 +1,18 @@
 <template>
     <div>
+        <div v-if="current" class="mb-4">
+            <base-dropdown>
+                <base-button slot="title" type="default" size="sm" class="dropdown-toggle">
+                    {{ current.name }}
+                </base-button>
+                <a v-for="(item, index) in stores" :key="index" class="dropdown-item" @click="change(item)">
+                    {{ item.name }}
+                </a>
+            </base-dropdown>
+        </div>
         <div v-if="(bannerType === 'store' && storeId) || bannerType === 'main'" class="card shadow">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h3>Banners</h3>
-                <div v-if="current">
-                    <base-dropdown>
-                        <base-button slot="title" type="default" size="sm" class="dropdown-toggle">
-                            {{ current.name }}
-                        </base-button>
-                        <a v-for="(item, index) in stores" :key="index" class="dropdown-item" @click="change(item)">
-                            {{ item.name }}
-                        </a>
-                    </base-dropdown>
-                </div>
                 <base-button size="sm" type="primary" icon="plus" @click="addModal = true">
                     Add Banner
                 </base-button>
