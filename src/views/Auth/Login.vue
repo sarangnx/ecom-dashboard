@@ -44,7 +44,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="row mt-3">
+                <div class="d-flex flex-wrap mt-3">
                     <div class="col-6">
                         <router-link to="/register" class="text-primary">
                             <small>Register an account.</small>
@@ -53,6 +53,11 @@
                     <div class="col-6 text-right">
                         <router-link to="/reset" class="text-primary">
                             <small>Forgot password?</small>
+                        </router-link>
+                    </div>
+                    <div class="col-12">
+                        <router-link to="/expert" class="text-primary">
+                            <small>Register as Professional.</small>
                         </router-link>
                     </div>
                 </div>
