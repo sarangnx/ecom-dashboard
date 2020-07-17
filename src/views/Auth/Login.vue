@@ -46,12 +46,12 @@
                 </div>
                 <div class="row mt-3">
                     <div class="col-6">
-                        <router-link to="/register" class="text-light">
+                        <router-link to="/register" class="text-primary">
                             <small>Register an account.</small>
                         </router-link>
                     </div>
                     <div class="col-6 text-right">
-                        <router-link to="/reset" class="text-light">
+                        <router-link to="/reset" class="text-primary">
                             <small>Forgot password?</small>
                         </router-link>
                     </div>
