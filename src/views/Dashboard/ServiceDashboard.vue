@@ -42,8 +42,11 @@
                             </div>
                         </div>
                         <div v-if="expert" class="card shadow-lg">
-                            <div class="row card-body">
-                                <div class="col-12 mb-2 table-responsive">
+                            <div class="card-header border-0 pb-0">
+                                <h3>Services</h3>
+                            </div>
+                            <div class="card-body p-0">
+                                <div class="mb-2 table-responsive">
                                     <base-table
                                         class="table align-items-center"
                                         thead-classes="thead-dark"
