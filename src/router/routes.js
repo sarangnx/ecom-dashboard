@@ -208,7 +208,7 @@ export default [
             },
             {
                 path: '/expert',
-                name: 'register expert',
+                name: 'register professional',
                 component: () => import(/* webpackChunkName: "registerexpert" */ '@/views/Auth/RegisterExpert.vue'),
             },
             {

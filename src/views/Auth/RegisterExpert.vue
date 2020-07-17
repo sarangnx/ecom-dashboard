@@ -2,7 +2,7 @@
     <div class="container-fluid pt-8">
         <div class="row justify-content-center">
             <div class="col-12 col-md-7">
-                <div class="card bg-secondary">
+                <div class="card bg-secondary shadow-lg">
                     <div v-if="step !== 6" class="card-header text-center">
                         <h2>Register as Professional</h2>
                     </div>
