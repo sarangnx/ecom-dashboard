@@ -27,7 +27,7 @@
                             >
                             </base-input>
 
-                            <base-checkbox class="custom-control-alternative">
+                            <base-checkbox v-model="remember" class="custom-control-alternative">
                                 <span class="text-muted">Remember me</span>
                             </base-checkbox>
                             <div class="text-center">
@@ -88,6 +88,7 @@ export default {
             superadmin: '/admin',
             service: '/service-dashboard',
         },
+        remember: true,
     }),
     computed: {
         ...mapGetters({
