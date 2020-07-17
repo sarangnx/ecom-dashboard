@@ -194,7 +194,7 @@ export default [
     {
         path: '/',
         redirect: 'login',
-        component: () => import(/* webpackChunkName: "auth" */ '@/layout/AuthLayout'),
+        component: () => import(/* webpackChunkName: "auth" */ '@/layout/Content'),
         children: [
             {
                 path: '/login',
@@ -208,7 +208,7 @@ export default [
             },
             {
                 path: '/expert',
-                name: 'register expert',
+                name: 'register professional',
                 component: () => import(/* webpackChunkName: "registerexpert" */ '@/views/Auth/RegisterExpert.vue'),
             },
             {
