@@ -194,7 +194,7 @@ export default [
     {
         path: '/',
         redirect: 'login',
-        component: () => import(/* webpackChunkName: "auth" */ '@/layout/AuthLayout'),
+        component: () => import(/* webpackChunkName: "auth" */ '@/layout/Content'),
         children: [
             {
                 path: '/login',
