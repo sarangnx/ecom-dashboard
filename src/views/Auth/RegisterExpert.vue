@@ -63,69 +63,8 @@
                                 <h4 class="text-muted">Last Name</h4>
                                 <base-input v-model="user.lastName" classes="input-group-alternative" />
                             </div>
-                            <!-- PERMANENT ADDRESS -->
-                            <div class="col-12">
-                                <div class="row">
-                                    <h4 class="col-12 text-muted">Permanent Address</h4>
-                                    <base-input
-                                        v-model="permanent.house"
-                                        class="col-12 col-md-6"
-                                        classes="input-group-alternative"
-                                        placeholder="House / Flat No."
-                                        :error="$v.permanent.house.$error ? 'House Name Required' : null"
-                                    />
-                                    <base-input
-                                        v-model="permanent.area"
-                                        class="col-12 col-md-6"
-                                        classes="input-group-alternative"
-                                        placeholder="Area"
-                                        :error="$v.permanent.area.$error ? 'Area Required' : null"
-                                    />
-                                    <base-input
-                                        v-model="permanent.city"
-                                        class="col-12 col-md-6"
-                                        classes="input-group-alternative"
-                                        placeholder="City"
-                                    />
-                                    <base-input
-                                        v-model="permanent.landmark"
-                                        class="col-12 col-md-6"
-                                        classes="input-group-alternative"
-                                        placeholder="Landmark"
-                                    />
-                                    <base-input
-                                        v-model="permanent.district"
-                                        class="col-12 col-md-6"
-                                        classes="input-group-alternative"
-                                        placeholder="District"
-                                        :error="$v.permanent.district.$error ? 'District Required' : null"
-                                    />
-                                    <base-input
-                                        v-model="permanent.pincode"
-                                        type="number"
-                                        class="col-12 col-md-6"
-                                        classes="input-group-alternative"
-                                        placeholder="Pincode"
-                                        :error="$v.permanent.pincode.$error ? 'Pincode Required' : null"
-                                    />
-                                    <base-input
-                                        v-model="permanent.state"
-                                        class="col-12 col-md-6"
-                                        classes="input-group-alternative"
-                                        placeholder="State"
-                                        :error="$v.permanent.state.$error ? 'State Required' : null"
-                                    />
-                                </div>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <base-checkbox v-model="sameAddress">
-                                    <span class="font-weight-bold">
-                                        Present Address & Permanent Address are same.
-                                    </span>
-                                </base-checkbox>
-                            </div>
                             <!-- PRESENT ADDRESS -->
-                            <div v-show="!sameAddress" class="col-12">
+                            <div class="col-12">
                                 <div class="row">
                                     <h4 class="col-12 text-muted">Present Address</h4>
                                     <base-input
@@ -175,6 +114,67 @@
                                         classes="input-group-alternative"
                                         placeholder="State"
                                         :error="$v.present.state.$error ? 'State Required' : null"
+                                    />
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <base-checkbox v-model="sameAddress">
+                                    <span class="font-weight-bold">
+                                        Present Address & Permanent Address are same.
+                                    </span>
+                                </base-checkbox>
+                            </div>
+                            <!-- PERMANENT ADDRESS -->
+                            <div v-show="!sameAddress" class="col-12">
+                                <div class="row">
+                                    <h4 class="col-12 text-muted">Permanent Address</h4>
+                                    <base-input
+                                        v-model="permanent.house"
+                                        class="col-12 col-md-6"
+                                        classes="input-group-alternative"
+                                        placeholder="House / Flat No."
+                                        :error="$v.permanent.house.$error ? 'House Name Required' : null"
+                                    />
+                                    <base-input
+                                        v-model="permanent.area"
+                                        class="col-12 col-md-6"
+                                        classes="input-group-alternative"
+                                        placeholder="Area"
+                                        :error="$v.permanent.area.$error ? 'Area Required' : null"
+                                    />
+                                    <base-input
+                                        v-model="permanent.city"
+                                        class="col-12 col-md-6"
+                                        classes="input-group-alternative"
+                                        placeholder="City"
+                                    />
+                                    <base-input
+                                        v-model="permanent.landmark"
+                                        class="col-12 col-md-6"
+                                        classes="input-group-alternative"
+                                        placeholder="Landmark"
+                                    />
+                                    <base-input
+                                        v-model="permanent.district"
+                                        class="col-12 col-md-6"
+                                        classes="input-group-alternative"
+                                        placeholder="District"
+                                        :error="$v.permanent.district.$error ? 'District Required' : null"
+                                    />
+                                    <base-input
+                                        v-model="permanent.pincode"
+                                        type="number"
+                                        class="col-12 col-md-6"
+                                        classes="input-group-alternative"
+                                        placeholder="Pincode"
+                                        :error="$v.permanent.pincode.$error ? 'Pincode Required' : null"
+                                    />
+                                    <base-input
+                                        v-model="permanent.state"
+                                        class="col-12 col-md-6"
+                                        classes="input-group-alternative"
+                                        placeholder="State"
+                                        :error="$v.permanent.state.$error ? 'State Required' : null"
                                     />
                                 </div>
                             </div>
