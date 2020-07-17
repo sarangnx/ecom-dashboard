@@ -27,9 +27,9 @@
                     <div class="col-xl-12">
                         <div class="copyright text-center text-xl-left text-muted">
                             &copy; {{ year }}
-                            <a href="https://www.daflow.in" class="font-weight-bold ml-1" target="_blank"
-                                >Daflow Technologies</a
-                            >
+                            <a href="https://www.doitnow.co.in" class="font-weight-bold ml-1" target="_blank">
+                                doITnow Technologies
+                            </a>
                         </div>
                     </div>
                 </div>
