@@ -113,6 +113,7 @@
                                         class="col-12 col-md-6"
                                         classes="input-group-alternative"
                                         placeholder="State"
+                                        disabled
                                         :error="$v.present.state.$error ? 'State Required' : null"
                                     />
                                 </div>
@@ -404,7 +405,7 @@ export default {
         selectedService: {},
         user: { password: null, repeatPassword: null },
         permanent: {},
-        present: {},
+        present: { state: 'Kerala' },
         sameAddress: true,
         step: 1,
         services: [],
@@ -431,14 +432,14 @@ export default {
             password: { required, minLength: minLength(8) },
             repeatPassword: { required, sameAsPassword: sameAs('password') },
         },
-        permanent: {
+        present: {
             house: { required },
             area: { required },
             district: { required },
             pincode: { required },
             state: { required },
         },
-        present: {
+        permanent: {
             house: {
                 required: requiredIf(function () {
                     return !this.sameAddress;
@@ -569,8 +570,8 @@ export default {
                 idProofType: this.id.selected.value,
                 idProofNumber: this.id.idProofNumber,
                 idProofImage: this.id.image,
-                permanentAddress: JSON.stringify(this.permanent),
-                ...(!this.sameAddress && { presentAddress: JSON.stringify(this.present) }),
+                presentAddress: JSON.stringify(this.present),
+                permanentAddress: this.sameAddress ? JSON.stringify(this.present) : JSON.stringify(this.permanent),
             };
 
             // remove keys with null or undefined
