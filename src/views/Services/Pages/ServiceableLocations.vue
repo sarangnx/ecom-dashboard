@@ -1,67 +1,64 @@
 <template>
-    <div>
-        <base-header type="gradient-success" class="pb-6 pb-8 pt-5 pt-md-8"></base-header>
-        <div class="container-fluid mt--7">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card shadow-lg">
-                        <div class="card-header d-flex justify-content-start align-items-center">
-                            <h3 class="m-0">Serviceable Locations</h3>
-                        </div>
-                        <div class="card-body bg-secondary position-relative">
-                            <div class="row">
-                                <div class="col-12">
-                                    <base-dropdown class="w-100" menu-classes="col-12" tag="div">
-                                        <base-button slot="title" type="primary" block>
-                                            Add Pincodes
-                                            <font-awesome-icon icon="caret-down" pull="right" />
-                                        </base-button>
-                                        <template slot="search">
-                                            <base-input
-                                                id="search"
-                                                v-model="filter"
-                                                autocomplete="off"
-                                                class="dropdown-item"
-                                                placeholder="Search for pincodes"
-                                            />
-                                        </template>
-                                        <a
-                                            v-for="(pincode, index) in filteredPincodes"
-                                            :key="index"
-                                            class="dropdown-item pointer"
-                                            @click="add(pincode)"
-                                        >
-                                            {{ pincode.pincode }} - {{ pincode.officeName }}
-                                        </a>
-                                    </base-dropdown>
-                                </div>
-                                <div
-                                    v-if="selectedPincodes && selectedPincodes.length"
-                                    class="col-12 mt-3 d-flex flex-wrap"
-                                >
-                                    <badge
-                                        v-for="(pincode, index) in selectedPincodes"
-                                        :key="index"
-                                        class="m-2 text-wrap d-flex align-items-center"
-                                    >
-                                        <span class="px-2 text-capitalize font-weight-normal">
-                                            <strong>{{ pincode.pincode }}</strong> - {{ pincode.officeName }}
-                                        </span>
-                                        <base-button icon="times" size="sm" @click="remove(pincode)" />
-                                    </badge>
-                                </div>
-                                <div v-else class="col-12 mt-3 text-center py-5">
-                                    <small>Add Pincodes from the dropdown list above.</small>
-                                </div>
-                                <div v-if="changed" class="col-12 mt-4">
-                                    <base-button block type="success" icon="save" @click="save">
-                                        Save Changes
+    <div class="container-fluid pt-4 pt-md-8">
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-lg">
+                    <div class="card-header d-flex justify-content-start align-items-center">
+                        <h3 class="m-0">Serviceable Locations</h3>
+                    </div>
+                    <div class="card-body bg-secondary position-relative">
+                        <div class="row">
+                            <div class="col-12">
+                                <base-dropdown class="w-100" menu-classes="col-12" tag="div">
+                                    <base-button slot="title" type="primary" block>
+                                        Add Pincodes
+                                        <font-awesome-icon icon="caret-down" pull="right" />
                                     </base-button>
-                                </div>
+                                    <template slot="search">
+                                        <base-input
+                                            id="search"
+                                            v-model="filter"
+                                            autocomplete="off"
+                                            class="dropdown-item"
+                                            placeholder="Search for pincodes"
+                                        />
+                                    </template>
+                                    <a
+                                        v-for="(pincode, index) in filteredPincodes"
+                                        :key="index"
+                                        class="dropdown-item pointer"
+                                        @click="add(pincode)"
+                                    >
+                                        {{ pincode.pincode }} - {{ pincode.officeName }}
+                                    </a>
+                                </base-dropdown>
                             </div>
-                            <div v-if="loading" class="over__lay">
-                                <loading />
+                            <div
+                                v-if="selectedPincodes && selectedPincodes.length"
+                                class="col-12 mt-3 d-flex flex-wrap"
+                            >
+                                <badge
+                                    v-for="(pincode, index) in selectedPincodes"
+                                    :key="index"
+                                    class="m-2 text-wrap d-flex align-items-center"
+                                >
+                                    <span class="px-2 text-capitalize font-weight-normal">
+                                        <strong>{{ pincode.pincode }}</strong> - {{ pincode.officeName }}
+                                    </span>
+                                    <base-button icon="times" size="sm" @click="remove(pincode)" />
+                                </badge>
                             </div>
+                            <div v-else class="col-12 mt-3 text-center py-5">
+                                <small>Add Pincodes from the dropdown list above.</small>
+                            </div>
+                            <div v-if="changed" class="col-12 mt-4">
+                                <base-button block type="success" icon="save" @click="save">
+                                    Save Changes
+                                </base-button>
+                            </div>
+                        </div>
+                        <div v-if="loading" class="over__lay">
+                            <loading />
                         </div>
                     </div>
                 </div>
