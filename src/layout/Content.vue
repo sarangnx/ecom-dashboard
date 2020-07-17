@@ -16,7 +16,7 @@
         </nav>
         <div style="min-height: 100%;" class="d-flex flex-column">
             <router-view class="flex-grow-1"></router-view>
-            <content-footer v-if="!$route.meta.hideFooter"></content-footer>
+            <content-footer center></content-footer>
         </div>
     </div>
 </template>
