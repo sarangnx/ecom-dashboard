@@ -27,7 +27,12 @@
                                 </div>
                             </div>
                             <div class="col-12 d-flex justify-content-center">
-                                <base-button type="primary" class="text-uppercase" icon="home">
+                                <base-button
+                                    type="primary"
+                                    class="text-uppercase"
+                                    icon="home"
+                                    @click="$router.push('/')"
+                                >
                                     Go Back Home
                                 </base-button>
                             </div>
