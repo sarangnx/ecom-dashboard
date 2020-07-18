@@ -232,17 +232,17 @@ export default [
                 name: 'Terms & Conditions',
                 component: () => import(/* webpackChunkName: "terms" */ '@/views/Pages/Terms'),
             },
+            {
+                path: '/404',
+                name: '404',
+                component: () => import(/* webpackChunkName: "error" */ '@/views/Pages/404.vue'),
+            },
         ],
     },
     {
         path: '/logout',
         name: 'logout',
         component: () => import(/* webpackChunkName: "auth" */ '@/views/Auth/Logout.vue'),
-    },
-    {
-        path: '/404',
-        name: '404',
-        component: () => import(/* webpackChunkName: "error" */ '@/views/404.vue'),
     },
     {
         path: '*',
