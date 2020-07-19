@@ -58,9 +58,16 @@
                                         editModal = true;
                                         selectedPack = row;
                                     "
-                                >
-                                </base-button>
-                                <base-button type="danger" icon="trash" size="sm"></base-button>
+                                ></base-button>
+                                <base-button
+                                    type="danger"
+                                    icon="trash"
+                                    size="sm"
+                                    @click="
+                                        deleteModal = true;
+                                        selectedPack = row;
+                                    "
+                                ></base-button>
                             </div>
                         </td>
                     </template>
@@ -103,16 +110,35 @@
                 "
             />
         </modal>
+        <!-- DELETE PACKAGE -->
+        <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-1" :click-out="false" scrollable>
+            <h4 slot="header" class="modal-title">Delete Package</h4>
+            <delete-package
+                :key="Date.now()"
+                :pack="selectedPack"
+                @close="
+                    deleteModal = false;
+                    selectedPack = null;
+                "
+                @done="
+                    deleteModal = false;
+                    selectedPack = null;
+                    getPackages();
+                "
+            />
+        </modal>
     </div>
 </template>
 <script>
 import AddPackage from './components/AddPackage';
 import EditPackage from './components/EditPackage';
+import DeletePackage from './components/DeletePackage';
 
 export default {
     components: {
         AddPackage,
         EditPackage,
+        DeletePackage,
     },
     data: () => ({
         page: 1,
@@ -122,6 +148,7 @@ export default {
         packages: null,
         addModal: false,
         editModal: false,
+        deleteModal: false,
         selectedPack: null,
     }),
     watch: {
