@@ -50,8 +50,16 @@
                         </td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <base-button type="success" icon="eye" size="sm"></base-button>
-                                <base-button type="primary" icon="edit" size="sm"></base-button>
+                                <base-button
+                                    type="primary"
+                                    icon="edit"
+                                    size="sm"
+                                    @click="
+                                        editModal = true;
+                                        selectedPack = row;
+                                    "
+                                >
+                                </base-button>
                                 <base-button type="danger" icon="trash" size="sm"></base-button>
                             </div>
                         </td>
@@ -82,14 +90,29 @@
                 "
             />
         </modal>
+        <!-- EDIT PACKAGE -->
+        <modal :show.sync="editModal" header-classes="pb-0" body-classes="pt-1" :click-out="false" scrollable>
+            <h4 slot="header" class="modal-title">Edit Package</h4>
+            <edit-package
+                :key="Date.now()"
+                :pack="selectedPack"
+                @done="
+                    editModal = false;
+                    selectedPack = null;
+                    getPackages();
+                "
+            />
+        </modal>
     </div>
 </template>
 <script>
 import AddPackage from './components/AddPackage';
+import EditPackage from './components/EditPackage';
 
 export default {
     components: {
         AddPackage,
+        EditPackage,
     },
     data: () => ({
         page: 1,
@@ -98,6 +121,8 @@ export default {
         loading: null,
         packages: null,
         addModal: false,
+        editModal: false,
+        selectedPack: null,
     }),
     watch: {
         page() {
