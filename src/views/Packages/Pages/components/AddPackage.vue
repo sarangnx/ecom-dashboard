@@ -66,6 +66,28 @@ export default {
     methods: {
         async addPackage() {
             this.$v.$touch();
+
+            if (this.$v.$invalid) return;
+            this.loading = true;
+
+            try {
+                const response = await this.$axios({
+                    method: 'post',
+                    url: '/packages/package',
+                    data: this.pack,
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                }
+                this.$emit('done');
+            } catch (err) {
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
         },
     },
 };
