@@ -40,7 +40,7 @@
                                 </small>
                             </div>
                         </div>
-                        <div class="card-footer d-flex flex-wrap justify-content-start py-2">
+                        <div class="card-footer d-flex flex-wrap justify-content-start">
                             <base-button
                                 size="sm"
                                 type="danger"
