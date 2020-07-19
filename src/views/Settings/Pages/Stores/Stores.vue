@@ -127,7 +127,7 @@
                 @close="deleteModal = false"
             />
         </modal>
-        <modal :show.sync="locationModal" header-classes="pb-0" body-classes="pt-0" :click-out="false" scrollable>
+        <modal :show.sync="locationModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
             <h4 slot="header" class="modal-title">Serviceable Locations</h4>
             <serviceable-locations
                 :key="Date.now()"
