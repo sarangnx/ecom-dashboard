@@ -74,7 +74,13 @@
         <!-- ADD PACKAGE -->
         <modal :show.sync="addModal" header-classes="pb-0" body-classes="pt-1" :click-out="false" scrollable>
             <h4 slot="header" class="modal-title">Add Package</h4>
-            <add-package :key="Date.now()" @done="addModal = false" />
+            <add-package
+                :key="Date.now()"
+                @done="
+                    addModal = false;
+                    getPackages();
+                "
+            />
         </modal>
     </div>
 </template>
