@@ -83,9 +83,9 @@ export default {
 
             try {
                 const response = await this.$axios({
-                    method: 'post',
+                    method: 'patch',
                     url: '/packages/package',
-                    data: this.pack,
+                    data: this.packModel,
                 });
 
                 if (response.status === 200 && response.data.message) {
@@ -99,6 +99,8 @@ export default {
                     this.$error('Something went wrong. Please try again later.');
                 }
             }
+
+            this.loading = false;
         },
     },
 };
