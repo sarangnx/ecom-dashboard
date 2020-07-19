@@ -86,11 +86,52 @@ export default {
         AddPackage,
     },
     data: () => ({
+        page: 1,
         perPage: 10,
         totalPages: null,
         loading: null,
         packages: null,
         addModal: false,
     }),
+    watch: {
+        page() {
+            this.getPackages();
+        },
+        perPage() {
+            this.getPackages();
+        },
+    },
+    mounted() {
+        this.getPackages();
+    },
+    methods: {
+        async getPackages() {
+            this.loading = true;
+
+            try {
+                const response = await this.$axios({
+                    method: 'get',
+                    url: '/packages/list',
+                    params: {
+                        page: this.page,
+                        perPage: this.perPage,
+                    },
+                });
+
+                const packages = response.data.packages;
+                this.packages = packages.rows;
+                this.totalPages = Math.ceil(packages.count / this.perPage);
+            } catch (err) {
+                const res = err.response;
+                if (res && res.status >= 400 && res.status < 500 && res.data.error) {
+                    this.$error(res.data.error.message);
+                } else {
+                    this.$error('Unable to get packages.');
+                }
+            }
+
+            this.loading = false;
+        },
+    },
 };
 </script>
