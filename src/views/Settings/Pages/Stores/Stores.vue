@@ -100,14 +100,7 @@
                 "
             />
         </modal>
-        <modal
-            :show.sync="editModal"
-            header-classes="pb-0"
-            body-classes="pt-0"
-            :click-out="false"
-            scrollable
-            @close="selectedStore = null"
-        >
+        <modal :show.sync="editModal" header-classes="pb-0" body-classes="pt-0" :click-out="false" scrollable>
             <h4 slot="header" class="modal-title">Edit Store</h4>
             <edit-store
                 :key="Date.now()"
@@ -118,13 +111,7 @@
                 "
             />
         </modal>
-        <modal
-            :show.sync="deleteModal"
-            header-classes="pb-0"
-            body-classes="pt-0"
-            :click-out="false"
-            @close="selectedStore = null"
-        >
+        <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
             <h4 slot="header" class="modal-title">Delete Store</h4>
             <delete-store
                 :key="Date.now()"
@@ -136,14 +123,7 @@
                 @close="deleteModal = false"
             />
         </modal>
-        <modal
-            :show.sync="locationModal"
-            header-classes="pb-0"
-            body-classes="pt-0"
-            :click-out="false"
-            scrollable
-            @close="selectedStore = null"
-        >
+        <modal :show.sync="locationModal" header-classes="pb-0" body-classes="pt-0" :click-out="false" scrollable>
             <h4 slot="header" class="modal-title">Serviceable Locations</h4>
             <serviceable-locations
                 :key="Date.now()"
