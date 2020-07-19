@@ -11,7 +11,7 @@
                     :key="index"
                     class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4 px-md-3"
                 >
-                    <div class="card shadow h-100">
+                    <div class="card shadow-sm shadow--hover h-100">
                         <div class="card-header border-0 d-flex justify-content-center align-items-center">
                             <img v-if="item.image" :src="`${s3bucket}/${item.image}`" class="col p-0" />
                             <font-awesome-icon v-else icon="image" size="5x"></font-awesome-icon>
@@ -77,12 +77,16 @@
                         </div>
                     </div>
                 </div>
-            </fade-transition>
-            <div v-if="count < limit" class="col-md-4 mb-2 p-1 min__height">
-                <div class="card shadow h-100 p-3 d-flex justify-content-center align-items-center">
-                    <base-button icon="plus" @click="addModal = true">Add Store</base-button>
+                <div
+                    v-if="count < limit"
+                    :key="count + 1"
+                    class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4 px-md-3 min__height"
+                >
+                    <div class="card shadow-sm shadow--hover h-100 d-flex justify-content-center align-items-center">
+                        <base-button icon="plus" @click="addModal = true">Add Store</base-button>
+                    </div>
                 </div>
-            </div>
+            </fade-transition>
             <div v-if="loading" class="over__lay">
                 <loading />
             </div>
