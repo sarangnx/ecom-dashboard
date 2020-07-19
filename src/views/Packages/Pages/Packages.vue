@@ -71,15 +71,26 @@
         <div v-if="totalPages" class="card-footer">
             <base-pagination v-model="page" :page-count="totalPages" align="center" />
         </div>
+        <!-- ADD PACKAGE -->
+        <modal :show.sync="addModal" header-classes="pb-0" body-classes="pt-1" :click-out="false" scrollable>
+            <h4 slot="header" class="modal-title">Add Package</h4>
+            <add-package :key="Date.now()" @done="addModal = false" />
+        </modal>
     </div>
 </template>
 <script>
+import AddPackage from './components/AddPackage';
+
 export default {
+    components: {
+        AddPackage,
+    },
     data: () => ({
         perPage: 10,
         totalPages: null,
         loading: null,
         packages: null,
+        addModal: false,
     }),
 };
 </script>
