@@ -108,9 +108,7 @@
             scrollable
             @close="selectedStore = null"
         >
-            <template slot="header">
-                <h4 class="modal-title">Edit Store</h4>
-            </template>
+            <h4 slot="header" class="modal-title">Edit Store</h4>
             <edit-store
                 :key="Date.now()"
                 :store="selectedStore"
@@ -127,9 +125,7 @@
             :click-out="false"
             @close="selectedStore = null"
         >
-            <template slot="header">
-                <h4 class="modal-title">Delete Store</h4>
-            </template>
+            <h4 slot="header" class="modal-title">Delete Store</h4>
             <delete-store
                 :key="Date.now()"
                 :store="selectedStore"
@@ -148,9 +144,7 @@
             scrollable
             @close="selectedStore = null"
         >
-            <template slot="header">
-                <h4 class="modal-title">Serviceable Locations</h4>
-            </template>
+            <h4 slot="header" class="modal-title">Serviceable Locations</h4>
             <serviceable-locations
                 :key="Date.now()"
                 :store="locationModal ? selectedStore : null"
