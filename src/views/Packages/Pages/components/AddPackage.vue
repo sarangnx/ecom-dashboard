@@ -34,7 +34,7 @@
                 ></base-input>
             </div>
             <div class="col-12 mt-3">
-                <base-button block icon="plus" @click="addPackage">Add Package</base-button>
+                <base-button block icon="plus" type="success" @click="addPackage">Add Package</base-button>
             </div>
         </div>
         <div v-if="loading" class="over__lay">
