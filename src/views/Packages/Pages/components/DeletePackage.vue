@@ -35,16 +35,15 @@ export default {
     }),
     methods: {
         async deletePackage() {
-            if (!this.service) return;
-
+            if (!this.pack) return;
             this.loading = true;
 
             try {
                 const response = await this.$axios({
                     method: 'delete',
-                    url: '/services/service',
+                    url: '/packages/package',
                     params: {
-                        serviceId: this.service.serviceId,
+                        packageId: this.pack.packageId,
                         force: this.force,
                     },
                 });
@@ -52,7 +51,6 @@ export default {
                 if (response.status === 200 && response.data.message) {
                     this.$success(response.data.message);
                 }
-
                 this.$emit('done');
             } catch (err) {
                 const res = err.response;
@@ -61,9 +59,8 @@ export default {
                 } else {
                     this.$error('Something went wrong. Please try again later.');
                 }
-            } finally {
-                this.loading = false;
             }
+            this.loading = false;
         },
     },
 };
