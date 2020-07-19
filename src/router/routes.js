@@ -189,6 +189,19 @@ export default [
                 component: () =>
                     import(/* webpackChunkName: "service-dashboard" */ '@/views/Dashboard/ServiceDashboard.vue'),
             },
+            {
+                path: '/packages',
+                component: () => import(/* webpackChunkName: "packages" */ '@/views/Packages/Index.vue'),
+                meta: { subject: 'packages' },
+                children: [
+                    {
+                        path: '',
+                        name: 'packages',
+                        component: () =>
+                            import(/* webpackChunkName: "packages" */ '@/views/Packages/Pages/Packages.vue'),
+                    },
+                ],
+            },
         ],
     },
     {
