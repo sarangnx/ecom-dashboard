@@ -83,81 +83,81 @@
                     <base-button icon="plus" @click="addModal = true">Add Store</base-button>
                 </div>
             </div>
-            <modal :show.sync="addModal" header-classes="pb-0" body-classes="pt-0" :click-out="false" scrollable>
-                <template slot="header">
-                    <h4 class="modal-title">Add Store</h4>
-                </template>
-                <add-store
-                    :key="Date.now()"
-                    :user-id="userId"
-                    @done="
-                        addModal = false;
-                        getStores(userId);
-                    "
-                />
-            </modal>
-            <modal
-                :show.sync="editModal"
-                header-classes="pb-0"
-                body-classes="pt-0"
-                :click-out="false"
-                scrollable
-                @close="selectedStore = null"
-            >
-                <template slot="header">
-                    <h4 class="modal-title">Edit Store</h4>
-                </template>
-                <edit-store
-                    :key="Date.now()"
-                    :store="selectedStore"
-                    @done="
-                        editModal = false;
-                        getStores(userId);
-                    "
-                />
-            </modal>
-            <modal
-                :show.sync="deleteModal"
-                header-classes="pb-0"
-                body-classes="pt-0"
-                :click-out="false"
-                @close="selectedStore = null"
-            >
-                <template slot="header">
-                    <h4 class="modal-title">Delete Store</h4>
-                </template>
-                <delete-store
-                    :key="Date.now()"
-                    :store="selectedStore"
-                    @done="
-                        deleteModal = false;
-                        getStores(userId);
-                    "
-                    @close="deleteModal = false"
-                />
-            </modal>
-            <modal
-                :show.sync="locationModal"
-                header-classes="pb-0"
-                body-classes="pt-0"
-                :click-out="false"
-                scrollable
-                @close="selectedStore = null"
-            >
-                <template slot="header">
-                    <h4 class="modal-title">Serviceable Locations</h4>
-                </template>
-                <serviceable-locations
-                    :key="Date.now()"
-                    :store="locationModal ? selectedStore : null"
-                    :pincodes="pincodes"
-                    @done="locationModal = false"
-                />
-            </modal>
             <div v-if="loading" class="over__lay">
                 <loading />
             </div>
         </div>
+        <modal :show.sync="addModal" header-classes="pb-0" body-classes="pt-0" :click-out="false" scrollable>
+            <template slot="header">
+                <h4 class="modal-title">Add Store</h4>
+            </template>
+            <add-store
+                :key="Date.now()"
+                :user-id="userId"
+                @done="
+                    addModal = false;
+                    getStores(userId);
+                "
+            />
+        </modal>
+        <modal
+            :show.sync="editModal"
+            header-classes="pb-0"
+            body-classes="pt-0"
+            :click-out="false"
+            scrollable
+            @close="selectedStore = null"
+        >
+            <template slot="header">
+                <h4 class="modal-title">Edit Store</h4>
+            </template>
+            <edit-store
+                :key="Date.now()"
+                :store="selectedStore"
+                @done="
+                    editModal = false;
+                    getStores(userId);
+                "
+            />
+        </modal>
+        <modal
+            :show.sync="deleteModal"
+            header-classes="pb-0"
+            body-classes="pt-0"
+            :click-out="false"
+            @close="selectedStore = null"
+        >
+            <template slot="header">
+                <h4 class="modal-title">Delete Store</h4>
+            </template>
+            <delete-store
+                :key="Date.now()"
+                :store="selectedStore"
+                @done="
+                    deleteModal = false;
+                    getStores(userId);
+                "
+                @close="deleteModal = false"
+            />
+        </modal>
+        <modal
+            :show.sync="locationModal"
+            header-classes="pb-0"
+            body-classes="pt-0"
+            :click-out="false"
+            scrollable
+            @close="selectedStore = null"
+        >
+            <template slot="header">
+                <h4 class="modal-title">Serviceable Locations</h4>
+            </template>
+            <serviceable-locations
+                :key="Date.now()"
+                :store="locationModal ? selectedStore : null"
+                :pincodes="pincodes"
+                @done="locationModal = false"
+            />
+        </modal>
     </div>
 </template>
 <script>
