@@ -4,7 +4,7 @@
             <base-button size="sm" icon="arrow-left" @click="$router.push('/settings')"></base-button>
             <h3 class="m-0">Stores</h3>
         </div>
-        <div class="card-body d-flex flex-row justify-content-start flex-wrap position-relative">
+        <div class="card-body position-relative">
             <fade-transition group tag="div" class="d-flex flex-row justify-content-start flex-wrap">
                 <div
                     v-for="(item, index) of stores"
@@ -134,6 +134,7 @@
                 :store="locationModal ? selectedStore : null"
                 :pincodes="pincodes"
                 @done="locationModal = false"
+                @changed="changePincodes"
             />
         </modal>
     </div>
@@ -223,6 +224,10 @@ export default {
             } catch (err) {
                 this.$error('Unable to get pincodes list.');
             }
+        },
+        changePincodes(pincodes) {
+            const index = this.stores.findIndex((store) => store.storeId === this.selectedStore.storeId);
+            this.$set(this.stores[index], 'pincodes', pincodes);
         },
     },
 };
