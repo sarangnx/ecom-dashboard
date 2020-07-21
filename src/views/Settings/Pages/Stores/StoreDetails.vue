@@ -101,6 +101,23 @@
                     />
                 </div>
             </div>
+            <div class="row mt-4 mb-2">
+                <span class="col-12 text-muted heading-small font-weight-bold">Other Info</span>
+            </div>
+            <div v-if="!edit" class="row pl-md-4">
+                <div class="col-12">
+                    <label class="form-control-label mr-3" style="white-space: nowrap;">Store Status</label>
+                    <badge :type="store.blocked ? 'danger' : 'success'">
+                        {{ store.blocked ? 'Blocked' : 'Active' }}
+                    </badge>
+                </div>
+                <div class="col-12">
+                    <label class="form-control-label mr-3" style="white-space: nowrap;">Verification Status</label>
+                    <badge :type="store.verified ? 'success' : 'danger'">
+                        {{ store.verified ? 'Verified' : 'Not Verified' }}
+                    </badge>
+                </div>
+            </div>
             <div v-if="loading" class="over__lay">
                 <loading />
             </div>
