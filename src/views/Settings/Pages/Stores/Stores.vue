@@ -40,7 +40,15 @@
                                 </small>
                             </div>
                         </div>
-                        <div class="card-footer d-flex flex-wrap justify-content-start">
+                        <div class="card-footer d-flex flex-wrap justify-content-between">
+                            <base-button
+                                size="sm"
+                                type="primary"
+                                icon="eye"
+                                @click="$router.push(`/settings/stores/${item.storeId}`)"
+                            >
+                                View
+                            </base-button>
                             <base-button
                                 size="sm"
                                 type="danger"

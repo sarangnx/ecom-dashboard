@@ -168,6 +168,12 @@ export default [
                         meta: { subject: 'settings-stores' },
                     },
                     {
+                        path: 'stores/:storeId',
+                        name: 'Store Details',
+                        component: () =>
+                            import(/* webpackChunkName: "settings" */ '@/views/Settings/Pages/Stores/StoreDetails.vue'),
+                    },
+                    {
                         path: 'profile',
                         name: 'settings / profile',
                         component: () =>
