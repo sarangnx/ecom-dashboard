@@ -184,16 +184,14 @@ export default {
         ...mapActions({
             init: 'stores/init',
         }),
-        async getStores(ownerId) {
+        async getStores(userId) {
             try {
                 this.loading = true;
 
                 const response = await this.$axios({
                     method: 'get',
                     url: '/stores/admin',
-                    params: {
-                        ownerId,
-                    },
+                    params: { userId },
                 });
 
                 const data = response.data;
