@@ -8,7 +8,7 @@
                 { 'has-label': label || $slots.label },
                 { 'has-success': valid === true },
                 { 'has-danger': valid === false },
-                classes,
+                ...classes,
             ]"
         >
             <slot name="label">
@@ -94,7 +94,7 @@ export default {
             description: 'Addont left icon',
         },
         classes: {
-            type: String,
+            type: [String, Array],
         },
         addonLeftClass: {
             type: [String, Array],
