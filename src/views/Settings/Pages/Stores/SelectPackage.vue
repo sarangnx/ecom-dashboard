@@ -4,28 +4,16 @@
             <div
                 v-for="pack in packages"
                 :key="pack.packageId"
-                class="card shadow-sm shadow--hover mb-3 pointer"
-                :class="[
-                    { 'bg-gradient-success text-default': selectedPack && selectedPack.packageId === pack.packageId },
-                ]"
+                class="card border-0 shadow-sm--hover ashadow--hover mb-3 pointer"
+                :class="[{ 'bg-default text-white': selectedPack && selectedPack.packageId === pack.packageId }]"
                 @click="choose(pack)"
             >
-                <div class="card-body">
-                    <div>
-                        <span class="text-xs font-weight-bold mr-2">Pack Name:</span>
-                        <span class="text-sm">{{ pack.name }}</span>
-                    </div>
-                    <div>
-                        <span class="text-xs font-weight-bold mr-2">Product Count:</span>
-                        <span class="text-sm">{{ pack.count }}</span>
-                    </div>
-                    <div>
-                        <span class="text-xs font-weight-bold mr-2">Validity:</span>
-                        <span class="text-sm">{{ pack.duration }} days</span>
-                    </div>
-                    <div>
-                        <span class="text-xs font-weight-bold mr-2">Price:</span>
-                        <span class="text-sm">{{ pack.price }}</span>
+                <div class="card-body p-3">
+                    <span class="text-sm font-weight-bold">{{ pack.name }}</span>
+                    <div class="text-sm">
+                        <span>{{ pack.count }} Items for {{ pack.duration }} days</span>
+                        <span class="text-muted"> &#64; </span>
+                        <span class="font-weight-bold">₹{{ pack.price }}</span>
                     </div>
                 </div>
             </div>
