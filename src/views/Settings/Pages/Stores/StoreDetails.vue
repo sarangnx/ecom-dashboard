@@ -22,8 +22,25 @@
                         label="Store Name"
                         :input-classes="['form-control-alternative', { 'bg-secondary shadow-none': !edit }]"
                         :classes="['d-flex', { 'flex-row align-items-baseline': !edit }, { 'flex-column': edit }]"
-                        class="m-0"
+                        :class="[{ 'm-0': !edit }]"
                     />
+                </div>
+                <div class="col-12">
+                    <label class="form-control-label mr-3" style="white-space: nowrap;">Store Type</label>
+                    <span v-if="!edit" class="text-gray text-sm">{{ storeTypes[store.storeType] }}</span>
+                    <base-dropdown v-else>
+                        <base-button slot="title" type="primary" size="sm" class="dropdown-toggle">
+                            {{ storeTypes[store.storeType] }}
+                        </base-button>
+                        <a
+                            v-for="(value, key) in storeTypes"
+                            :key="key"
+                            class="dropdown-item"
+                            @click="store.storeType = key"
+                        >
+                            {{ value }}
+                        </a>
+                    </base-dropdown>
                 </div>
             </div>
             <div class="row">
@@ -77,6 +94,7 @@
                         v-model="store.pincode"
                         :disabled="!edit"
                         label="Pincode"
+                        type="number"
                         :input-classes="['form-control-alternative', { 'bg-secondary shadow-none': !edit }]"
                         :classes="['d-flex', { 'flex-row align-items-baseline': !edit }, { 'flex-column': edit }]"
                         :class="[{ 'm-0': !edit }]"
@@ -96,6 +114,14 @@ export default {
         edit: false,
         store: {},
         original: null,
+        storeTypes: {
+            SUPERMARKET: 'Supermarket',
+            GROCERY: 'Grocery',
+            RESTAURANTS: 'Restaurants',
+            MEDICALSHOPS: 'Medical Shops',
+            VEGNFRUITS: 'Vegetables & Fruits',
+            OTHERS: 'Others',
+        },
     }),
     mounted() {
         const storeId = this.$route.params ? this.$route.params.storeId : null;
