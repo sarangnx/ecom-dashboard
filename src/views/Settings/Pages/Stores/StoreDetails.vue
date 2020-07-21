@@ -123,17 +123,26 @@
             </div>
             <div v-if="!edit" class="row">
                 <div class="col-12">
-                    <base-button size="sm">Choose Plan</base-button>
+                    <base-button size="sm" @click="packageModal = true">Choose a Package</base-button>
                 </div>
             </div>
             <div v-if="loading" class="over__lay">
                 <loading />
             </div>
         </div>
+        <modal :show.sync="packageModal" :click-out="false" scrollable modal-classes="modal-lg">
+            <h4 slot="header" class="modal-title">Select a Package</h4>
+            <select-package :store-id="store.storeId" />
+        </modal>
     </div>
 </template>
 <script>
+import SelectPackage from './SelectPackage';
+
 export default {
+    components: {
+        SelectPackage,
+    },
     data: () => ({
         loading: false,
         edit: false,
@@ -148,13 +157,14 @@ export default {
             OTHERS: 'Others',
         },
         packages: null,
+        packageModal: false,
     }),
     mounted() {
         const storeId = this.$route.params ? this.$route.params.storeId : null;
         if (storeId) {
             this.getStore(storeId);
         }
-        this.getPackages();
+        // this.getPackages();
     },
     methods: {
         async getStore(storeId) {
