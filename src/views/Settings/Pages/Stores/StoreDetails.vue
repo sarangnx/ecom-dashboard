@@ -118,6 +118,14 @@
                     </badge>
                 </div>
             </div>
+            <div v-if="!edit" class="row mt-4 mb-2">
+                <span class="col-12 text-muted heading-small font-weight-bold">Package</span>
+            </div>
+            <div v-if="!edit" class="row">
+                <div class="col-12">
+                    <base-button size="sm">Choose Plan</base-button>
+                </div>
+            </div>
             <div v-if="loading" class="over__lay">
                 <loading />
             </div>
@@ -139,12 +147,14 @@ export default {
             VEGNFRUITS: 'Vegetables & Fruits',
             OTHERS: 'Others',
         },
+        packages: null,
     }),
     mounted() {
         const storeId = this.$route.params ? this.$route.params.storeId : null;
         if (storeId) {
             this.getStore(storeId);
         }
+        this.getPackages();
     },
     methods: {
         async getStore(storeId) {
@@ -170,6 +180,24 @@ export default {
             }
 
             this.loading = false;
+        },
+        async getPackages() {
+            try {
+                const response = await this.$axios({
+                    method: 'get',
+                    url: '/packages/list',
+                });
+
+                const packages = response.data.packages;
+                this.packages = packages.rows;
+            } catch (err) {
+                const res = err.response;
+                if (res && res.status >= 400 && res.status < 500 && res.data.error) {
+                    this.$error(res.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
         },
         close() {
             this.store = Object.assign({}, this.original);
