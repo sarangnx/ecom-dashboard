@@ -111,6 +111,7 @@ export default {
 
                 if (response.status === 200) {
                     this.$success('Package Selected.');
+                    this.$emit('selected');
                 }
             } catch (err) {
                 const res = err.response;

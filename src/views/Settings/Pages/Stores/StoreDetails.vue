@@ -148,7 +148,7 @@
                 <loading />
             </div>
         </div>
-        <select-package :store-id="store.storeId" :show.sync="packageModal" />
+        <select-package :store-id="store.storeId" :show.sync="packageModal" @selected="getStore(storeId)" />
     </div>
 </template>
 <script>
@@ -174,12 +174,15 @@ export default {
         packages: null,
         packageModal: false,
     }),
+    computed: {
+        storeId() {
+            return this.$route.params ? this.$route.params.storeId : null;
+        },
+    },
     mounted() {
-        const storeId = this.$route.params ? this.$route.params.storeId : null;
-        if (storeId) {
-            this.getStore(storeId);
+        if (this.storeId) {
+            this.getStore(this.storeId);
         }
-        // this.getPackages();
     },
     methods: {
         async getStore(storeId) {
