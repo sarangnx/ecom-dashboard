@@ -30,7 +30,9 @@
             </div>
         </div>
         <div slot="footer">
-            <base-button size="sm" type="success" icon="arrow-right" icon-position="right">Next</base-button>
+            <base-button size="sm" type="success" icon="arrow-right" icon-position="right" @click="selectPack">
+                Next
+            </base-button>
         </div>
     </modal>
 </template>
@@ -76,6 +78,12 @@ export default {
                 this.selectedPack = null;
             } else {
                 this.selectedPack = pack;
+            }
+        },
+        selectPack() {
+            if (!this.selectedPack) {
+                this.$warn('Select a package', { title: 'No Pack Selected' });
+                return;
             }
         },
     },
