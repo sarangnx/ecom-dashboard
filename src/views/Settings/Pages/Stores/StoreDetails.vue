@@ -130,10 +130,7 @@
                 <loading />
             </div>
         </div>
-        <modal :show.sync="packageModal" :click-out="false" scrollable header-classes="pb-0" body-classes="pt-2">
-            <h4 slot="header" class="modal-title">Select a Package</h4>
-            <select-package :store-id="store.storeId" />
-        </modal>
+        <select-package :store-id="store.storeId" :show.sync="packageModal" />
     </div>
 </template>
 <script>
