@@ -9,7 +9,7 @@
         @update:show="$emit('update:show', $event)"
     >
         <h4 slot="header" class="modal-title">Select a Package</h4>
-        <div class="">
+        <template>
             <div class="col-12">
                 <div
                     v-for="pack in packages"
@@ -28,9 +28,19 @@
                     </div>
                 </div>
             </div>
-        </div>
+            <div v-if="loading" class="over__lay">
+                <loading />
+            </div>
+        </template>
         <div slot="footer">
-            <base-button size="sm" type="success" icon="arrow-right" icon-position="right" @click="selectPack">
+            <base-button
+                size="sm"
+                type="success"
+                icon="arrow-right"
+                icon-position="right"
+                :loading="loading"
+                @click="selectPack"
+            >
                 Next
             </base-button>
         </div>
@@ -50,6 +60,7 @@ export default {
     data: () => ({
         packages: null,
         selectedPack: null,
+        loading: false,
     }),
     mounted() {
         this.getPackages();
@@ -86,6 +97,8 @@ export default {
                 return;
             }
 
+            this.loading = true;
+
             try {
                 const response = await this.$axios({
                     method: 'post',
@@ -107,6 +120,8 @@ export default {
                     this.$error('Something went wrong. Please try again later.');
                 }
             }
+
+            this.loading = false;
         },
     },
 };
