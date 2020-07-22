@@ -67,6 +67,7 @@ export default {
                 'stores',
                 'users',
                 'settings',
+                'packages',
             ],
         },
         { action: 'route', subject: ['settings-profile', 'settings-password'] },

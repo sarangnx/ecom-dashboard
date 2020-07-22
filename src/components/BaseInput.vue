@@ -8,11 +8,11 @@
                 { 'has-label': label || $slots.label },
                 { 'has-success': valid === true },
                 { 'has-danger': valid === false },
-                classes,
+                ...classes,
             ]"
         >
             <slot name="label">
-                <label v-if="label" class="form-control-label" :class="labelClasses">
+                <label v-if="label" class="form-control-label" :class="labelClasses" style="white-space: nowrap;">
                     {{ label }}
                     <span v-if="required">*</span>
                 </label>
@@ -30,7 +30,7 @@
                     :value="value"
                     v-bind="$attrs"
                     class="form-control"
-                    :class="[{ 'is-valid': valid === true }, { 'is-invalid': error }, inputClasses]"
+                    :class="[{ 'is-valid': valid === true }, { 'is-invalid': error }, ...[inputClasses]]"
                     aria-describedby="addon-right addon-left"
                     v-on="listeners"
                 />
@@ -78,7 +78,7 @@ export default {
             description: 'Input label css classes',
         },
         inputClasses: {
-            type: String,
+            type: [String, Array],
             description: 'Input css classes',
         },
         value: {
@@ -94,7 +94,7 @@ export default {
             description: 'Addont left icon',
         },
         classes: {
-            type: String,
+            type: [String, Array],
         },
         addonLeftClass: {
             type: [String, Array],

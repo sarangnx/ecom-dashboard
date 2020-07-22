@@ -168,6 +168,12 @@ export default [
                         meta: { subject: 'settings-stores' },
                     },
                     {
+                        path: 'stores/:storeId',
+                        name: 'Store Details',
+                        component: () =>
+                            import(/* webpackChunkName: "settings" */ '@/views/Settings/Pages/Stores/StoreDetails.vue'),
+                    },
+                    {
                         path: 'profile',
                         name: 'settings / profile',
                         component: () =>
@@ -188,6 +194,19 @@ export default [
                 name: 'Service Dashboard',
                 component: () =>
                     import(/* webpackChunkName: "service-dashboard" */ '@/views/Dashboard/ServiceDashboard.vue'),
+            },
+            {
+                path: '/packages',
+                component: () => import(/* webpackChunkName: "packages" */ '@/views/Packages/Index.vue'),
+                meta: { subject: 'packages' },
+                children: [
+                    {
+                        path: '',
+                        name: 'packages',
+                        component: () =>
+                            import(/* webpackChunkName: "packages" */ '@/views/Packages/Pages/Packages.vue'),
+                    },
+                ],
             },
         ],
     },

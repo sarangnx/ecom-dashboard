@@ -142,6 +142,14 @@ export default {
                 type: 'sidebaritem',
             },
             {
+                name: 'Packages',
+                subject: 'packages',
+                icon: 'box-open',
+                class: 'text-blue',
+                path: '/packages',
+                type: 'sidebaritem',
+            },
+            {
                 name: 'Serviceable Locations',
                 subject: 'manage-pincodes',
                 icon: 'user-tie',

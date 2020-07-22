@@ -70,7 +70,7 @@ export default {
     }),
     computed: {
         selectedPincodes() {
-            return this.storePincodes.concat(this.newPincodes);
+            return this.storePincodes ? this.storePincodes.concat(this.newPincodes) : [];
         },
     },
     watch: {
@@ -82,24 +82,12 @@ export default {
         },
     },
     mounted() {
-        if (this.store && this.store.storeId) {
-            this.getStorePincodes();
+        if (this.store && this.store.pincodes) {
+            this.storePincodes = this.store.pincodes;
         }
-        this.filteredPincodes = Object.assign({}, this.pincodes);
+        this.filteredPincodes = this.pincodes;
     },
     methods: {
-        async getStorePincodes() {
-            const response = await this.$axios({
-                method: 'get',
-                url: '/pincodes/list',
-                params: {
-                    storeId: this.store.storeId,
-                },
-            });
-
-            const pincodes = response.data.pincodes;
-            this.storePincodes = pincodes.rows;
-        },
         remove(pincode) {
             let index = this.newPincodes.findIndex((item) => item.pinId === pincode.pinId);
             // if pincode to be removed is in newPincodes just splice
@@ -193,6 +181,7 @@ export default {
             // If both requests are successful, changed is set to false.
             if (!error) {
                 this.changed = false;
+                this.$emit('changed', this.storePincodes);
             }
         },
     },
