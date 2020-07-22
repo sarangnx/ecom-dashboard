@@ -46,7 +46,7 @@
             <div class="row">
                 <span class="col-12 text-muted mt-4 heading-small font-weight-bold">Store Address</span>
             </div>
-            <div :class="['row pl-md-4', { 'mb-3': edit }]">
+            <div :class="['row', { 'mb-3': edit }]">
                 <div class="col-12 col-md-6 col-lg-4">
                     <base-input
                         v-model="store.area"
@@ -68,7 +68,7 @@
                     />
                 </div>
             </div>
-            <div :class="['row pl-md-4', { 'mb-3': edit }]">
+            <div :class="['row', { 'mb-3': edit }]">
                 <div class="col-12 col-md-6 col-lg-4">
                     <base-input
                         v-model="store.district"
@@ -104,7 +104,7 @@
             <div class="row mt-4 mb-2">
                 <span class="col-12 text-muted heading-small font-weight-bold">Other Info</span>
             </div>
-            <div v-if="!edit" class="row pl-md-4">
+            <div v-if="!edit" class="row">
                 <div class="col-12">
                     <label class="form-control-label mr-3" style="white-space: nowrap;">Store Status</label>
                     <badge :type="store.blocked ? 'danger' : 'success'">
@@ -122,7 +122,25 @@
                 <span class="col-12 text-muted heading-small font-weight-bold">Package</span>
             </div>
             <div v-if="!edit" class="row">
-                <div class="col-12">
+                <template v-if="store.package">
+                    <div class="col-12">
+                        <label class="form-control-label mr-3" style="white-space: nowrap;">Package Name</label>
+                        <span class="text-gray text-sm">{{ store.package.packageDetails.name }}</span>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-control-label mr-3" style="white-space: nowrap;">Product Count</label>
+                        <span class="text-gray text-sm">{{ store.package.packageDetails.count }}</span>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-control-label mr-3" style="white-space: nowrap;">Validity</label>
+                        <span class="text-gray text-sm">{{ store.package.packageDetails.duration }} days</span>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-control-label mr-3" style="white-space: nowrap;">Price</label>
+                        <span class="text-gray text-sm">₹{{ store.package.packageDetails.price }}</span>
+                    </div>
+                </template>
+                <div v-else class="col-12">
                     <base-button size="sm" @click="packageModal = true">Choose a Package</base-button>
                 </div>
             </div>
