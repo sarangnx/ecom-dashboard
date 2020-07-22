@@ -80,10 +80,32 @@ export default {
                 this.selectedPack = pack;
             }
         },
-        selectPack() {
+        async selectPack() {
             if (!this.selectedPack) {
                 this.$warn('Select a package', { title: 'No Pack Selected' });
                 return;
+            }
+
+            try {
+                const response = await this.$axios({
+                    method: 'post',
+                    url: '/packages/store/add',
+                    data: {
+                        storeId: this.storeId,
+                        packageId: this.selectedPack.packageId,
+                    },
+                });
+
+                if (response.status === 200) {
+                    this.$success('Package Selected.');
+                }
+            } catch (err) {
+                const res = err.response;
+                if (res && res.status >= 400 && res.status < 500 && res.data.error) {
+                    this.$error(res.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
             }
         },
     },
