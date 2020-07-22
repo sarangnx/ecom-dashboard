@@ -4,7 +4,8 @@
         :click-out="false"
         scrollable
         header-classes="pb-0"
-        body-classes="pt-2"
+        body-classes="py-2"
+        footer-classes="pt-0"
         @update:show="$emit('update:show', $event)"
     >
         <h4 slot="header" class="modal-title">Select a Package</h4>
@@ -13,20 +14,23 @@
                 <div
                     v-for="pack in packages"
                     :key="pack.packageId"
-                    class="card border-0 shadow-sm--hover ashadow--hover mb-3 pointer"
-                    :class="[{ 'bg-default text-white': selectedPack && selectedPack.packageId === pack.packageId }]"
+                    class="card shadow-sm--hover mb-3 pointer"
+                    :class="[{ selected: selectedPack && selectedPack.packageId === pack.packageId }]"
                     @click="choose(pack)"
                 >
-                    <div class="card-body p-3">
+                    <div class="card-body p-3 d-flex flex-column align-items-start">
                         <span class="text-sm font-weight-bold">{{ pack.name }}</span>
-                        <div class="text-sm">
+                        <badge type="success">
                             <span>{{ pack.count }} Items for {{ pack.duration }} days</span>
                             <span class="text-muted"> &#64; </span>
                             <span class="font-weight-bold">₹{{ pack.price }}</span>
-                        </div>
+                        </badge>
                     </div>
                 </div>
             </div>
+        </div>
+        <div slot="footer">
+            <base-button size="sm" type="success" icon="arrow-right" icon-position="right">Next</base-button>
         </div>
     </modal>
 </template>
@@ -77,3 +81,10 @@ export default {
     },
 };
 </script>
+<style lang="scss" scoped>
+@import '~bootstrap/scss/functions';
+@import '~bootstrap/scss/variables';
+.selected {
+    border: 1px solid $success;
+}
+</style>
