@@ -10,7 +10,7 @@ module.exports = {
         ],
     },
     pwa: {
-        name: 'Peedika',
+        name: 'Evide',
         themeColor: '#172b4d',
         msTileColor: '#172b4d',
         appleMobileWebAppCapable: 'yes',
