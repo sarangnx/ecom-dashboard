@@ -13,7 +13,7 @@
                 >
                     <div class="card shadow-sm shadow--hover h-100">
                         <div
-                            class="card-header border-0 d-flex justify-content-end align-items-end"
+                            class="card-header border-0 d-flex justify-content-end align-items-end position-relative"
                             :style="{
                                 'background-image': item.image
                                     ? `url(${s3bucket}/${item.image})`
@@ -24,6 +24,9 @@
                                 'background-position': 'center',
                             }"
                         >
+                            <div v-if="imageLoading && imageLoading.includes(item.storeId)" class="over__lay">
+                                <loading />
+                            </div>
                             <input
                                 :ref="`file-${index}`"
                                 type="file"
@@ -39,7 +42,6 @@
                                 @click="openImage(`file-${index}`)"
                             ></base-button>
                         </div>
-
                         <div class="card-body d-flex justify-content-end flex-column py-2">
                             <div>
                                 <h5 class="d-inline m-0 pr-2">Name:</h5>
@@ -174,6 +176,7 @@ export default {
         locationModal: null,
         pincodes: [],
         loading: false,
+        imageLoading: [],
         placeholder:
             'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%20viewBox%3D%220%200%20100%20100%22%3E%20%3Crect%20fill%3D%22%23ddd%22%20width%3D%22100%22%20height%3D%22100%22%2F%3E%20%3Ctext%20fill%3D%22rgba%280%2C0%2C0%2C0.5%29%22%20font-family%3D%22sans-serif%22%20font-size%3D%2210%22%20dy%3D%223.5%22%20font-weight%3D%22bold%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%3ENo%20Image%3C%2Ftext%3E%20%3C%2Fsvg%3E',
     }),
@@ -254,6 +257,8 @@ export default {
                 storeId,
             };
 
+            this.imageLoading.push(storeId);
+
             // Wrap it as FormData.
             const formData = new FormData();
             Object.keys(data).forEach((key) => {
@@ -278,6 +283,9 @@ export default {
                     this.$error('Something went wrong. Please try again later.');
                 }
             }
+
+            const index = this.imageLoading.indexOf(storeId);
+            if (index > -1) this.imageLoading.splice(index, 1);
         },
     },
 };
