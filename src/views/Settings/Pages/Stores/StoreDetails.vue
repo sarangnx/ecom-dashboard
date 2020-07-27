@@ -205,6 +205,7 @@
 <script>
 import { required } from 'vuelidate/lib/validators';
 import SelectPackage from './SelectPackage';
+import { pick } from '@/helpers';
 
 export default {
     components: {
@@ -324,6 +325,49 @@ export default {
             this.$v.$touch();
 
             if (this.$v.$invalid) return;
+
+            // prepare data
+            const data = pick(this.store, [
+                'storeId',
+                'name',
+                'area',
+                'city',
+                'district',
+                'state',
+                'pincode',
+                'phones',
+                'storeType',
+                'deliveryAvailable',
+            ]);
+
+            // if multiple phone numbers are given combine them to an object
+            if (this.phones && this.phones.length) {
+                data.phones = this.phones.reduce((phones, phone) => {
+                    if (phone.key) {
+                        phones[phone.key] = phone.value;
+                    }
+
+                    return phones;
+                }, {});
+            }
+
+            try {
+                const response = await this.$axios({
+                    method: 'patch',
+                    url: '/stores/store',
+                    data,
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                }
+            } catch (err) {
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
         },
     },
 };
