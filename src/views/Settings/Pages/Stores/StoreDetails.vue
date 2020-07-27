@@ -274,7 +274,6 @@ export default {
 
                 this.store = Object.assign({}, response.data.store);
                 this.original = Object.assign({}, response.data.store);
-                console.log(this.store);
             } catch (err) {
                 const res = err.response;
                 if (res && res.status >= 400 && res.status < 500 && res.data.error) {
@@ -325,6 +324,7 @@ export default {
             this.$v.$touch();
 
             if (this.$v.$invalid) return;
+            this.loading = true;
 
             // prepare data
             const data = pick(this.store, [
@@ -360,6 +360,7 @@ export default {
 
                 if (response.status === 200 && response.data.message) {
                     this.$success(response.data.message);
+                    this.original = Object.assign({}, this.store, data);
                 }
             } catch (err) {
                 if (err.response && err.response.status === 400 && err.response.data.error) {
@@ -368,6 +369,7 @@ export default {
                     this.$error('Something went wrong. Please try again later.');
                 }
             }
+            this.loading = false;
         },
     },
 };
