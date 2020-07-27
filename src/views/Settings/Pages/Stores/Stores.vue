@@ -62,17 +62,6 @@
                             </base-button>
                             <base-button
                                 size="sm"
-                                type="success"
-                                icon="edit"
-                                @click="
-                                    editModal = true;
-                                    selectedStore = item;
-                                "
-                            >
-                                Edit
-                            </base-button>
-                            <base-button
-                                size="sm"
                                 class="mt-2"
                                 icon="clipboard-list"
                                 @click="
@@ -112,17 +101,6 @@
                 "
             />
         </modal>
-        <modal :show.sync="editModal" header-classes="pb-0" body-classes="pt-0" :click-out="false" scrollable>
-            <h4 slot="header" class="modal-title">Edit Store</h4>
-            <edit-store
-                :key="Date.now()"
-                :store="selectedStore"
-                @done="
-                    editModal = false;
-                    getStores(userId);
-                "
-            />
-        </modal>
         <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
             <h4 slot="header" class="modal-title">Delete Store</h4>
             <delete-store
@@ -151,7 +129,6 @@
 import { FadeTransition } from 'vue2-transitions';
 import { mapGetters, mapActions } from 'vuex';
 import AddStore from './AddStore';
-import EditStore from './EditStore';
 import DeleteStore from './DeleteStore';
 import ServiceableLocations from './ServiceableLocations';
 
@@ -159,7 +136,6 @@ export default {
     name: 'Stores',
     components: {
         AddStore,
-        EditStore,
         DeleteStore,
         ServiceableLocations,
         FadeTransition,
@@ -169,7 +145,6 @@ export default {
         count: null,
         limit: 1, // TODO: make limit dynamic
         addModal: false,
-        editModal: false,
         deleteModal: false,
         selectedStore: {},
         locationModal: null,
