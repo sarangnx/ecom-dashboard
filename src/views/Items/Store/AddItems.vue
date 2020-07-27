@@ -32,7 +32,7 @@
                                 <div
                                     class="card-header border-0"
                                     :style="{
-                                        background: item.image
+                                        'background-image': item.image
                                             ? `url(${s3bucket}/${item.image})`
                                             : `url(${placeholder})`,
                                         height: '200px',
