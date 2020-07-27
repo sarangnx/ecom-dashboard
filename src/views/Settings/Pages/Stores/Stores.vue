@@ -13,7 +13,7 @@
                 >
                     <div class="card shadow-sm shadow--hover h-100">
                         <div
-                            class="card-header border-0"
+                            class="card-header border-0 d-flex justify-content-end align-items-end"
                             :style="{
                                 'background-image': item.image
                                     ? `url(${s3bucket}/${item.image})`
@@ -23,7 +23,22 @@
                                 'background-repeat': 'no-repeat',
                                 'background-position': 'center',
                             }"
-                        ></div>
+                        >
+                            <input
+                                :ref="`file-${index}`"
+                                type="file"
+                                class="hidden"
+                                accept="image/*"
+                                @change="uploadImage(item.storeId, $event)"
+                            />
+                            <base-button
+                                icon="edit"
+                                size="sm"
+                                type="primary"
+                                title="Set Store Image"
+                                @click="openImage(`file-${index}`)"
+                            ></base-button>
+                        </div>
 
                         <div class="card-body d-flex justify-content-end flex-column py-2">
                             <div>
@@ -52,7 +67,7 @@
                         <div class="card-footer d-flex flex-wrap justify-content-between">
                             <base-button
                                 size="sm"
-                                type="primary"
+                                type="success"
                                 icon="eye"
                                 @click="$router.push(`/settings/stores/${item.storeId}`)"
                             >
@@ -169,6 +184,9 @@ export default {
         userId() {
             return this.user.userId;
         },
+        s3bucket() {
+            return process.env.VUE_APP_S3_BUCKET;
+        },
     },
     mounted() {
         this.getStores(this.userId);
@@ -220,6 +238,46 @@ export default {
         changePincodes(pincodes) {
             const index = this.stores.findIndex((store) => store.storeId === this.selectedStore.storeId);
             this.$set(this.stores[index], 'pincodes', pincodes);
+        },
+        openImage(ref) {
+            // open the file selector.
+            // [0] is needed because refs inside v-for is converted to an array by default
+            // there seems to be no way around it at the moment
+            this.$refs[ref][0].click();
+        },
+        async uploadImage(storeId, event) {
+            const image = event.target.files[0];
+            if (!image) return;
+
+            let data = {
+                image,
+                storeId,
+            };
+
+            // Wrap it as FormData.
+            const formData = new FormData();
+            Object.keys(data).forEach((key) => {
+                formData.append(key, data[key]);
+            });
+
+            try {
+                const response = await this.$axios({
+                    method: 'post',
+                    url: '/stores/store/image',
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                    data: formData,
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                }
+            } catch (err) {
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
         },
     },
 };
