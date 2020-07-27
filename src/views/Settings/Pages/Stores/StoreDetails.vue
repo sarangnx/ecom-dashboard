@@ -102,6 +102,42 @@
                 </div>
             </div>
             <div class="row mt-4 mb-2">
+                <span class="col-12 text-muted heading-small font-weight-bold">Phones</span>
+            </div>
+            <div v-if="!edit" class="row">
+                <div v-for="(phone, key) in store.phones" :key="key" class="col-12">
+                    <label class="form-control-label mr-3" style="white-space: nowrap;">{{ key }}</label>
+                    {{ phone }}
+                </div>
+            </div>
+            <div v-else class="d-flex flex-column">
+                <div v-for="(value, index) of phones" :key="index" class="d-flex flex-row justify-content-between mb-3">
+                    <base-input
+                        v-model="phones[index].key"
+                        placeholder="Type (like office, help etc.)"
+                        :disabled="phones[index].key === 'default'"
+                        class="mb-0 mr-2"
+                    />
+                    <base-input v-model="phones[index].value" type="number" placeholder="Phone Number" class="mb-0" />
+                    <base-button
+                        :disabled="phones[index].key === 'default'"
+                        icon="trash"
+                        type="danger"
+                        class="ml-2"
+                        @click="phones.splice(index, 1)"
+                    />
+                </div>
+                <base-button
+                    icon="plus"
+                    type="default"
+                    class="mb-3 align-self-end"
+                    size="sm"
+                    @click="phones.push({ key: null, value: null })"
+                >
+                    Add Phone
+                </base-button>
+            </div>
+            <div class="row mt-4 mb-2">
                 <span class="col-12 text-muted heading-small font-weight-bold">Other Info</span>
             </div>
             <div class="row">
@@ -182,16 +218,18 @@ export default {
         },
         packages: null,
         packageModal: false,
+        phones: [],
     }),
     computed: {
         storeId() {
             return this.$route.params ? this.$route.params.storeId : null;
         },
     },
-    mounted() {
+    async mounted() {
         if (this.storeId) {
-            this.getStore(this.storeId);
+            await this.getStore(this.storeId);
         }
+        this.splitPhones();
     },
     methods: {
         async getStore(storeId) {
@@ -236,8 +274,21 @@ export default {
                 }
             }
         },
+        splitPhones() {
+            // split to array
+            if (this.store && this.store.phones) {
+                this.phones = [];
+                for (let key in this.store.phones) {
+                    this.phones.push({
+                        key,
+                        value: this.store.phones[key],
+                    });
+                }
+            }
+        },
         close() {
             this.store = Object.assign({}, this.original);
+            this.splitPhones();
             this.edit = false;
         },
         async save() {},
