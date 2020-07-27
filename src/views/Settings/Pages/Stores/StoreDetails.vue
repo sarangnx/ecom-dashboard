@@ -23,6 +23,7 @@
                         :input-classes="['form-control-alternative', { 'bg-secondary shadow-none': !edit }]"
                         :classes="['d-flex', { 'flex-row align-items-baseline': !edit }, { 'flex-column': edit }]"
                         :class="[{ 'm-0': !edit }]"
+                        :error="$v.store.name.$error ? 'Store Name Required' : null"
                     />
                 </div>
                 <div class="col-12">
@@ -55,6 +56,7 @@
                         :input-classes="['form-control-alternative', { 'bg-secondary shadow-none': !edit }]"
                         :classes="['d-flex', { 'flex-row align-items-baseline': !edit }, { 'flex-column': edit }]"
                         :class="[{ 'm-0': !edit }]"
+                        :error="$v.store.area.$error ? 'Area Required' : null"
                     />
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
@@ -65,6 +67,7 @@
                         :input-classes="['form-control-alternative', { 'bg-secondary shadow-none': !edit }]"
                         :classes="['d-flex', { 'flex-row align-items-baseline': !edit }, { 'flex-column': edit }]"
                         :class="[{ 'm-0': !edit }]"
+                        :error="$v.store.city.$error ? 'City Required' : null"
                     />
                 </div>
             </div>
@@ -77,6 +80,7 @@
                         :input-classes="['form-control-alternative', { 'bg-secondary shadow-none': !edit }]"
                         :classes="['d-flex', { 'flex-row align-items-baseline': !edit }, { 'flex-column': edit }]"
                         :class="[{ 'm-0': !edit }]"
+                        :error="$v.store.district.$error ? 'District Required' : null"
                     />
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
@@ -87,6 +91,7 @@
                         :input-classes="['form-control-alternative', { 'bg-secondary shadow-none': !edit }]"
                         :classes="['d-flex', { 'flex-row align-items-baseline': !edit }, { 'flex-column': edit }]"
                         :class="[{ 'm-0': !edit }]"
+                        :error="$v.store.state.$error ? 'State Required' : null"
                     />
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
@@ -98,6 +103,7 @@
                         :input-classes="['form-control-alternative', { 'bg-secondary shadow-none': !edit }]"
                         :classes="['d-flex', { 'flex-row align-items-baseline': !edit }, { 'flex-column': edit }]"
                         :class="[{ 'm-0': !edit }]"
+                        :error="$v.store.pincode.$error ? 'Pincode Required' : null"
                     />
                 </div>
             </div>
@@ -197,6 +203,7 @@
     </div>
 </template>
 <script>
+import { required } from 'vuelidate/lib/validators';
 import SelectPackage from './SelectPackage';
 
 export default {
@@ -223,6 +230,28 @@ export default {
     computed: {
         storeId() {
             return this.$route.params ? this.$route.params.storeId : null;
+        },
+    },
+    validations: {
+        store: {
+            name: {
+                required,
+            },
+            area: {
+                required,
+            },
+            city: {
+                required,
+            },
+            district: {
+                required,
+            },
+            state: {
+                required,
+            },
+            pincode: {
+                required,
+            },
         },
     },
     async mounted() {
@@ -291,7 +320,11 @@ export default {
             this.splitPhones();
             this.edit = false;
         },
-        async save() {},
+        async save() {
+            this.$v.$touch();
+
+            if (this.$v.$invalid) return;
+        },
     },
 };
 </script>
