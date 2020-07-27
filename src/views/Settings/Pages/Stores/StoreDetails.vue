@@ -104,6 +104,15 @@
             <div class="row mt-4 mb-2">
                 <span class="col-12 text-muted heading-small font-weight-bold">Other Info</span>
             </div>
+            <div class="row">
+                <div class="col-12">
+                    <label class="form-control-label mr-3" style="white-space: nowrap;">Delivery Method</label>
+                    <small v-if="!edit">
+                        {{ store.deliveryAvailable ? 'Pickup + Home Delivery' : 'Pickup only' }}
+                    </small>
+                    <base-checkbox v-else v-model="store.deliveryAvailable">Home Delivery Available</base-checkbox>
+                </div>
+            </div>
             <div v-if="!edit" class="row">
                 <div class="col-12">
                     <label class="form-control-label mr-3" style="white-space: nowrap;">Store Status</label>
