@@ -13,6 +13,7 @@
                 >
                     <div class="card shadow-sm shadow--hover h-100">
                         <div
+                            :ref="`bg-${index}`"
                             class="card-header border-0 d-flex justify-content-end align-items-end position-relative"
                             :style="{
                                 'background-image': item.image
@@ -32,7 +33,7 @@
                                 type="file"
                                 class="hidden"
                                 accept="image/*"
-                                @change="uploadImage(item.storeId, $event)"
+                                @change="uploadImage(item.storeId, index, $event)"
                             />
                             <base-button
                                 icon="edit"
@@ -248,7 +249,7 @@ export default {
             // there seems to be no way around it at the moment
             this.$refs[ref][0].click();
         },
-        async uploadImage(storeId, event) {
+        async uploadImage(storeId, index, event) {
             const image = event.target.files[0];
             if (!image) return;
 
@@ -275,6 +276,20 @@ export default {
 
                 if (response.status === 200 && response.data.message) {
                     this.$success(response.data.message);
+
+                    // open image
+                    let reader = new FileReader();
+                    reader.onload = (e) => {
+                        // replace backgound with new selected image
+                        const el = this.$refs[`bg-${index}`][0];
+                        el.setAttribute('style', `background-image: url(${e.target.result})`);
+                        el.style.height = '200px';
+                        el.style.backgroundSize = 'cover';
+                        el.style.backgroundRepeat = 'no-repeat';
+                        el.style.backgroundPosition = 'center';
+                    };
+
+                    reader.readAsDataURL(event.target.files[0]);
                 }
             } catch (err) {
                 if (err.response && err.response.status === 400 && err.response.data.error) {
@@ -284,8 +299,8 @@ export default {
                 }
             }
 
-            const index = this.imageLoading.indexOf(storeId);
-            if (index > -1) this.imageLoading.splice(index, 1);
+            const sindex = this.imageLoading.indexOf(storeId);
+            if (sindex > -1) this.imageLoading.splice(sindex, 1);
         },
     },
 };
