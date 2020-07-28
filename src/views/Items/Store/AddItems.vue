@@ -231,6 +231,7 @@ export default {
                 page: this.page,
                 perPage: this.perPage,
                 storeId: this.storeId,
+                search: this.search,
             });
         },
         current: {
@@ -243,6 +244,7 @@ export default {
                         page: this.page,
                         perPage: this.perPage,
                         storeId: this.storeId,
+                        search: this.search,
                     });
                 }
             },
