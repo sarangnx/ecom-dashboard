@@ -23,6 +23,7 @@
                         :input-classes="['form-control-alternative', { 'bg-secondary shadow-none': !edit }]"
                         :classes="['d-flex', { 'flex-row align-items-baseline': !edit }, { 'flex-column': edit }]"
                         :class="[{ 'm-0': !edit }]"
+                        :error="$v.store.name.$error ? 'Store Name Required' : null"
                     />
                 </div>
                 <div class="col-12">
@@ -55,6 +56,7 @@
                         :input-classes="['form-control-alternative', { 'bg-secondary shadow-none': !edit }]"
                         :classes="['d-flex', { 'flex-row align-items-baseline': !edit }, { 'flex-column': edit }]"
                         :class="[{ 'm-0': !edit }]"
+                        :error="$v.store.area.$error ? 'Area Required' : null"
                     />
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
@@ -65,6 +67,7 @@
                         :input-classes="['form-control-alternative', { 'bg-secondary shadow-none': !edit }]"
                         :classes="['d-flex', { 'flex-row align-items-baseline': !edit }, { 'flex-column': edit }]"
                         :class="[{ 'm-0': !edit }]"
+                        :error="$v.store.city.$error ? 'City Required' : null"
                     />
                 </div>
             </div>
@@ -77,6 +80,7 @@
                         :input-classes="['form-control-alternative', { 'bg-secondary shadow-none': !edit }]"
                         :classes="['d-flex', { 'flex-row align-items-baseline': !edit }, { 'flex-column': edit }]"
                         :class="[{ 'm-0': !edit }]"
+                        :error="$v.store.district.$error ? 'District Required' : null"
                     />
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
@@ -87,6 +91,7 @@
                         :input-classes="['form-control-alternative', { 'bg-secondary shadow-none': !edit }]"
                         :classes="['d-flex', { 'flex-row align-items-baseline': !edit }, { 'flex-column': edit }]"
                         :class="[{ 'm-0': !edit }]"
+                        :error="$v.store.state.$error ? 'State Required' : null"
                     />
                 </div>
                 <div class="col-12 col-md-6 col-lg-4">
@@ -98,11 +103,57 @@
                         :input-classes="['form-control-alternative', { 'bg-secondary shadow-none': !edit }]"
                         :classes="['d-flex', { 'flex-row align-items-baseline': !edit }, { 'flex-column': edit }]"
                         :class="[{ 'm-0': !edit }]"
+                        :error="$v.store.pincode.$error ? 'Pincode Required' : null"
                     />
                 </div>
             </div>
             <div class="row mt-4 mb-2">
+                <span class="col-12 text-muted heading-small font-weight-bold">Phones</span>
+            </div>
+            <div v-if="!edit" class="row">
+                <div v-for="(phone, key) in store.phones" :key="key" class="col-12">
+                    <label class="form-control-label mr-3" style="white-space: nowrap;">{{ key }}</label>
+                    {{ phone }}
+                </div>
+            </div>
+            <div v-else class="d-flex flex-column">
+                <div v-for="(value, index) of phones" :key="index" class="d-flex flex-row justify-content-between mb-3">
+                    <base-input
+                        v-model="phones[index].key"
+                        placeholder="Type (like office, help etc.)"
+                        :disabled="phones[index].key === 'default'"
+                        class="mb-0 mr-2"
+                    />
+                    <base-input v-model="phones[index].value" type="number" placeholder="Phone Number" class="mb-0" />
+                    <base-button
+                        :disabled="phones[index].key === 'default'"
+                        icon="trash"
+                        type="danger"
+                        class="ml-2"
+                        @click="phones.splice(index, 1)"
+                    />
+                </div>
+                <base-button
+                    icon="plus"
+                    type="default"
+                    class="mb-3 align-self-end"
+                    size="sm"
+                    @click="phones.push({ key: null, value: null })"
+                >
+                    Add Phone
+                </base-button>
+            </div>
+            <div class="row mt-4 mb-2">
                 <span class="col-12 text-muted heading-small font-weight-bold">Other Info</span>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <label class="form-control-label mr-3" style="white-space: nowrap;">Delivery Method</label>
+                    <small v-if="!edit">
+                        {{ store.deliveryAvailable ? 'Pickup + Home Delivery' : 'Pickup only' }}
+                    </small>
+                    <base-checkbox v-else v-model="store.deliveryAvailable">Home Delivery Available</base-checkbox>
+                </div>
             </div>
             <div v-if="!edit" class="row">
                 <div class="col-12">
@@ -152,7 +203,9 @@
     </div>
 </template>
 <script>
+import { required } from 'vuelidate/lib/validators';
 import SelectPackage from './SelectPackage';
+import { pick } from '@/helpers';
 
 export default {
     components: {
@@ -173,16 +226,40 @@ export default {
         },
         packages: null,
         packageModal: false,
+        phones: [],
     }),
     computed: {
         storeId() {
             return this.$route.params ? this.$route.params.storeId : null;
         },
     },
-    mounted() {
+    validations: {
+        store: {
+            name: {
+                required,
+            },
+            area: {
+                required,
+            },
+            city: {
+                required,
+            },
+            district: {
+                required,
+            },
+            state: {
+                required,
+            },
+            pincode: {
+                required,
+            },
+        },
+    },
+    async mounted() {
         if (this.storeId) {
-            this.getStore(this.storeId);
+            await this.getStore(this.storeId);
         }
+        this.splitPhones();
     },
     methods: {
         async getStore(storeId) {
@@ -197,7 +274,6 @@ export default {
 
                 this.store = Object.assign({}, response.data.store);
                 this.original = Object.assign({}, response.data.store);
-                console.log(this.store);
             } catch (err) {
                 const res = err.response;
                 if (res && res.status >= 400 && res.status < 500 && res.data.error) {
@@ -227,11 +303,74 @@ export default {
                 }
             }
         },
+        splitPhones() {
+            // split to array
+            if (this.store && this.store.phones) {
+                this.phones = [];
+                for (let key in this.store.phones) {
+                    this.phones.push({
+                        key,
+                        value: this.store.phones[key],
+                    });
+                }
+            }
+        },
         close() {
             this.store = Object.assign({}, this.original);
+            this.splitPhones();
             this.edit = false;
         },
-        async save() {},
+        async save() {
+            this.$v.$touch();
+
+            if (this.$v.$invalid) return;
+            this.loading = true;
+
+            // prepare data
+            const data = pick(this.store, [
+                'storeId',
+                'name',
+                'area',
+                'city',
+                'district',
+                'state',
+                'pincode',
+                'phones',
+                'storeType',
+                'deliveryAvailable',
+            ]);
+
+            // if multiple phone numbers are given combine them to an object
+            if (this.phones && this.phones.length) {
+                data.phones = this.phones.reduce((phones, phone) => {
+                    if (phone.key) {
+                        phones[phone.key] = phone.value;
+                    }
+
+                    return phones;
+                }, {});
+            }
+
+            try {
+                const response = await this.$axios({
+                    method: 'patch',
+                    url: '/stores/store',
+                    data,
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                    this.original = Object.assign({}, this.store, data);
+                }
+            } catch (err) {
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
+            this.loading = false;
+        },
     },
 };
 </script>

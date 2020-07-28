@@ -12,9 +12,36 @@
                     class="col-12 col-md-6 col-lg-4 col-xl-3 mb-4 px-md-3"
                 >
                     <div class="card shadow-sm shadow--hover h-100">
-                        <div class="card-header border-0 d-flex justify-content-center align-items-center">
-                            <img v-if="item.image" :src="`${s3bucket}/${item.image}`" class="col p-0" />
-                            <font-awesome-icon v-else icon="image" size="5x"></font-awesome-icon>
+                        <div
+                            :ref="`bg-${index}`"
+                            class="card-header border-0 d-flex justify-content-end align-items-end position-relative"
+                            :style="{
+                                'background-image': item.image
+                                    ? `url(${s3bucket}/${item.image})`
+                                    : `url(${placeholder})`,
+                                height: '200px',
+                                'background-size': 'cover',
+                                'background-repeat': 'no-repeat',
+                                'background-position': 'center',
+                            }"
+                        >
+                            <div v-if="imageLoading && imageLoading.includes(item.storeId)" class="over__lay">
+                                <loading />
+                            </div>
+                            <input
+                                :ref="`file-${index}`"
+                                type="file"
+                                class="hidden"
+                                accept="image/*"
+                                @change="uploadImage(item.storeId, index, $event)"
+                            />
+                            <base-button
+                                icon="edit"
+                                size="sm"
+                                type="primary"
+                                title="Set Store Image"
+                                @click="openImage(`file-${index}`)"
+                            ></base-button>
                         </div>
                         <div class="card-body d-flex justify-content-end flex-column py-2">
                             <div>
@@ -43,7 +70,7 @@
                         <div class="card-footer d-flex flex-wrap justify-content-between">
                             <base-button
                                 size="sm"
-                                type="primary"
+                                type="success"
                                 icon="eye"
                                 @click="$router.push(`/settings/stores/${item.storeId}`)"
                             >
@@ -59,17 +86,6 @@
                                 "
                             >
                                 Remove
-                            </base-button>
-                            <base-button
-                                size="sm"
-                                type="success"
-                                icon="edit"
-                                @click="
-                                    editModal = true;
-                                    selectedStore = item;
-                                "
-                            >
-                                Edit
                             </base-button>
                             <base-button
                                 size="sm"
@@ -112,17 +128,6 @@
                 "
             />
         </modal>
-        <modal :show.sync="editModal" header-classes="pb-0" body-classes="pt-0" :click-out="false" scrollable>
-            <h4 slot="header" class="modal-title">Edit Store</h4>
-            <edit-store
-                :key="Date.now()"
-                :store="selectedStore"
-                @done="
-                    editModal = false;
-                    getStores(userId);
-                "
-            />
-        </modal>
         <modal :show.sync="deleteModal" header-classes="pb-0" body-classes="pt-0" :click-out="false">
             <h4 slot="header" class="modal-title">Delete Store</h4>
             <delete-store
@@ -151,7 +156,6 @@
 import { FadeTransition } from 'vue2-transitions';
 import { mapGetters, mapActions } from 'vuex';
 import AddStore from './AddStore';
-import EditStore from './EditStore';
 import DeleteStore from './DeleteStore';
 import ServiceableLocations from './ServiceableLocations';
 
@@ -159,7 +163,6 @@ export default {
     name: 'Stores',
     components: {
         AddStore,
-        EditStore,
         DeleteStore,
         ServiceableLocations,
         FadeTransition,
@@ -169,12 +172,14 @@ export default {
         count: null,
         limit: 1, // TODO: make limit dynamic
         addModal: false,
-        editModal: false,
         deleteModal: false,
         selectedStore: {},
         locationModal: null,
         pincodes: [],
         loading: false,
+        imageLoading: [],
+        placeholder:
+            'data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22100%22%20height%3D%22100%22%20viewBox%3D%220%200%20100%20100%22%3E%20%3Crect%20fill%3D%22%23ddd%22%20width%3D%22100%22%20height%3D%22100%22%2F%3E%20%3Ctext%20fill%3D%22rgba%280%2C0%2C0%2C0.5%29%22%20font-family%3D%22sans-serif%22%20font-size%3D%2210%22%20dy%3D%223.5%22%20font-weight%3D%22bold%22%20x%3D%2250%25%22%20y%3D%2250%25%22%20text-anchor%3D%22middle%22%3ENo%20Image%3C%2Ftext%3E%20%3C%2Fsvg%3E',
     }),
     computed: {
         ...mapGetters({
@@ -182,6 +187,9 @@ export default {
         }),
         userId() {
             return this.user.userId;
+        },
+        s3bucket() {
+            return process.env.VUE_APP_S3_BUCKET;
         },
     },
     mounted() {
@@ -234,6 +242,65 @@ export default {
         changePincodes(pincodes) {
             const index = this.stores.findIndex((store) => store.storeId === this.selectedStore.storeId);
             this.$set(this.stores[index], 'pincodes', pincodes);
+        },
+        openImage(ref) {
+            // open the file selector.
+            // [0] is needed because refs inside v-for is converted to an array by default
+            // there seems to be no way around it at the moment
+            this.$refs[ref][0].click();
+        },
+        async uploadImage(storeId, index, event) {
+            const image = event.target.files[0];
+            if (!image) return;
+
+            let data = {
+                image,
+                storeId,
+            };
+
+            this.imageLoading.push(storeId);
+
+            // Wrap it as FormData.
+            const formData = new FormData();
+            Object.keys(data).forEach((key) => {
+                formData.append(key, data[key]);
+            });
+
+            try {
+                const response = await this.$axios({
+                    method: 'post',
+                    url: '/stores/store/image',
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                    data: formData,
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+
+                    // open image
+                    let reader = new FileReader();
+                    reader.onload = (e) => {
+                        // replace backgound with new selected image
+                        const el = this.$refs[`bg-${index}`][0];
+                        el.setAttribute('style', `background-image: url(${e.target.result})`);
+                        el.style.height = '200px';
+                        el.style.backgroundSize = 'cover';
+                        el.style.backgroundRepeat = 'no-repeat';
+                        el.style.backgroundPosition = 'center';
+                    };
+
+                    reader.readAsDataURL(event.target.files[0]);
+                }
+            } catch (err) {
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
+
+            const sindex = this.imageLoading.indexOf(storeId);
+            if (sindex > -1) this.imageLoading.splice(sindex, 1);
         },
     },
 };
