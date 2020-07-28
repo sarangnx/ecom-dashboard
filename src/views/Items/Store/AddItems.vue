@@ -1,8 +1,8 @@
 <template>
     <div>
         <div v-if="storeId || (stores && stores.length)" class="card shadow">
-            <div class="card-header d-flex justify-content-between">
-                <div class="d-flex align-items-center">
+            <div class="card-header d-flex flex-column align-items-center justify-content-between flex-lg-row">
+                <div class="d-flex align-items-center mb-4 mb-lg-0">
                     <h4 class="m-0 mr-2">Add to Store:</h4>
                     <div v-if="current">
                         <base-dropdown>
@@ -15,13 +15,31 @@
                         </base-dropdown>
                     </div>
                 </div>
-                <div class="d-flex">
+                <div class="d-flex align-items-center mb-4 mb-lg-0">
                     <category-dropdown
                         :categories="categories"
                         @category-id="
                             getItems({ categoryId: (categoryId = $event), page: (page = 1), perPage, storeId })
                         "
                     />
+                </div>
+                <div class="d-flex align-items-center mb-4 mb-lg-0">
+                    <base-input
+                        v-model="search"
+                        class="input-group-alternative mb-0"
+                        placeholder="search..."
+                        addon-right-class="py-0"
+                        classes="shadow-lg"
+                        @keypress.enter="getItems({ page: (page = 1), perPage, storeId, search })"
+                    >
+                        <template slot="addonRight" class="p-0">
+                            <base-button
+                                size="sm"
+                                icon="search"
+                                @click="getItems({ page: (page = 1), perPage, storeId, search })"
+                            />
+                        </template>
+                    </base-input>
                 </div>
             </div>
             <div class="card-body position-relative min__height">
@@ -175,6 +193,7 @@ export default {
         },
     },
     data: () => ({
+        search: null,
         categoryId: null,
         page: 1,
         perPage: 12,
@@ -251,6 +270,7 @@ export default {
                         page: options.page,
                         perPage: options.perPage,
                         storeId: options.storeId,
+                        search: options.search,
                     },
                 });
 
