@@ -38,6 +38,7 @@
             <h5 class="text-muted">State</h5>
             <base-input v-model="store.state" :error="$v.store.state.$error ? 'State Required' : null" />
         </div>
+        
         <div class="col-6">
             <h5 class="text-muted">Pincode</h5>
             <base-input
@@ -45,6 +46,17 @@
                 type="number"
                 :error="$v.store.pincode.$error ? 'Pincode Required' : null"
             />
+        </div>
+        <div class="col-6 mb-3">
+            <h4>Package</h4>
+            <base-dropdown>
+                    <base-button slot="title" type="primary" size="sm" class="dropdown-toggle">
+                        {{ pkg.name!=undefined?pkg.name:"Select Package" }}
+                    </base-button>
+                    <a v-for="(item, index) in packages" :key="index" class="dropdown-item" @click="pkg = item">
+                        {{ item.name }}
+                    </a>
+                </base-dropdown>
         </div>
         <div class="col-12">
             <h5 class="text-muted">Phones</h5>
@@ -75,9 +87,11 @@
                     Add Phone
                 </base-button>
             </div>
+        
         </div>
+        
         <div class="col-12">
-            <base-button type="success" icon="plus" block @click.prevent.stop="add()">Add Store</base-button>
+            <base-button type="success" icon="plus" block @click.prevent.stop="payNow()">Add Store</base-button>
         </div>
         <div v-if="loading" class="over__lay">
             <loading color="dark" />
@@ -95,6 +109,9 @@ export default {
         },
     },
     data: () => ({
+        order:{},
+        packages:[],
+        pkg:{},
         store: {},
         phones: [{ key: 'default', value: null }],
         loading: null,
@@ -131,10 +148,107 @@ export default {
         },
     },
     mounted() {
+        let paymentScript = document.createElement('script')
+        paymentScript.setAttribute('src','https://checkout.razorpay.com/v1/checkout.js')
+        document.head.appendChild(paymentScript)
+        this.getPackages();
         this.storeType = this.storeTypes[0];
     },
     methods: {
-        async add() {
+        async getPackages() {
+            try {
+                const response = await this.$axios({
+                    method: 'get',
+                    url: '/packages/list',
+                });
+
+                const packages = response.data.packages;
+                this.packages = packages.rows;
+                this.pack = this.packages[0];
+            } catch (err) {
+                const res = err.response;
+                if (res && res.status >= 400 && res.status < 500 && res.data.error) {
+                    this.$error(res.data.error.message);
+                } else {
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
+        },
+        add:async function() {
+            this.$v.$touch();
+
+            if (this.$v.$invalid) return;
+
+            // prepare data
+            const data = Object.assign({}, this.store);
+            data.userId = this.userId;
+
+            // if multiple phone numbers are given combine them to an object
+            if (this.phones && this.phones.length) {
+                data.phones = this.phones.reduce((phones, phone) => {
+                    if (phone.key) {
+                        phones[phone.key] = phone.value;
+                    }
+
+                    return phones;
+                }, {});
+            }
+
+            // Add Store Type
+            if (this.storeType) {
+                data.storeType = this.storeType.key;
+            }
+
+            this.loading = true;
+    
+            try{
+                const response = await this.$axios({
+                    method: 'post',
+                    url: '/stores/store',
+                    data,
+                });
+
+                if (response.status === 200 && response.data.message) {
+                    this.$success(response.data.message);
+                }
+
+                this.$emit('done'); 
+            } catch (err) {
+                console.log(err);
+                if (err.response && err.response.status === 400 && err.response.data.error) {
+                    this.$error(err.response.data.error.message);
+                } else {
+                        
+                    this.$error('Something went wrong. Please try again later.');
+                }
+            }
+
+            this.loading = false;
+        },
+        verifyPayment:async function(res) {
+
+            try{
+                const data = Object.assign({}, res);
+                console.log(res);
+                data.razorpay_payment_id = res.razorpay_payment_id;
+                data.razorpay_order_id = res.razorpay_order_id;
+                data.razorpay_signature = res.razorpay_signature;
+                const response = await this.$axios({
+                    method: 'post',
+                    url: '/stores/verify/payment',
+                    data,
+                });
+                
+                if (response.status === 200 && response.data && response.data==true) {
+                    return true
+                }else{
+                    return false;
+                }
+            } catch (err) {
+                return false;
+            }
+        },
+        payNow:async function(){
             this.$v.$touch();
 
             if (this.$v.$invalid) return;
@@ -161,28 +275,67 @@ export default {
 
             this.loading = true;
 
-            try {
-                const response = await this.$axios({
-                    method: 'post',
-                    url: '/stores/store',
-                    data,
-                });
+            if(this.pkg==undefined||this.pkg==''){
+                this.$error('Please select a valid package');
+            }
 
-                if (response.status === 200 && response.data.message) {
-                    this.$success(response.data.message);
-                }
+           
+            data.amount = this.pkg.price;
+            data.packageId = this.pkg.packageId;
 
-                this.$emit('done');
-            } catch (err) {
-                if (err.response && err.response.status === 400 && err.response.data.error) {
-                    this.$error(err.response.data.error.message);
-                } else {
-                    this.$error('Something went wrong. Please try again later.');
+            const response = await this.$axios({
+                method: 'post',
+                url: '/stores/pay',
+                data,
+            });
+
+            if (response.status === 200 && response.data) {
+                try {
+                   console.log(response.data.id);
+                    const rzp_options = {
+                        key: "rzp_test_0j0sb5cTJ0o805",
+                        amount: this.pkg.price * 100,
+                        name: this.pkg.name,
+                        description: this.pkg.name,
+                        order_id:response.data.id,
+                        handler: async (response)=> {
+                            if(await this.verifyPayment(response)){
+                                this.add();
+                            }else{
+                                alert("Payment Failed");
+                                this.$emit('done');
+                            }
+                            
+                        },
+                        modal: {
+                            ondismiss: function() {
+                                alert(`Payment Failed`)
+                            }
+                        },
+                        notes: {
+                            item: this.pkg.name,
+                        },
+                        theme: {
+                            color: "#667eea"
+                        }
+                    };
+                    const rzp1 = new Razorpay(rzp_options);
+                    rzp1.open();
+                } catch (err) {
+
+                    if (err.response && err.response.status === 400 && err.response.data.error) {
+                        this.$error(err.response.data.error.message);
+                    } else {
+                        
+                        this.$error('Something went wrong. Please try again later.');
+                    }
                 }
             }
+            
 
             this.loading = false;
         },
+        
     },
 };
 </script>
